@@ -1,0 +1,5 @@
+<div class="lms-card {{ extra_class }}">
+  {% if title %}
+  <div class="lms-card__header">{{ title }}</div>
+  {% endif %}
+  <div class="lms-card__body {% if compact %}lms-card__body--compact{% endif %}">

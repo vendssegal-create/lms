@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% load static %}
+{% load lms_filters %}
+
+{% block title %}HEMIS Sinxronizatsiya — Django LMS{% endblock %}
+
+{% block content %}
+<div class="space-y-6 animate-in fade-in duration-500">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h2 class="font-display text-3xl font-extrabold tracking-tight text-text-primary">HEMIS Sinxronizatsiya</h2>
+            <p class="text-sm font-medium text-text-muted mt-1">Tizim ma'lumotlarini HEMIS bilan sinxronlashtirish</p>
+        </div>
+        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <i data-lucide="refresh-cw" class="h-6 w-6"></i>
+        </div>
+    </div>
+
+    <!-- Config Status -->
+    {% if not config_ok %}
+    <div class="rounded-2xl bg-red-50 border border-red-200 p-4 flex items-center gap-3">
+        <i data-lucide="alert-triangle" class="h-5 w-5 text-red-500 shrink-0"></i>
+        <div>
+            <p class="font-bold text-red-800 text-sm">HEMIS sozlamalari to'liq emas!</p>
+            <p class="text-xs text-red-700 mt-0.5"><code>HEMIS_BACKEND_API_TOKEN</code> va <code>HEMIS_REST_BASE_URL</code> ni <code>settings.py</code> da o'rnating.</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="rounded-2xl bg-green-50 border border-green-200 p-4 flex items-center gap-3">
+        <i data-lucide="check-circle" class="h-5 w-5 text-green-500 shrink-0"></i>
+        <div>
+            <p class="font-bold text-green-800 text-sm">HEMIS ulanishi sozlangan</p>
+            <p class="text-xs text-green-700">{{ hemis_base_url }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if has_running %}
+    <div id="running-banner" class="rounded-2xl bg-amber-50 border border-amber-200 p-4 flex items-center gap-3">
+        <i data-lucide="loader" class="h-5 w-5 text-amber-600 animate-spin shrink-0"></i>
+        <div>
+            <p class="font-bold text-amber-800 text-sm">Sinxronlash davom etmoqda...</p>
+            <p class="text-xs text-amber-700">Sahifa avtomatik yangilanib boradi. <span id="countdown" class="font-bold"></span></p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column -->
+        <div class="space-y-6">
+            <!-- DB Stats -->
+            <div class="rounded-3xl border border-border bg-white shadow-sm overflow-hidden">
+                <div class="px-5 py-3 border-b border-border bg-slate-50">
+                    <h3 class="text-sm font-bold text-text-primary flex items-center gap-2">
+                        <i data-lucide="database" class="h-4 w-4 text-primary"></i> Mahalliy baza
+                    </h3>
+                </div>
+                <div class="divide-y divide-border">
+                    <div class="flex items-center justify-between px-5 py-3">
+                        <span class="text-sm text-text-muted flex items-center gap-2"><i data-lucide="users" class="h-3.5 w-3.5 text-primary"></i> Talabalar</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-primary text-white text-xs font-bold">{{ db_stats.students }}</span>
+                    </div>
+                    <div class="flex items-center justify-between px-5 py-3">
+                        <span class="text-sm text-text-muted flex items-center gap-2"><i data-lucide="user" class="h-3.5 w-3.5 text-violet-500"></i> O'qituvchilar</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-violet-500 text-white text-xs font-bold">{{ db_stats.teachers }}</span>
+                    </div>
+                    <div class="flex items-center justify-between px-5 py-3">
+                        <span class="text-sm text-text-muted flex items-center gap-2"><i data-lucide="book" class="h-3.5 w-3.5 text-cyan-500"></i> O'quv rejalari</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-cyan-500 text-white text-xs font-bold">{{ db_stats.curriculums }}</span>
+                    </div>
+                    <div class="flex items-center justify-between px-5 py-3">
+                        <span class="text-sm text-text-muted flex items-center gap-2"><i data-lucide="building" class="h-3.5 w-3.5 text-green-500"></i> Xonalar</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-green-500 text-white text-xs font-bold">{{ db_stats.rooms }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Launch Sync -->
+            <div class="rounded-3xl border border-border bg-white shadow-sm overflow-hidden">
+                <div class="px-5 py-3 border-b border-border bg-slate-50">
+                    <h3 class="text-sm font-bold text-text-primary flex items-center gap-2">
+                        <i data-lucide="play-circle" class="h-4 w-4 text-green-500"></i> Sinxronlashni boshlash
+                    </h3>
+                </div>
+                <div class="p-5">
+                    <form method="post" action="{% url 'retake:retake_run_sync' %}">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="block text-xs font-bold text-text-muted mb-1">Sinxronizatsiya doirasi:</label>
+                            <select name="scope" class="w-full rounded-xl border border-border px-3 py-2.5 text-sm focus:border-primary focus:outline-none">
+                                <option value="students">Barcha talabalar (Snapshots)</option>
+                                <option value="teachers">Barcha o'qituvchi va xodimlar</option>
+                                <option value="curriculums">O'quv rejalari (Curriculums)</option>
+                                <option value="rooms">Xonalar va auditoriyalar</option>
+                                <option value="all">Barchasini sinxronlash (ketma-ket)</option>
+                            </select>
+                        </div>
+                        <button type="submit" {% if not config_ok %}disabled{% endif %} class="w-full py-2.5 rounded-xl {% if config_ok %}bg-green-500 hover:bg-green-600{% else %}bg-slate-300 cursor-not-allowed{% endif %} text-white text-sm font-bold transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="play" class="h-4 w-4"></i> Sinxronlashtirishni boshlash
+                        </button>
+                    </form>
+                    <hr class="my-4 border-border">
+                    <button id="test-conn-btn" {% if not config_ok %}disabled{% endif %} class="w-full py-2 rounded-xl bg-slate-100 text-text-primary text-xs font-bold hover:bg-slate-200 transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="plug" class="h-3.5 w-3.5"></i> HEMIS ulanishini tekshirish
+                    </button>
+                    <div id="conn-result" class="mt-3 hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Sync Logs -->
+        <div class="lg:col-span-2">
+            <div class="rounded-3xl border border-border bg-white shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-border flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-text-primary flex items-center gap-2">
+                        <i data-lucide="history" class="h-4 w-4 text-text-muted"></i>
+                        Sinxronizatsiya jurnali <span class="text-text-muted font-normal">(Oxirgi 20 ta)</span>
+                    </h3>
+                    <button onclick="location.reload()" class="px-3 py-1 rounded-lg bg-slate-100 text-text-muted text-xs font-bold hover:bg-slate-200 transition-colors flex items-center gap-1">
+                        <i data-lucide="refresh-cw" class="h-3 w-3"></i> Yangilash
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 text-text-muted text-xs uppercase tracking-wider">
+                                <th class="px-5 py-3 text-left font-bold">Sana / Vaqt</th>
+                                <th class="px-4 py-3 text-left font-bold">Soha</th>
+                                <th class="px-4 py-3 text-left font-bold">Holat</th>
+                                <th class="px-4 py-3 text-left font-bold">Natija</th>
+                                <th class="px-4 py-3 text-left font-bold">Davomiylik</th>
+                                <th class="px-5 py-3 text-right font-bold">Foydalanuvchi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-border">
+                            {% for log in last_syncs %}
+                            <tr class="{% if log.status == 'running' %}bg-amber-50{% else %}hover:bg-slate-50{% endif %} transition-colors">
+                                <td class="px-5 py-3.5">
+                                    <p class="font-bold text-text-primary text-xs">{{ log.started_at|uz_datetime }}</p>
+                                    {% if log.message and log.status != 'success' %}
+                                    <p class="text-[10px] text-red-500 mt-0.5 truncate max-w-[200px]" title="{{ log.message }}">{{ log.message|truncatechars:60 }}</p>
+                                    {% endif %}
+                                </td>
+                                <td class="px-4 py-3.5">
+                                    {% if log.scope == 'students' %}
+                                    <span class="px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 text-[10px] font-bold">TALABALAR</span>
+                                    {% elif log.scope == 'teachers' %}
+                                    <span class="px-2 py-0.5 rounded-md bg-violet-100 text-violet-700 text-[10px] font-bold">O'QITUVCHILAR</span>
+                                    {% elif log.scope == 'curriculums' %}
+                                    <span class="px-2 py-0.5 rounded-md bg-cyan-100 text-cyan-700 text-[10px] font-bold">REJALAR</span>
+                                    {% elif log.scope == 'rooms' %}
+                                    <span class="px-2 py-0.5 rounded-md bg-green-100 text-green-700 text-[10px] font-bold">XONALAR</span>
+                                    {% elif log.scope == 'all' %}
+                                    <span class="px-2 py-0.5 rounded-md bg-orange-100 text-orange-700 text-[10px] font-bold">BARCHASI</span>
+                                    {% else %}
+                                    <span class="px-2 py-0.5 rounded-md bg-slate-100 text-text-muted text-[10px] font-bold">{{ log.scope|upper }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-4 py-3.5">
+                                    {% if log.status == 'success' %}
+                                    <span class="flex items-center gap-1 text-green-600 text-xs font-bold"><i data-lucide="check-circle" class="h-3 w-3"></i> Tugallandi</span>
+                                    {% elif log.status == 'running' %}
+                                    <span class="flex items-center gap-1 text-amber-600 text-xs font-bold"><i data-lucide="loader" class="h-3 w-3 animate-spin"></i> Davom etmoqda</span>
+                                    {% elif log.status == 'partial' %}
+                                    <span class="flex items-center gap-1 text-blue-600 text-xs font-bold"><i data-lucide="minus-circle" class="h-3 w-3"></i> Qisman</span>
+                                    {% else %}
+                                    <span class="flex items-center gap-1 text-red-500 text-xs font-bold"><i data-lucide="x-circle" class="h-3 w-3"></i> Xatolik</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-4 py-3.5">
+                                    <span class="font-bold text-text-primary">{{ log.processed_count }}</span>
+                                    <span class="text-text-muted text-[10px]"> ta yozuv</span>
+                                </td>
+                                <td class="px-4 py-3.5 text-xs text-text-muted">
+                                    {% if log.finished_at and log.started_at %}
+                                    {% with delta=log.finished_at|timeuntil:log.started_at %}
+                                    <span class="flex items-center gap-1"><i data-lucide="clock" class="h-3 w-3"></i> {{ delta }}</span>
+                                    {% endwith %}
+                                    {% elif log.status == 'running' %}
+                                    <span class="text-amber-500 flex items-center gap-1"><i data-lucide="loader" class="h-3 w-3 animate-spin"></i> Hisob...</span>
+                                    {% else %}—{% endif %}
+                                </td>
+                                <td class="px-5 py-3.5 text-right text-xs text-text-muted">
+                                    {{ log.initiated_by.get_full_name|default:log.initiated_by.username|default:"—" }}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center py-16 text-text-muted">
+                                    <i data-lucide="history" class="h-8 w-8 mx-auto opacity-20 mb-2"></i>
+                                    <p class="text-sm font-bold">Sinxronizatsiya jurnali bo'sh</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('test-conn-btn').addEventListener('click', function () {
+    const btn = this;
+    const resultDiv = document.getElementById('conn-result');
+    btn.disabled = true;
+    btn.innerHTML = '<i data-lucide="loader" class="h-3.5 w-3.5 animate-spin"></i> Tekshirilmoqda...';
+    resultDiv.classList.add('hidden');
+
+    fetch('{% url "retake:retake_sync_test_connection" %}', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+    })
+        .then(r => r.json())
+        .then(data => {
+            resultDiv.classList.remove('hidden');
+            if (data.success) {
+                const info = Object.values(data.results || {}).map(r => r.message).join(', ');
+                resultDiv.innerHTML = `<div class="rounded-xl bg-green-50 border border-green-200 p-3 text-xs font-bold text-green-700">Ulanish muvaffaqiyatli! ${info}</div>`;
+            } else {
+                const errMsg = data.error || Object.values(data.results || {}).map(r => r.message).join('<br>');
+                resultDiv.innerHTML = `<div class="rounded-xl bg-red-50 border border-red-200 p-3 text-xs font-bold text-red-700">Xatolik: ${errMsg}</div>`;
+            }
+        })
+        .catch(err => {
+            resultDiv.classList.remove('hidden');
+            resultDiv.innerHTML = `<div class="rounded-xl bg-red-50 border border-red-200 p-3 text-xs text-red-700">So'rov xatosi: ${err}</div>`;
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="plug" class="h-3.5 w-3.5"></i> HEMIS ulanishini tekshirish';
+            if (window.lucide) lucide.createIcons();
+        });
+});
+
+{% if has_running %}
+(function () {
+    let seconds = 5;
+    const countdownEl = document.getElementById('countdown');
+    function tick() {
+        if (countdownEl) countdownEl.textContent = `(${seconds}s)`;
+        if (seconds <= 0) { location.reload(); } else { seconds--; setTimeout(tick, 1000); }
+    }
+    tick();
+})();
+{% endif %}
+</script>
+{% endblock %}

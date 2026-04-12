@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Qaydnoma sozlamalari: {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="animate-slideUp max-w-4xl mx-auto pb-20">
+    <div class="space-y-8">
+        <!-- Header Section -->
+        <div class="flex items-center gap-6">
+            <a href="{% url 'lms:course_gradebook' course.id %}" class="w-12 h-12 rounded-2xl bg-white border border-border/50 flex items-center justify-center text-text-muted hover:text-primary hover:border-primary/20 transition-all shadow-sm group">
+                <i data-lucide="arrow-left" size="20" class="group-hover:-translate-x-1 transition-transform"></i>
+            </a>
+            <div>
+                <h2 class="text-3xl font-black text-text-primary tracking-tight">Qaydnoma Sozlamalari</h2>
+                <p class="text-sm font-medium text-text-secondary mt-1">Maksimal ballar taqsimotini belgilang</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <!-- Form Area -->
+            <div class="lg:col-span-2">
+                <div class="card-premium p-10 lg:p-12">
+                    <form method="post" id="setupForm" class="space-y-10">
+                        {% csrf_token %}
+                        
+                        <!-- Current Control (JN) -->
+                        <div class="space-y-4">
+                            <label class="flex items-center justify-between">
+                                <span class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Joriy nazorat (JN)</span>
+                                <span class="text-xs font-bold text-blue-500 bg-blue-50 px-3 py-1 rounded-lg">Maksimal ball</span>
+                            </label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-blue-400 group-focus-within:text-blue-600 transition-colors">
+                                    <i data-lucide="edit-3" size="20"></i>
+                                </div>
+                                <input type="number" name="current_max" 
+                                       value="{{ gradebook.current_max }}" 
+                                       class="grade-setup-input w-full rounded-2xl bg-slate-50 border-none pl-14 pr-6 py-5 text-lg font-black text-text-primary ring-2 ring-transparent focus:ring-blue-500/20 focus:bg-white transition-all shadow-inner outline-none" 
+                                       min="0" max="100">
+                            </div>
+                        </div>
+
+                        <!-- Midterm Control (ON) -->
+                        <div class="space-y-4">
+                            <label class="flex items-center justify-between">
+                                <span class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Oraliq nazorat (ON)</span>
+                                <span class="text-xs font-bold text-amber-500 bg-amber-50 px-3 py-1 rounded-lg">Maksimal ball</span>
+                            </label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-amber-400 group-focus-within:text-amber-600 transition-colors">
+                                    <i data-lucide="trending-up" size="20"></i>
+                                </div>
+                                <input type="number" name="midterm_max" 
+                                       value="{{ gradebook.midterm_max }}" 
+                                       class="grade-setup-input w-full rounded-2xl bg-slate-50 border-none pl-14 pr-6 py-5 text-lg font-black text-text-primary ring-2 ring-transparent focus:ring-amber-500/20 focus:bg-white transition-all shadow-inner outline-none" 
+                                       min="0" max="100">
+                            </div>
+                        </div>
+
+                        <!-- Final Control (YN) -->
+                        <div class="space-y-4">
+                            <label class="flex items-center justify-between">
+                                <span class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Yakuniy nazorat (YN)</span>
+                                <span class="text-xs font-bold text-rose-500 bg-rose-50 px-3 py-1 rounded-lg">Maksimal ball</span>
+                            </label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-rose-400 group-focus-within:text-rose-600 transition-colors">
+                                    <i data-lucide="graduation-cap" size="20"></i>
+                                </div>
+                                <input type="number" name="final_max" 
+                                       value="{{ gradebook.final_max }}" 
+                                       class="grade-setup-input w-full rounded-2xl bg-slate-50 border-none pl-14 pr-6 py-5 text-lg font-black text-text-primary ring-2 ring-transparent focus:ring-rose-500/20 focus:bg-white transition-all shadow-inner outline-none" 
+                                       min="0" max="100">
+                            </div>
+                        </div>
+
+                        <div class="pt-6">
+                            <button type="submit" class="w-full inline-flex items-center justify-center gap-3 px-10 py-5 rounded-[24px] bg-primary text-white font-black text-base shadow-2xl shadow-primary/30 hover:bg-primary/90 transition-all group">
+                                <i data-lucide="save" size="20" class="group-hover:scale-110 transition-transform"></i>
+                                Sozlamalarni saqlash
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Summary Sidebar -->
+            <div class="space-y-8">
+                <div class="card-premium p-10 bg-slate-900 border-none relative overflow-hidden group">
+                    <!-- Decor -->
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all"></div>
+                    
+                    <div class="relative z-10 space-y-8">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-primary">
+                                <i data-lucide="pie-chart" size="20"></i>
+                            </div>
+                            <h3 class="text-lg font-extrabold text-white tracking-tight">Umumiy taqsimot</h3>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="flex items-end gap-2">
+                                <span id="totalSumLabel" class="text-6xl font-black text-white tracking-tighter transition-colors">100</span>
+                                <span class="text-xl font-bold text-white/40 mb-2">/ 100</span>
+                            </div>
+                            <p class="text-sm font-medium text-white/50">Umumiy ballar yig'indisi 100 bo'lishi kerak.</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="h-4 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                                <div id="totalProgressBar" class="h-full rounded-full bg-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)] transition-all duration-700" style="width: 100%"></div>
+                            </div>
+                            <div id="statusMessage" class="flex items-center gap-2 text-xs font-bold text-success drop-shadow-sm transition-colors">
+                                <i data-lucide="check-circle-2" size="14"></i>
+                                Muvaffaqiyatli taqsimlandi
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Card -->
+                <div class="card-premium p-8 bg-slate-50/50 border-dashed">
+                    <div class="flex gap-4">
+                        <div class="w-10 h-10 shrink-0 rounded-2xl bg-white border border-border/50 flex items-center justify-center text-text-muted">
+                            <i data-lucide="info" size="18"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-sm font-bold text-text-primary">Eslatma</p>
+                            <p class="text-xs font-medium text-text-secondary leading-relaxed">
+                                Ballar taqsimotini o'zgartirgandan so'ng, qaydnomadagi amaldagi ballar avtomatik ravishda yangi maksimal ballarga ko'ra validatsiya qilinadi.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('.grade-setup-input');
+        const sumLabel = document.getElementById('totalSumLabel');
+        const progressBar = document.getElementById('totalProgressBar');
+        const statusMessage = document.getElementById('statusMessage');
+
+        function updateSum() {
+            let sum = 0;
+            inputs.forEach(input => {
+                sum += parseInt(input.value || 0);
+            });
+            
+            sumLabel.innerText = sum;
+            const percentage = Math.min(sum, 100);
+            progressBar.style.width = percentage + '%';
+
+            if (sum === 100) {
+                sumLabel.classList.remove('text-rose-400');
+                sumLabel.classList.add('text-white');
+                progressBar.classList.remove('bg-rose-500');
+                progressBar.classList.add('bg-primary');
+                statusMessage.innerHTML = '<i data-lucide="check-circle-2" size="14"></i> Muvaffaqiyatli taqsimlandi';
+                statusMessage.className = 'flex items-center gap-2 text-xs font-bold text-emerald-400';
+            } else {
+                sumLabel.classList.remove('text-white');
+                sumLabel.classList.add('text-rose-400');
+                progressBar.classList.remove('bg-primary');
+                progressBar.classList.add('bg-rose-500');
+                statusMessage.innerHTML = '<i data-lucide="alert-circle" size="14"></i> Ballar yig\'indisi 100 ga teng emas';
+                statusMessage.className = 'flex items-center gap-2 text-xs font-bold text-rose-400';
+            }
+            if(window.lucide) {
+                window.lucide.createIcons();
+            }
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('input', updateSum);
+        });
+
+        updateSum(); // Initial call
+    });
+</script>
+{% endblock %}

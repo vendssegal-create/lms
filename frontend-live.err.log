@@ -1,0 +1,569 @@
+[2m10:20:36[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m10:54:54[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/courses/3/certificate/check/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m10:54:54[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/courses/3/certificate/check/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m11:42:54[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m11:42:54[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m11:42:54[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m11:42:54[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m11:43:02[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m11:43:02[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m11:43:09[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m11:43:11[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m11:43:19[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m11:43:19[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m11:43:32[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5)
+    at HTTPParser.parserOnBody (node:_http_common:137:24)
+    at Socket.socketOnData (node:_http_client:615:22)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[2m11:47:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: D:\djangolms\django_lms\design\src\components\lms\SectionAccordion.tsx: Unexpected token, expected "," (178:6)
+
+[0m [90m 176 |[39m       [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+ [90m 177 |[39m
+[31m[1m>[22m[39m[90m 178 |[39m       {[90m/* STATS MODAL */[39m}
+ [90m     |[39m       [31m[1m^[22m[39m
+ [90m 179 |[39m       {statsResource [33m&&[39m (
+ [90m 180 |[39m         [33m<[39m[33mdiv[39m className[33m=[39m[32m"fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fadeIn"[39m[33m>[39m
+ [90m 181 |[39m           [33m<[39m[33mdiv[39m className[33m=[39m[32m"bg-white rounded-[32px] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col animate-scaleUp"[39m[33m>[39m[0m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/djangolms/django_lms/design/src/components/lms/SectionAccordion.tsx[39m:178:6
+[33m  176|        </div>
+  177|  
+  178|        {/* STATS MODAL */}
+     |        ^
+  179|        {statsResource && (
+  180|          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fadeIn">[39m
+[2m11:47:41[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\djangolms\django_lms\design\src\components\lms\SectionAccordion.tsx: Unexpected token, expected "," (178:6)
+
+[0m [90m 176 |[31m       [33m<[31m[33m/[31m[33mdiv[31m[33m>[31m
+ [90m 177 |[31m
+[31m[1m>[22m[31m[90m 178 |[31m       {[90m/* STATS MODAL */[31m}
+ [90m     |[31m       [31m[1m^[22m[31m
+ [90m 179 |[31m       {statsResource [33m&&[31m (
+ [90m 180 |[31m         [33m<[31m[33mdiv[31m className[33m=[31m[32m"fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fadeIn"[31m[33m>[31m
+ [90m 181 |[31m           [33m<[31m[33mdiv[31m className[33m=[31m[32m"bg-white rounded-[32px] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col animate-scaleUp"[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/djangolms/django_lms/design/src/components/lms/SectionAccordion.tsx[39m:178:6
+[33m  176|        </div>
+  177|  
+  178|        {/* STATS MODAL */}
+     |        ^
+  179|        {statsResource && (
+  180|          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fadeIn">[39m
+      at constructor (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:365:19)
+      at TypeScriptParserMixin.raise (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:6619:16)
+      at TypeScriptParserMixin.expect (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:6899:12)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:11661:14)
+      at TypeScriptParserMixin.parseExprAtom (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9786:20)
+      at TypeScriptParserMixin.parseExpressionBase (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10784:23)
+      at D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10780:39
+      at TypeScriptParserMixin.allowInAnd (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12421:16)
+      at TypeScriptParserMixin.parseExpression (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10780:17)
+      at TypeScriptParserMixin.parseReturnStatement (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13142:28)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12100:24)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12086:10)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9172:18)
+      at D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13445:12
+      at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12403:14)
+      at TypeScriptParserMixin.parseFunction (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13444:10)
+      at TypeScriptParserMixin.parseFunctionStatement (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13125:17)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12791:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12747:17)
+      at TypeScriptParserMixin.parseExportDeclaration (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13934:17)
+      at TypeScriptParserMixin.parseExportDeclaration (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9629:85)
+      at TypeScriptParserMixin.maybeParseExportDeclaration (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13893:31)
+      at TypeScriptParserMixin.parseExport (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13812:29)
+      at TypeScriptParserMixin.parseExport (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9385:20)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12878:27)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseModuleItem (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12744:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13316:36)
+      at TypeScriptParserMixin.parseBlockBody (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13309:10)
+[2m11:47:46[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\djangolms\django_lms\design\src\components\lms\SectionAccordion.tsx: Unexpected token, expected "," (178:6)
+
+[0m [90m 176 |[31m       [33m<[31m[33m/[31m[33mdiv[31m[33m>[31m
+ [90m 177 |[31m
+[31m[1m>[22m[31m[90m 178 |[31m       {[90m/* STATS MODAL */[31m}
+ [90m     |[31m       [31m[1m^[22m[31m
+ [90m 179 |[31m       {statsResource [33m&&[31m (
+ [90m 180 |[31m         [33m<[31m[33mdiv[31m className[33m=[31m[32m"fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fadeIn"[31m[33m>[31m
+ [90m 181 |[31m           [33m<[31m[33mdiv[31m className[33m=[31m[32m"bg-white rounded-[32px] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col animate-scaleUp"[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/djangolms/django_lms/design/src/components/lms/SectionAccordion.tsx[39m:178:6
+[33m  176|        </div>
+  177|  
+  178|        {/* STATS MODAL */}
+     |        ^
+  179|        {statsResource && (
+  180|          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fadeIn">[39m
+      at constructor (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:365:19)
+      at TypeScriptParserMixin.raise (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:6619:16)
+      at TypeScriptParserMixin.expect (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:6899:12)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:11661:14)
+      at TypeScriptParserMixin.parseExprAtom (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9786:20)
+      at TypeScriptParserMixin.parseExpressionBase (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10784:23)
+      at D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10780:39
+      at TypeScriptParserMixin.allowInAnd (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12421:16)
+      at TypeScriptParserMixin.parseExpression (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:10780:17)
+      at TypeScriptParserMixin.parseReturnStatement (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13142:28)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12100:24)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12086:10)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9172:18)
+      at D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13445:12
+      at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12403:14)
+      at TypeScriptParserMixin.parseFunction (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13444:10)
+      at TypeScriptParserMixin.parseFunctionStatement (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13125:17)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12791:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12747:17)
+      at TypeScriptParserMixin.parseExportDeclaration (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13934:17)
+      at TypeScriptParserMixin.parseExportDeclaration (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9629:85)
+      at TypeScriptParserMixin.maybeParseExportDeclaration (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13893:31)
+      at TypeScriptParserMixin.parseExport (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13812:29)
+      at TypeScriptParserMixin.parseExport (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9385:20)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12878:27)
+      at TypeScriptParserMixin.parseStatementContent (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseModuleItem (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:12744:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13316:36)
+      at TypeScriptParserMixin.parseBlockBody (D:\djangolms\django_lms\design\node_modules\@babel\parser\lib\index.js:13309:10)
+[2m12:04:58[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:04:58[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m12:04:58[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:04:58[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:04:58[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:04:58[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:05:34[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:05:34[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:05:35[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:05:35[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:05:39[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m12:05:39[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:05:39[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:05:40[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:05:40[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m12:05:40[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:18:19[22m [31m[1m[vite][22m[39m [31mws proxy error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:18:19[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/courses/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m12:18:19[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/courses/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m12:20:24[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/messages/contacts/[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:20:24[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/messages/threads/[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:20:24[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/quick-chat/preferences/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m12:20:26[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/quick-chat/preferences/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m12:20:26[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/retake/applications/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m12:20:27[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/quick-chat/preferences/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m12:20:31[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/quick-chat/preferences/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m12:20:34[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/quick-chat/preferences/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m12:20:35[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/quick-chat/preferences/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m12:20:35[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/quick-chat/preferences/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m12:20:38[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:20:38[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:20:38[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:20:38[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m12:20:38[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m12:20:38[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m13:41:05[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m13:41:05[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m13:41:05[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m13:41:05[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m13:41:06[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m13:41:06[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: write ECONNABORTED
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:966:11)
+    at Socket._write (node:net:978:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.write (node:internal/streams/writable:508:10)
+    at IncomingMessage.ondata (node:internal/streams/readable:1012:24)
+    at IncomingMessage.emit (node:events:508:28)
+    at Readable.read (node:internal/streams/readable:784:10)
+    at flow (node:internal/streams/readable:1290:53)
+    at resume_ (node:internal/streams/readable:1269:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2m13:41:06[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m13:41:06[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m13:41:07[22m [31m[1m[vite][22m[39m [31mws proxy socket error:[39m
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+[2m17:05:27[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:27[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:27[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:27[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:27[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/quick-chat/preferences/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:28[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:28[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:28[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:28[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:28[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/quick-chat/preferences/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:28[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:28[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:28[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:28[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:28[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/quick-chat/preferences/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/login-alerts/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+[2m17:05:29[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/lms/dashboard/[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1645:16)
+^C^C

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Talaba yuklamalari: {{ course.title }}{% endblock %}
+
+{% block page_header %}
+<i class="fa fa-cloud-download margin-r-5"></i> Barcha talaba yuklamalari
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary premium-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{ course.title }} - Bo'limlar bo'yicha yuklamalar</h3>
+                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 200px;">
+                        <input type="text" id="submissionsFilter" class="form-control" placeholder="Ismlarni qidirish...">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box-body no-padding">
+                <div class="table-responsive">
+                    <table class="table table-hover submissions-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;" class="text-center">#</th>
+                                <th>Talaba</th>
+                                <th>Bo'lim</th>
+                                <th>Yuborilgan sana</th>
+                                <th>Fayl</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sub in submissions %}
+                            <tr class="submission-row">
+                                <td class="text-center vertical-middle">{{ forloop.counter }}</td>
+                                <td class="vertical-middle">
+                                    <div class="user-block">
+                                        {% if sub.student.student_profile.image %}
+                                            <img class="img-circle" src="{{ sub.student.student_profile.image.url }}" alt="User Image">
+                                        {% else %}
+                                            <span class="user-initials bg-gray">{{ sub.student.username|slice:":1"|upper }}</span>
+                                        {% endif %}
+                                        <span class="username" style="margin-left: 5px;">
+                                            {{ sub.student.student_profile.full_name|default:sub.student.get_full_name|default:sub.student.username }}
+                                        </span>
+                                        <span class="description" style="margin-left: 5px;">@{{ sub.student.username }}</span>
+                                    </div>
+                                </td>
+                                <td class="vertical-middle">
+                                    <span class="label label-info">{{ sub.section.name }}</span>
+                                </td>
+                                <td class="vertical-middle">
+                                    {{ sub.submitted_at|date:"d.m.Y H:i" }}
+                                </td>
+                                <td class="vertical-middle">
+                                    <a href="{{ sub.file.url }}" class="btn btn-xs btn-default btn-flat" target="_blank">
+                                        <i class="fa fa-download"></i> Yuklab olish
+                                    </a>
+                                </td>
+                                <td class="text-center vertical-middle">
+                                    <button class="btn btn-primary btn-xs btn-flat">
+                                        <i class="fa fa-check"></i> Baholash
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted" style="padding: 50px;">
+                                    <i class="fa fa-inbox fa-3x" style="display: block; margin-bottom: 10px; opacity: 0.3;"></i>
+                                    Kurs bo'yiicha hech qanday yuklama topilmadi.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="box-footer">
+                <a href="{% url 'lms:course_detail' course.id %}" class="btn btn-default btn-flat btn-sm">
+                    <i class="fa fa-arrow-left"></i> Kursga qaytish
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterInput = document.getElementById('submissionsFilter');
+        const rows = document.querySelectorAll('.submission-row');
+        
+        filterInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+    });
+</script>
+
+<style>
+    .premium-box {
+        border-top: 3px solid #3c8dbc;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-radius: 8px;
+    }
+    .submissions-table th {
+        background: #f9f9f9;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 1px;
+        color: #777;
+        padding: 12px 10px !important;
+    }
+    .vertical-middle { vertical-align: middle !important; }
+    .user-initials {
+        float: left;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 32px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .btn-flat { border-radius: 4px; }
+    .ml-2 { margin-left: 8px; }
+</style>
+{% endblock %}

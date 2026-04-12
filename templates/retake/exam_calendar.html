@@ -1,0 +1,378 @@
+{% extends "base.html" %}
+{% load lms_filters %}
+{% load static %}
+
+{% block title %}Q.O'qish nazorat jadvali — Django LMS{% endblock %}
+
+{% block content %}
+<style>
+.exam-card { border-radius: 4px; padding: 5px 7px; margin-bottom: 4px; font-size: 11px; cursor: pointer; transition: all 0.15s; position: relative; }
+.exam-card:hover { transform: scale(1.03); box-shadow: 0 3px 10px rgba(0,0,0,0.15); z-index: 2; }
+.exam-card-final { background: #fef2f2; border-left: 4px solid #dc2626; }
+.exam-card-final .exam-type { color: #dc2626; }
+.exam-card-jn { background: #f0fdf4; border-left: 4px solid #22c55e; }
+.exam-card-jn .exam-type { color: #16a34a; }
+.exam-card-on { background: #eff6ff; border-left: 4px solid #3b82f6; }
+.exam-card-on .exam-type { color: #2563eb; }
+.exam-card-other { background: #fefce8; border-left: 4px solid #eab308; }
+.exam-card-other .exam-type { color: #ca8a04; }
+.cal-day { vertical-align: top; height: 130px; padding: 5px; position: relative; border-color: #d1d5db; }
+.cal-day-active { background: #e8f4f8; }
+.cal-day-empty { background: #f8fafc; }
+.cal-day-today { background: #dbeafe !important; }
+.cal-plus { border-radius: 3px; padding: 1px 7px; border: none; background: transparent; color: #22c55e; font-size: 16px; font-weight: 900; cursor: pointer; }
+.cal-plus:hover { background: #dcfce7; border-radius: 50%; }
+/* Legend */
+.legend-item { display: inline-flex; align-items: center; gap: 5px; margin-right: 15px; font-size: 12px; color: #555; }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+</style>
+
+<div class="row animate-fadeInUp">
+    <div class="col-md-12">
+        <!-- Breadcrumb -->
+        <div style="margin-bottom: 15px; color: #64748b; font-size: 13px;">
+            <a href="{% url 'retake:retake_dashboard' %}" style="color: #64748b; text-decoration: none;">Asosiy</a> / 
+            <span style="color: #1e293b; font-weight: 600;">Q.O'qish nazorat jadvali</span>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="box" style="border-radius: 12px; border: 1px solid #d1d5db; box-shadow: none; margin-bottom: 20px;">
+            <div class="box-body" style="padding: 15px 20px;">
+                <form method="get" id="filterForm">
+                    <input type="hidden" name="year" value="{{ year }}">
+                    <input type="hidden" name="month" value="{{ month }}">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap;">
+                        <select name="faculty" class="form-control input-sm" style="flex: 1; min-width: 180px; border-radius: 4px;">
+                            <option value="">Fakultetni tanlang</option>
+                            {% for f in faculties %}
+                            <option value="{{ f }}" {% if request.GET.faculty == f %}selected{% endif %}>{{ f }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="cycle_id" class="form-control input-sm" style="flex: 1; min-width: 180px; border-radius: 4px;">
+                            <option value="">Qayta o'qishni tanlang</option>
+                            {% for c in cycles %}
+                            <option value="{{ c.id }}" {% if cycle.id == c.id %}selected{% endif %}>{{ c.name }} ({{ c.academic_year }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <select name="group_id" class="form-control input-sm" style="flex: 2; min-width: 250px; border-radius: 4px;">
+                            <option value="">Tanlash (Guruh / Fan)</option>
+                            {% for g in groups %}
+                            <option value="{{ g.id }}" {% if selected_group_id == g.id %}selected{% endif %}>{{ g.code }} — {{ g.subject_snapshot.subject_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm" style="border-radius: 4px; font-weight: 700; background: #3c8dbc; border-color: #3c8dbc; padding: 6px 25px;">
+                            <i class="fa fa-check"></i> OK
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="box" style="border-radius: 12px; border: 1px solid #d1d5db; box-shadow: none;">
+            <div class="box-header" style="padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #d1d5db;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <a href="?year={{ prev_year }}&month={{ prev_month }}{% if selected_group_id %}&group_id={{ selected_group_id }}{% endif %}" class="btn btn-default btn-sm" style="border-radius: 4px; padding: 5px 12px;">
+                        <i class="fa fa-chevron-left"></i>
+                    </a>
+                    <a href="?year={{ next_year }}&month={{ next_month }}{% if selected_group_id %}&group_id={{ selected_group_id }}{% endif %}" class="btn btn-default btn-sm" style="border-radius: 4px; padding: 5px 12px;">
+                        <i class="fa fa-chevron-right"></i>
+                    </a>
+                </div>
+                <h3 style="margin: 0; font-weight: 800; color: #1e293b; font-size: 20px;">
+                    {{ month_name }} {{ year }}
+                </h3>
+                <!-- Legend -->
+                <div>
+                    <span class="legend-item"><span class="legend-dot" style="background: #dc2626;"></span>Yakuniy</span>
+                    <span class="legend-item"><span class="legend-dot" style="background: #3b82f6;"></span>Oraliq</span>
+                    <span class="legend-item"><span class="legend-dot" style="background: #22c55e;"></span>Joriy</span>
+                </div>
+            </div>
+            
+            <div class="box-body no-padding">
+                <table class="table table-bordered" style="margin-bottom: 0; table-layout: fixed;">
+                    <thead>
+                        <tr style="background: #3c8dbc; color: #fff;">
+                            <th style="text-align: center; padding: 12px 5px; font-weight: 700; font-size: 13px; border-color: #2e7dab;">Dushanba</th>
+                            <th style="text-align: center; padding: 12px 5px; font-weight: 700; font-size: 13px; border-color: #2e7dab;">Seshanba</th>
+                            <th style="text-align: center; padding: 12px 5px; font-weight: 700; font-size: 13px; border-color: #2e7dab;">Chorshanba</th>
+                            <th style="text-align: center; padding: 12px 5px; font-weight: 700; font-size: 13px; border-color: #2e7dab;">Payshanba</th>
+                            <th style="text-align: center; padding: 12px 5px; font-weight: 700; font-size: 13px; border-color: #2e7dab;">Juma</th>
+                            <th style="text-align: center; padding: 12px 5px; font-weight: 700; font-size: 13px; border-color: #2e7dab;">Shanba</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for week in month_days %}
+                        <tr>
+                            {% for day in week %}
+                            <td class="cal-day {% if day == 0 %}cal-day-empty{% else %}cal-day-active{% endif %}">
+                                {% if day != 0 %}
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+                                    <button type="button" class="cal-plus" 
+                                            onclick="openExamModal('{{ year }}-{% if month < 10 %}0{% endif %}{{ month }}-{% if day < 10 %}0{% endif %}{{ day }}')">
+                                        +
+                                    </button>
+                                    <span style="font-weight: 800; color: #1e293b; font-size: 16px;">{{ day }}</span>
+                                </div>
+                                
+                                {% with day_assessments as all_assessments %}
+                                    {% for d, items in all_assessments.items %}
+                                        {% if d == day %}
+                                            {% for a in items %}
+                                            <div class="exam-card {% if a.control_type == 'final' %}exam-card-final{% elif a.control_type == '1-jn' or a.control_type == '2-jn' %}exam-card-jn{% elif a.control_type == '1-on' or a.control_type == '2-on' %}exam-card-on{% else %}exam-card-other{% endif %}"
+                                                 onclick="openEditModal({{ a.id }}, '{{ a.scheduled_at|date:"Y-m-d" }}', '{{ a.control_type }}', '{{ a.pair_number|default:"" }}', '{{ a.room|default:""|escapejs }}', '{{ a.teacher_profile_id|default:"" }}', '{{ a.group_id }}')">
+                                                <div class="exam-type" style="font-weight: 800; font-size: 11px; text-transform: uppercase;">
+                                                    {{ a.scheduled_at|time:"H:i" }} | {{ a.control_type_label|upper }}
+                                                </div>
+                                                <div style="font-weight: 700; color: #1e293b; margin-top: 1px;">{{ a.group.subject_snapshot.subject_name|truncatechars:25 }}</div>
+                                                {% if a.teacher_profile %}<div style="color: #555; font-size: 10px;">{{ a.teacher_profile.full_name }}</div>{% endif %}
+                                                <div style="color: #888; font-size: 10px;">
+                                                    Guruh: {{ a.group.code }}
+                                                    {% if a.room %} · Xona: {{ a.room }}{% endif %}
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CREATE Modal -->
+<div class="modal fade" id="examModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+            <div class="modal-header" style="background: #3c8dbc; border-radius: 12px 12px 0 0; padding: 15px 20px;">
+                <button type="button" class="close" data-dismiss="modal" style="color: #fff; opacity: 1; font-size: 22px;"><span>&times;</span></button>
+                <h4 class="modal-title" style="color: #fff; font-weight: 700;"><i class="fa fa-plus-circle"></i> Nazorat qo'shish</h4>
+            </div>
+            <form method="post" action="{% url 'retake:retake_save_exam_schedule' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create">
+                <div class="modal-body" style="padding: 20px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #333;">Nazorat sanasi</label>
+                                <div class="input-group">
+                                    <input type="date" id="modal_exam_date" name="exam_date" class="form-control" required style="border-radius: 4px; height: 38px;">
+                                    <span class="input-group-addon" style="background: #f0f0f0;"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #333;">Juftlik</label>
+                                <select name="pair_number" class="form-control" style="border-radius: 4px; height: 38px;">
+                                    <option value="">Juftlikni tanlang</option>
+                                    <option value="1">1-juftlik (08:00)</option>
+                                    <option value="2">2-juftlik (09:30)</option>
+                                    <option value="3">3-juftlik (11:00)</option>
+                                    <option value="4">4-juftlik (13:00)</option>
+                                    <option value="5">5-juftlik (14:30)</option>
+                                    <option value="6">6-juftlik (16:00)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #c0392b;">Nazorat turi <span style="color: red;">*</span></label>
+                                <select name="control_type" class="form-control" required style="border-radius: 4px; height: 38px;">
+                                    <option value="">Nazorat turini tanlang</option>
+                                    <option value="final">Yakuniy nazorat</option>
+                                    <option value="1-jn">1-jn</option>
+                                    <option value="2-jn">2-jn</option>
+                                    <option value="1-on">1-on</option>
+                                    <option value="2-on">2-on</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #333;">Auditoriya</label>
+                                <input type="text" name="room" class="form-control" placeholder="Auditoriya raqami" style="border-radius: 4px; height: 38px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #333;">Xodim</label>
+                                <select name="teacher_id" class="form-control" style="border-radius: 4px; height: 38px;">
+                                    <option value="">Xodimni tanlang</option>
+                                    {% for t in teachers %}
+                                    <option value="{{ t.id }}">{{ t.full_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #333;">Guruhlar <span style="color: red;">*</span></label>
+                                <select name="group_id" class="form-control" required style="border-radius: 4px; height: 38px;">
+                                    <option value="">Guruhni tanlang</option>
+                                    {% for g in groups %}
+                                    <option value="{{ g.id }}">{{ g.code }} — {{ g.subject_snapshot.subject_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding: 12px 20px; border-top: 1px solid #e5e7eb;">
+                    <button type="submit" class="btn btn-primary" style="border-radius: 4px; font-weight: 700; padding: 8px 25px; background: #3c8dbc; border-color: #3c8dbc;">
+                        <i class="fa fa-check"></i> Saqlash
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- EDIT Modal -->
+<div class="modal fade" id="editExamModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+            <div class="modal-header" style="background: #f59e0b; border-radius: 12px 12px 0 0; padding: 15px 20px;">
+                <button type="button" class="close" data-dismiss="modal" style="color: #fff; opacity: 1; font-size: 22px;"><span>&times;</span></button>
+                <h4 class="modal-title" style="color: #fff; font-weight: 700;"><i class="fa fa-edit"></i> Nazoratni tahrirlash</h4>
+            </div>
+            <form method="post" action="{% url 'retake:retake_save_exam_schedule' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" id="edit_assessment_id" name="assessment_id" value="">
+                <div class="modal-body" style="padding: 20px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #333;">Nazorat sanasi</label>
+                                <div class="input-group">
+                                    <input type="date" id="edit_exam_date" name="exam_date" class="form-control" required style="border-radius: 4px; height: 38px;">
+                                    <span class="input-group-addon" style="background: #f0f0f0;"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #333;">Juftlik</label>
+                                <select id="edit_pair_number" name="pair_number" class="form-control" style="border-radius: 4px; height: 38px;">
+                                    <option value="">Juftlikni tanlang</option>
+                                    <option value="1">1-juftlik (08:00)</option>
+                                    <option value="2">2-juftlik (09:30)</option>
+                                    <option value="3">3-juftlik (11:00)</option>
+                                    <option value="4">4-juftlik (13:00)</option>
+                                    <option value="5">5-juftlik (14:30)</option>
+                                    <option value="6">6-juftlik (16:00)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #c0392b;">Nazorat turi <span style="color: red;">*</span></label>
+                                <select id="edit_control_type" name="control_type" class="form-control" required style="border-radius: 4px; height: 38px;">
+                                    <option value="">Nazorat turini tanlang</option>
+                                    <option value="final">Yakuniy nazorat</option>
+                                    <option value="1-jn">1-jn</option>
+                                    <option value="2-jn">2-jn</option>
+                                    <option value="1-on">1-on</option>
+                                    <option value="2-on">2-on</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #333;">Auditoriya</label>
+                                <input type="text" id="edit_room" name="room" class="form-control" placeholder="Auditoriya raqami" style="border-radius: 4px; height: 38px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #333;">Xodim</label>
+                                <select id="edit_teacher_id" name="teacher_id" class="form-control" style="border-radius: 4px; height: 38px;">
+                                    <option value="">Xodimni tanlang</option>
+                                    {% for t in teachers %}
+                                    <option value="{{ t.id }}">{{ t.full_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-weight: 700; color: #333;">Guruhlar <span style="color: red;">*</span></label>
+                                <select id="edit_group_id" name="group_id" class="form-control" required style="border-radius: 4px; height: 38px;">
+                                    <option value="">Guruhni tanlang</option>
+                                    {% for g in groups %}
+                                    <option value="{{ g.id }}">{{ g.code }} — {{ g.subject_snapshot.subject_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding: 12px 20px; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-between;">
+                    <button type="button" class="btn btn-danger" onclick="deleteExam()" style="border-radius: 4px; font-weight: 700; padding: 8px 20px;">
+                        <i class="fa fa-trash"></i> O'chirish
+                    </button>
+                    <button type="submit" class="btn btn-warning" style="border-radius: 4px; font-weight: 700; padding: 8px 25px; background: #f59e0b; border-color: #f59e0b; color: #fff;">
+                        <i class="fa fa-save"></i> Yangilash
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- DELETE form (hidden) -->
+<form id="deleteExamForm" method="post" action="{% url 'retake:retake_save_exam_schedule' %}" style="display:none;">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="delete">
+    <input type="hidden" id="delete_assessment_id" name="assessment_id" value="">
+    <input type="hidden" id="delete_exam_date" name="exam_date" value="">
+</form>
+
+<script>
+function openExamModal(dateStr) {
+    document.getElementById('modal_exam_date').value = dateStr;
+    $('#examModal').modal('show');
+}
+
+function openEditModal(id, date, controlType, pairNumber, room, teacherId, groupId) {
+    document.getElementById('edit_assessment_id').value = id;
+    document.getElementById('edit_exam_date').value = date;
+    document.getElementById('edit_control_type').value = controlType;
+    document.getElementById('edit_pair_number').value = pairNumber;
+    document.getElementById('edit_room').value = room;
+    document.getElementById('edit_teacher_id').value = teacherId;
+    document.getElementById('edit_group_id').value = groupId;
+    $('#editExamModal').modal('show');
+}
+
+function deleteExam() {
+    if (confirm("Haqiqatan ham bu nazoratni o'chirmoqchimisiz?")) {
+        var id = document.getElementById('edit_assessment_id').value;
+        var date = document.getElementById('edit_exam_date').value;
+        document.getElementById('delete_assessment_id').value = id;
+        document.getElementById('delete_exam_date').value = date;
+        document.getElementById('deleteExamForm').submit();
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Guruhlash takliflari — Django LMS{% endblock %}
+
+{% block content %}
+<div class="space-y-8 animate-in fade-in duration-500">
+    <div>
+        <h2 class="font-display text-3xl font-extrabold tracking-tight text-text-primary">Avtomatik guruhlash takliflari</h2>
+        <p class="text-sm font-medium text-text-muted mt-1">{{ cycle.name }} — fanlar va talabalar uchun taklif qilingan guruhlar</p>
+    </div>
+
+    <div class="rounded-3xl border border-border bg-white shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-border bg-slate-50">
+            <p class="text-sm text-text-muted">Quyidagi fanlar va talabalar uchun yangi guruhlar yaratish yoki mavjudlariga biriktirish taklif qilinadi. Tekshirib chiqing va tasdiqlang.</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bg-slate-50/50 text-text-muted text-xs uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left font-bold">Amal turi</th>
+                        <th class="px-4 py-3 text-left font-bold">Fan</th>
+                        <th class="px-4 py-3 text-left font-bold">Guruh kodi</th>
+                        <th class="px-4 py-3 text-center font-bold">Talabalar soni</th>
+                        <th class="px-6 py-3 text-right font-bold">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border">
+                    {% for sug in suggestions %}
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            {% if sug.type == 'create' %}
+                            <span class="status-pill status-pill-success flex items-center gap-1 w-fit"><i data-lucide="plus-circle" class="h-3 w-3"></i> Yangi yaratish</span>
+                            {% else %}
+                            <span class="status-pill px-2.5 py-1 rounded-lg bg-cyan-100 text-cyan-700 text-[10px] font-bold flex items-center gap-1 w-fit"><i data-lucide="arrow-right" class="h-3 w-3"></i> Biriktirish</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-4 font-bold text-text-primary">{{ sug.subject_name }}</td>
+                        <td class="px-4 py-4"><code class="px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-bold">{{ sug.group_code|default:sug.suggested_code }}</code></td>
+                        <td class="px-4 py-4 text-center"><span class="px-2.5 py-1 rounded-lg bg-slate-800 text-white text-xs font-bold">{{ sug.items_count }}</span></td>
+                        <td class="px-6 py-4 text-right"><span class="text-green-500 flex items-center justify-end gap-1 text-xs font-bold"><i data-lucide="check-circle" class="h-3.5 w-3.5"></i> Tayyor</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="px-6 py-5 border-t border-border flex justify-end gap-3">
+            <a href="{% url 'retake:retake_manage_groups' %}" class="px-5 py-2.5 rounded-xl bg-slate-100 text-text-primary text-sm font-bold hover:bg-slate-200 transition-colors">Bekor qilish</a>
+            <form action="{% url 'retake:retake_apply_group_suggestions' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="suggestions_data" value="{{ suggestions_json }}">
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all">Takliflarni tasdiqlash</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

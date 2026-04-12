@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if assignment %}Tahrirlash: {{ assignment.title }}{% else %}Yangi topshiriq{% endif %} - {{ course.title }}{% endblock %}
+
+{% block page_header %}
+{% if assignment %}Topshiriqni tahrirlash{% else %}Yangi topshiriq yaratish{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto animate-slideUp">
+    <div class="card-premium">
+        <!-- Header -->
+        <div class="p-10 border-b border-border/50 bg-white/50 backdrop-blur-sm">
+            <h1 class="text-3xl font-extrabold text-text-primary tracking-tight flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+                    <i data-lucide="{% if assignment %}edit-3{% else %}plus-circle{% endif %}" size="28"></i>
+                </div>
+                {% if assignment %}Topshiriqni tahrirlash{% else %}Yangi topshiriq yaratish{% endif %}
+            </h1>
+            <p class="mt-2 text-sm font-medium text-text-secondary flex items-center gap-2">
+                <i data-lucide="book" size="14"></i>
+                {{ course.title }}
+            </p>
+        </div>
+        
+        <form method="post" class="p-10 lg:p-12 space-y-10">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Left Column: Details -->
+                <div class="space-y-8">
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Sarlavha</label>
+                        <input type="text" name="title" 
+                               class="w-full rounded-2xl border border-border bg-slate-50/50 px-6 py-4 text-sm font-bold placeholder:text-text-muted/40 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all outline-none" 
+                               placeholder="Topshiriq sarlavhasi" value="{{ assignment.title|default:'' }}" required>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Bo'lim (Modul)</label>
+                        <select name="section_id" 
+                                class="w-full rounded-2xl border border-border bg-slate-50/50 px-5 py-4 text-sm font-bold focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all outline-none">
+                            <option value="">— Bo'limsiz (kurs bo'ylab) —</option>
+                            {% for s in sections %}
+                            <option value="{{ s.id }}"{% if selected_section_id == s.id %} selected{% endif %}>{{ s.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <p class="text-[10px] text-text-muted font-medium px-1">Bo'lim tanlansa, topshiriq shu mavzu ostida ko'rinadi.</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Maksimal ball</label>
+                            <input type="number" name="max_score" 
+                                   class="w-full rounded-2xl border border-border bg-slate-50/50 px-6 py-4 text-sm font-bold text-center focus:bg-white focus:border-primary transition-all outline-none" 
+                                   value="{{ assignment.max_score|default:100 }}" min="1">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Muddat (Deadline)</label>
+                            <input type="datetime-local" name="deadline" 
+                                   class="w-full rounded-2xl border border-border bg-slate-50/50 px-5 py-4 text-sm font-bold focus:bg-white focus:border-primary transition-all outline-none" 
+                                   value="{{ assignment.deadline|date:'Y-m-d\TH:i' }}">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 space-y-4">
+                        <label class="flex items-center gap-4 cursor-pointer group">
+                            <div class="relative">
+                                <input type="checkbox" name="is_active" class="peer sr-only" {% if assignment.is_active|default:True %}checked{% endif %}>
+                                <div class="w-12 h-6 bg-slate-200 rounded-full peer-checked:bg-primary transition-all"></div>
+                                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-6"></div>
+                            </div>
+                            <span class="text-sm font-bold text-text-primary">Faol (Talabalarga ko'rinadi)</span>
+                        </label>
+
+                        <label class="flex items-center gap-4 cursor-pointer group">
+                            <div class="relative">
+                                <input type="checkbox" name="allow_late" class="peer sr-only" {% if assignment.allow_late %}checked{% endif %}>
+                                <div class="w-12 h-6 bg-slate-200 rounded-full peer-checked:bg-warning transition-all"></div>
+                                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-6"></div>
+                            </div>
+                            <span class="text-sm font-bold text-text-primary">Kechikib topshirishga ruxsat berish</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Right Column: Description -->
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Tavsif va Yo'riqnoma</label>
+                    <textarea name="description" 
+                              class="w-full rounded-3xl border border-border bg-slate-50/50 px-6 py-5 text-sm font-bold placeholder:text-text-muted/40 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all outline-none min-h-[380px]" 
+                              placeholder="Topshiriq shartlari va ko'rsatmalari..." required>{{ assignment.description|default:'' }}</textarea>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex items-center justify-between pt-10 border-t border-border/50">
+                <a href="{% url 'lms:course_detail' course.id %}" class="inline-flex items-center gap-2 text-sm font-bold text-text-muted hover:text-danger transition-colors">
+                    <i data-lucide="x" size="18"></i>
+                    Bekor qilish
+                </a>
+                <button type="submit" class="inline-flex items-center gap-3 px-12 py-5 rounded-3xl bg-primary text-white text-base font-black hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 group">
+                    <i data-lucide="save" size="20" class="group-hover:scale-110 transition-transform"></i>
+                    Saqlash
+                </button>
+            </div>
+        </form>
+</div>
+{% endblock %}

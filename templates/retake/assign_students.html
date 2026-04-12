@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load lms_filters %}
+{% load static %}
+
+{% block title %}Talabalar taqsimoti — Django LMS{% endblock %}
+
+{% block extra_head %}
+<style>
+    .bulk-action-bar {
+        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+        background: #1e293b; color: #fff; padding: 15px 30px; border-radius: 50px;
+        display: none; align-items: center; gap: 20px; z-index: 1000;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: all 0.3s ease;
+    }
+    .bulk-action-bar.active { display: flex; animation: slideUp 0.3s ease-out; }
+    @keyframes slideUp { from { transform: translate(-50%, 100%); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+    .student-row.selected { background-color: #eff6ff !important; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="space-y-6 animate-in fade-in duration-500">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <p class="text-xs text-text-muted mb-1"><a href="{% url 'retake:retake_dashboard' %}" class="text-text-muted hover:text-primary transition-colors">Asosiy</a> / Talabalar taqsimoti</p>
+            <h2 class="font-display text-3xl font-extrabold tracking-tight text-text-primary">Guruhlarga taqsimlash</h2>
+        </div>
+        <a href="{% url 'retake:retake_auto_group_subjects' %}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-amber-500 text-white text-sm font-bold hover:bg-amber-600 transition-colors shadow-lg shadow-amber-500/20">
+            <i data-lucide="wand-2" class="h-4 w-4"></i> Avtomatik taqsimlash
+        </a>
+    </div>
+
+    <!-- Filters -->
+    <div class="rounded-2xl border border-border bg-white p-5">
+        <form method="get" id="filterForm" class="flex flex-wrap items-end gap-3">
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-xs font-bold text-text-muted mb-1">Fakultet</label>
+                <select name="faculty" class="w-full rounded-xl border border-border px-3 py-2 text-sm focus:border-primary focus:outline-none" onchange="this.form.submit()">
+                    <option value="">Barcha fakultetlar</option>
+                    {% for f in faculties %}
+                    <option value="{{ f }}" {% if request.GET.faculty == f %}selected{% endif %}>{{ f }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-xs font-bold text-text-muted mb-1">Fan</label>
+                <select name="subject_id" class="w-full rounded-xl border border-border px-3 py-2 text-sm focus:border-primary focus:outline-none" onchange="this.form.submit()">
+                    <option value="">Barcha fanlar</option>
+                    {% for s in pending_subjects %}
+                    <option value="{{ s.subject_snapshot_id }}" {% if request.GET.subject_id == s.subject_snapshot_id|stringformat:"s" %}selected{% endif %}>{{ s.subject_snapshot__subject_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="px-5 py-2 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors flex items-center gap-1">
+                <i data-lucide="filter" class="h-3.5 w-3.5"></i> Saralash
+            </button>
+            <a href="?" class="px-5 py-2 rounded-xl bg-slate-100 text-text-primary text-sm font-bold hover:bg-slate-200 transition-colors">Tozalash</a>
+        </form>
+    </div>
+
+    <!-- Student List -->
+    <div class="rounded-3xl border border-border bg-white shadow-sm overflow-hidden">
+        <form method="post" id="bulkForm">
+            {% csrf_token %}
+            <input type="hidden" name="bulk_assign" value="1">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm" id="studentsTable">
+                    <thead>
+                        <tr class="bg-slate-50 text-text-muted text-xs uppercase tracking-wider">
+                            <th class="w-12 px-4 py-3 text-center font-bold">
+                                <input type="checkbox" id="selectAll" class="rounded border-border accent-primary w-4 h-4 cursor-pointer">
+                            </th>
+                            <th class="px-4 py-3 text-left font-bold">Talaba</th>
+                            <th class="px-4 py-3 text-left font-bold">Fakultet / Yo'nalish</th>
+                            <th class="px-4 py-3 text-left font-bold">Fan</th>
+                            <th class="px-4 py-3 text-center font-bold">Nazorat</th>
+                            <th class="px-4 py-3 text-right font-bold">Sana</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border">
+                        {% for item in pending_items %}
+                        <tr class="student-row hover:bg-slate-50 transition-colors" data-subject="{{ item.subject_snapshot_id }}">
+                            <td class="px-4 py-3 text-center"><input type="checkbox" name="item_ids" value="{{ item.id }}" class="rounded border-border accent-primary w-4 h-4 cursor-pointer student-check"></td>
+                            <td class="px-4 py-3">
+                                <p class="font-bold text-text-primary">{{ item.application.student_snapshot.full_name }}</p>
+                                <p class="text-[10px] text-text-muted">ID: {{ item.application.student_snapshot.student_id_number }}</p>
+                            </td>
+                            <td class="px-4 py-3">
+                                <p class="text-xs text-text-primary">{{ item.application.student_snapshot.faculty_name }}</p>
+                                <p class="text-[10px] text-text-muted">{{ item.application.student_snapshot.specialty_name }}</p>
+                            </td>
+                            <td class="px-4 py-3">
+                                <p class="text-xs font-semibold text-primary">{{ item.subject_snapshot.subject_name }}</p>
+                                <p class="text-[10px] text-text-muted">Kredit: {{ item.subject_snapshot.credit }}</p>
+                            </td>
+                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded-md bg-cyan-100 text-cyan-700 text-[10px] font-bold">{{ item.required_control_type }}</span></td>
+                            <td class="px-4 py-3 text-right text-xs text-text-muted">{{ item.application.created_at|date:"d.m.Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-20 text-text-muted">
+                                <i data-lucide="users" class="h-12 w-12 mx-auto opacity-20 mb-3"></i>
+                                <p class="font-bold text-text-primary">Hozirda taqsimlanmagan talabalar yo'q</p>
+                                <p class="text-xs mt-1">Barcha tasdiqlangan arizalar guruhlarga biriktirilgan.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Floating Action Bar -->
+            <div id="bulkActionBar" class="bulk-action-bar">
+                <div class="font-bold text-sm border-r border-slate-600 pr-5">
+                    <span id="selectedCount">0</span> ta tanlandi
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-400">Guruh:</span>
+                    <select name="target_group_id" id="targetGroupSelect" class="rounded-lg bg-slate-700 border border-slate-600 text-white px-3 py-1.5 text-sm min-w-[250px]">
+                        <option value="">Guruhni tanlang...</option>
+                        {% for group in active_groups %}
+                        <option value="{{ group.id }}" data-subject="{{ group.subject_snapshot_id }}">{{ group.code }} ({{ group.subject_snapshot.subject_name }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="px-5 py-2 rounded-full bg-green-500 text-white text-sm font-bold hover:bg-green-600 transition-colors flex items-center gap-2">
+                    <i data-lucide="check-circle" class="h-4 w-4"></i> Biriktirish
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectAll = document.getElementById('selectAll');
+    const studentChecks = document.querySelectorAll('.student-check');
+    const bulkBar = document.getElementById('bulkActionBar');
+    const selectedCount = document.getElementById('selectedCount');
+    const targetGroupSelect = document.getElementById('targetGroupSelect');
+    const allGroups = Array.from(targetGroupSelect.options);
+
+    function updateActionBar() {
+        const checked = document.querySelectorAll('.student-check:checked');
+        selectedCount.textContent = checked.length;
+        if (checked.length > 0) {
+            bulkBar.classList.add('active');
+            const selectedSubjects = new Set();
+            checked.forEach(cb => selectedSubjects.add(cb.closest('tr').dataset.subject));
+            if (selectedSubjects.size === 1) {
+                const subId = Array.from(selectedSubjects)[0];
+                targetGroupSelect.innerHTML = '';
+                allGroups.forEach(opt => {
+                    if (opt.value === "" || opt.dataset.subject === subId) targetGroupSelect.appendChild(opt);
+                });
+            } else {
+                targetGroupSelect.innerHTML = '<option value="">Har xil fanlar tanlangan!</option>';
+            }
+        } else {
+            bulkBar.classList.remove('active');
+        }
+    }
+
+    selectAll.addEventListener('change', function() {
+        studentChecks.forEach(cb => {
+            cb.checked = this.checked;
+            cb.closest('tr').classList.toggle('selected', this.checked);
+        });
+        updateActionBar();
+    });
+
+    studentChecks.forEach(cb => {
+        cb.addEventListener('change', function() {
+            this.closest('tr').classList.toggle('selected', this.checked);
+            updateActionBar();
+        });
+    });
+});
+</script>
+{% endblock %}

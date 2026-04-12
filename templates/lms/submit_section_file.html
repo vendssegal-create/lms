@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Fayl yuklash: {{ section.name }}{% endblock %}
+
+{% block page_header %}Fayl yuklash: {{ section.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="box box-primary premium-box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-cloud-upload margin-r-5"></i> Mustaqil ish / Yuklama</h3>
+            </div>
+            
+            <form action="{% url 'lms:submit_section_file' section.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="box-body">
+                    <div class="alert alert-info" style="background: #f0f9ff !important; border-color: #bee3f8 !important; color: #2b6cb0 !important;">
+                        <h4><i class="icon fa fa-info"></i> Diqqat!</h4>
+                        Ushbu bo'lim bo'yicha mustaqil ishingiz yoki boshqa so'ralgan hujjatlarni PDF yoki ZIP formatida yuklang.
+                    </div>
+
+                    {% if submission %}
+                        <div class="well well-sm" style="background: #fff; border: 1px solid #e2e8f0;">
+                            <strong>Oxirgi yuklangan fayl:</strong><br>
+                            <a href="{{ submission.file.url }}" target="_blank" class="text-primary">
+                                <i class="fa fa-file-o"></i> {{ submission.file.name|slice:"17:" }}
+                            </a>
+                            <span class="text-muted small ml-2">({{ submission.submitted_at|date:"d.m.Y H:i" }})</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label>Faylni tanlang</label>
+                        <div class="upload-area" id="drop-area">
+                            <input type="file" name="file" id="fileElem" class="hidden-input" accept=".pdf,.doc,.docx,.zip,.rar" required onchange="handleFiles(this.files)">
+                            <label class="upload-label" for="fileElem">
+                                <i class="fa fa-cloud-upload fa-3x"></i>
+                                <p id="file-name">Faylni shu yerga tashlang yoki tanlash uchun bosing</p>
+                                <span class="text-muted small">Maksimal hajm: 20MB</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <a href="{% url 'lms:student_course_detail' section.course.id %}" class="btn btn-default btn-flat">Bekor qilish</a>
+                        <button type="submit" class="btn btn-primary btn-flat">
+                            <i class="fa fa-upload"></i> {% if submission %}Qayta yuklash{% else %}Yuklash{% endif %}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function handleFiles(files) {
+    if (files.length > 0) {
+        document.getElementById('file-name').innerText = files[0].name;
+        document.getElementById('drop-area').classList.add('has-file');
+    }
+}
+</script>
+
+<style>
+    .premium-box {
+        border-top: 3px solid #3c8dbc;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-radius: 8px;
+    }
+    .upload-area {
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 40px 20px;
+        text-align: center;
+        background: #f8fafc;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    .upload-area:hover, .upload-area.has-file {
+        border-color: #3c8dbc;
+        background: #f0f7ff;
+    }
+    .hidden-input { display: none; }
+    .upload-label { cursor: pointer; display: block; width: 100%; }
+    .upload-label i { color: #cbd5e1; margin-bottom: 15px; }
+    .upload-area.has-file i { color: #3c8dbc; }
+    .ml-2 { margin-left: 10px; }
+    .btn-flat { border-radius: 4px; }
+</style>
+{% endblock %}

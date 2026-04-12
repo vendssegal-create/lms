@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load lms_filters %}
+{% load static %}
+
+{% block title %}Arizalar oqimi — Django LMS Premium{% endblock %}
+
+{% block content %}
+<div class="space-y-12 animate-slideUp h-[calc(100vh-140px)] flex flex-col">
+    <!-- Page Header & Glass Filter Bar (Reference RetakeDashboard.tsx) -->
+    <div class="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between shrink-0">
+        <div class="space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full border border-secondary/20">
+                <i data-lucide="trending-up" size="14" class="text-secondary"></i>
+                <span class="text-[10px] font-extrabold text-secondary uppercase tracking-[0.2em]">Application Pipeline</span>
+            </div>
+            <h2 class="text-4xl lg:text-5xl font-extrabold text-text-primary tracking-tighter leading-none">Arizalar <span class="text-secondary italic">oqimi</span></h2>
+            <p class="text-text-secondary text-lg font-medium max-w-xl">Talabalar arizalarini holati bo'yicha kuzatish va boshqarish.</p>
+        </div>
+
+        <!-- Glass Filter Bar -->
+        <div class="glass p-3 rounded-[32px] flex flex-wrap items-center gap-3 border border-white/40 shadow-premium">
+            <div class="relative group flex-1 min-w-[240px]">
+                <div class="absolute left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary transition-colors">
+                    <i data-lucide="search" size="18"></i>
+                </div>
+                <form method="get" action="" id="filterForm" class="flex gap-3">
+                    <input type="text" name="q" value="{{ request.GET.q|default:'' }}" 
+                           placeholder="Talaba qidirish..." 
+                           class="w-full bg-white/50 border-transparent focus:bg-white focus:border-primary/20 rounded-2xl pl-12 pr-6 py-3 text-sm outline-none transition-all font-bold placeholder:text-text-muted">
+                    
+                    <select name="cycle_id" class="bg-white/50 border-transparent focus:bg-white focus:border-primary/20 rounded-2xl px-6 py-3 text-sm outline-none transition-all font-bold cursor-pointer min-w-[180px]">
+                        <option value="">Barcha yillar</option>
+                        {% for c in cycles %}
+                        <option value="{{ c.id }}" {% if cycle.id == c.id %}selected{% endif %}>{{ c.name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+            
+            <a href="{% url 'retake:search_student' %}" class="flex items-center justify-center gap-2 px-8 py-3 rounded-2xl bg-primary text-white text-sm font-black shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                <i data-lucide="plus" size="18"></i>
+                Yangi ariza
+            </a>
+        </div>
+    </div>
+
+    <!-- Kanban Board (Reference RetakeDashboard.tsx) -->
+    <div class="flex-1 flex gap-8 overflow-x-auto pb-8 no-scrollbar custom-kanban-scroll">
+        
+        <!-- Column: Draft -->
+        <div class="flex flex-col gap-6 w-[340px] shrink-0">
+            <div class="flex items-center justify-between p-5 rounded-[24px] bg-white/40 border border-white/60 backdrop-blur-sm shadow-sm">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-slate-400"></span>
+                    <h3 class="text-xs font-black text-text-primary uppercase tracking-[0.2em]">Qoralama</h3>
+                </div>
+                <span class="px-3 py-1 rounded-lg bg-slate-100 text-[10px] font-black text-text-muted">{{ applications|filter_status:'draft'|length }}</span>
+            </div>
+            <div class="flex-1 space-y-4 overflow-y-auto no-scrollbar pr-1">
+                {% for app in applications|filter_status:'draft' %}
+                    {% include "retake/partials/kanban_card.html" with application=app %}
+                {% empty %}
+                <div class="h-full border-2 border-dashed border-slate-200 rounded-[32px] flex flex-col items-center justify-center p-8 text-center opacity-40">
+                    <i data-lucide="inbox" size="32" class="mb-4"></i>
+                    <p class="text-[10px] font-black uppercase tracking-widest leading-loose">Arizalar mavjud emas</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Column: In Review -->
+        <div class="flex flex-col gap-6 w-[340px] shrink-0">
+            <div class="flex items-center justify-between p-5 rounded-[24px] bg-warning/5 border border-warning/20 backdrop-blur-sm shadow-sm">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-warning"></span>
+                    <h3 class="text-xs font-black text-warning uppercase tracking-[0.2em]">Ko'rib chiqilmoqda</h3>
+                </div>
+                <span class="px-3 py-1 rounded-lg bg-warning/10 text-[10px] font-black text-warning">{{ applications|filter_status:'in_review'|length }}</span>
+            </div>
+            <div class="flex-1 space-y-4 overflow-y-auto no-scrollbar pr-1">
+                {% for app in applications|filter_status:'in_review' %}
+                    {% include "retake/partials/kanban_card.html" with application=app %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Column: Partially Approved -->
+        <div class="flex flex-col gap-6 w-[340px] shrink-0">
+            <div class="flex items-center justify-between p-5 rounded-[24px] bg-secondary/5 border border-secondary/20 backdrop-blur-sm shadow-sm">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-secondary"></span>
+                    <h3 class="text-xs font-black text-secondary uppercase tracking-[0.2em]">Qisman tasdiqlangan</h3>
+                </div>
+                <span class="px-3 py-1 rounded-lg bg-secondary/10 text-[10px] font-black text-secondary">{{ applications|filter_status:'partially_approved'|length }}</span>
+            </div>
+            <div class="flex-1 space-y-4 overflow-y-auto no-scrollbar pr-1">
+                {% for app in applications|filter_status:'partially_approved' %}
+                    {% include "retake/partials/kanban_card.html" with application=app %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Column: Approved -->
+        <div class="flex flex-col gap-6 w-[340px] shrink-0">
+            <div class="flex items-center justify-between p-5 rounded-[24px] bg-success/5 border border-success/20 backdrop-blur-sm shadow-sm">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-success"></span>
+                    <h3 class="text-xs font-black text-success uppercase tracking-[0.2em]">Tasdiqlangan</h3>
+                </div>
+                <span class="px-3 py-1 rounded-lg bg-success/10 text-[10px] font-black text-success">{{ applications|filter_status:'approved'|length }}</span>
+            </div>
+            <div class="flex-1 space-y-4 overflow-y-auto no-scrollbar pr-1">
+                {% for app in applications|filter_status:'approved' %}
+                    {% include "retake/partials/kanban_card.html" with application=app %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Column: Completed -->
+        <div class="flex flex-col gap-6 w-[340px] shrink-0">
+            <div class="flex items-center justify-between p-5 rounded-[24px] bg-primary/5 border border-primary/20 backdrop-blur-sm shadow-sm">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-primary"></span>
+                    <h3 class="text-xs font-black text-primary uppercase tracking-[0.2em]">Yakunlangan</h3>
+                </div>
+                <span class="px-3 py-1 rounded-lg bg-primary/10 text-[10px] font-black text-primary">{{ applications|filter_status:'completed'|length }}</span>
+            </div>
+            <div class="flex-1 space-y-4 overflow-y-auto no-scrollbar pr-1">
+                {% for app in applications|filter_status:'completed' %}
+                    {% include "retake/partials/kanban_card.html" with application=app %}
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .custom-kanban-scroll::-webkit-scrollbar { height: 10px; }
+    .custom-kanban-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); border-radius: 10px; }
+    .custom-kanban-scroll::-webkit-scrollbar-thumb { background: rgba(67, 97, 238, 0.1); border-radius: 10px; border: 3px solid transparent; background-clip: content-box; }
+    .custom-kanban-scroll::-webkit-scrollbar-thumb:hover { background: rgba(67, 97, 238, 0.2); border: 3px solid transparent; background-clip: content-box; }
+</style>
+
+<script>
+    // Auto-submit filter form on select change
+    document.querySelector('select[name="cycle_id"]').addEventListener('change', function() {
+        document.getElementById('filterForm').submit();
+    });
+</script>
+{% endblock %}

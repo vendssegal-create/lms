@@ -1,0 +1,42 @@
+{% load lms_filters %}
+<table class="f-table">
+    <thead>
+        <tr>
+            <th rowspan="2" style="width: 30px;">№</th>
+            <th rowspan="2">Talabaning familiyasi, ismi, sharifi</th>
+            <th rowspan="2" style="width: 80px;">Reyting daftarchasining raqami</th>
+            <th colspan="3">Semestrda to'plagan ballari</th>
+            <th rowspan="2" style="width: 40px;">YN</th>
+            <th rowspan="2" style="width: 60px;">O'zlashtirish ko'rsatkichi</th>
+            <th rowspan="2" style="width: 40px;">Baho</th>
+            <th rowspan="2" style="width: 100px;">YN o'tkazgan o'qituvchi imzosi</th>
+        </tr>
+        <tr>
+            <th style="width: 35px;">Σ JN</th>
+            <th style="width: 35px;">Σ ON</th>
+            <th style="width: 45px;">ΣJN+ON</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in entries %}
+        {% with cross=cross_scores|get_item:entry.group_membership_id %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td class="text-left">{{ entry.student_snapshot.full_name|upper }}</td>
+            <td>{{ entry.student_snapshot.student_id_number }}</td>
+            <td>{{ cross.jn|default:"0.0"|floatformat:1 }}</td>
+            <td>{{ cross.on|default:"0.0"|floatformat:1 }}</td>
+            <td>{{ cross.jn|add_float:cross.on|default:"0.0"|floatformat:1 }}</td>
+            <td><span class="f-yn-val-{{ forloop.counter }}">{{ entry.score|floatformat:0|default:"0" }}</span></td>
+            <td><span class="f-tot-val-{{ forloop.counter }}">{{ entry.score|add_float:cross.jn|add_float:cross.on|floatformat:0|default:"0" }}</span></td>
+            <td><span class="f-gr-val-{{ forloop.counter }}">
+                {% with total=entry.score|add_float:cross.jn|add_float:cross.on %}
+                    {% if total >= 86 %}5{% elif total >= 71 %}4{% elif total >= 60 %}3{% else %}2{% endif %}
+                {% endwith %}
+            </span></td>
+            <td></td>
+        </tr>
+        {% endwith %}
+        {% endfor %}
+    </tbody>
+</table>

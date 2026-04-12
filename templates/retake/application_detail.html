@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+{% load lms_filters static %}
+
+{% block title %}Ariza #{{ application.id }} — Django LMS{% endblock %}
+
+{% block content %}
+<div class="space-y-8 animate-in fade-in duration-500">
+    <!-- Stepper -->
+    <div class="rounded-3xl border border-border bg-white p-6 shadow-sm">
+        <div class="flex items-center justify-between gap-2 overflow-x-auto pb-2">
+            {% define_steps application.status as steps %}
+            {% for step in steps %}
+            <div class="flex flex-col items-center gap-2 shrink-0 min-w-[80px] flex-1">
+                <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-lg
+                    {% if step.is_done %}bg-green-500 text-white shadow-md
+                    {% elif step.is_active %}bg-primary text-white shadow-lg shadow-primary/20
+                    {% else %}bg-slate-100 text-text-muted{% endif %}">
+                    <i class="fa {% if step.is_done %}fa-check{% else %}{{ step.icon }}{% endif %}"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-wide text-center
+                    {% if step.is_active %}text-primary{% else %}text-text-muted{% endif %}">{{ step.label }}</span>
+            </div>
+            {% if not forloop.last %}
+            <i data-lucide="chevron-right" class="h-4 w-4 text-slate-300 shrink-0 mt-[-20px]"></i>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Application Paper -->
+            <div class="rounded-3xl border border-border bg-white p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-6">
+                    <h4 class="font-display text-lg font-extrabold text-text-primary">Ariza ko'rinishi</h4>
+                    <a href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 text-text-primary text-xs font-bold hover:bg-slate-200 transition-colors">
+                        <i data-lucide="printer" class="h-3.5 w-3.5"></i> PDF Yuklash
+                    </a>
+                </div>
+
+                <div class="border border-border p-8 sm:p-12 font-serif text-black leading-relaxed">
+                    <div class="text-right mb-10">
+                        <strong>Toshkent davlat sharqshunoslik universiteti<br>registrator ofisiga</strong><br>
+                        talaba {{ application.student_snapshot.full_name }}dan
+                    </div>
+                    <div class="text-center mb-8">
+                        <h3 class="font-bold uppercase text-xl">ARIZA</h3>
+                    </div>
+                    <div class="text-justify indent-10 mb-10">
+                        Men, {{ application.student_snapshot.full_name }}, quyidagi fan(lar)dan qarzdorligim borligi sababli, qayta o'qish va imtihon topshirish uchun ruxsat berishingizni so'rayman.
+                    </div>
+                    <table class="w-full border-collapse mb-10">
+                        <thead>
+                            <tr class="bg-slate-50">
+                                <th class="border border-black p-2.5 text-center">#</th>
+                                <th class="border border-black p-2.5">Fan nomi</th>
+                                <th class="border border-black p-2.5 text-center">Kredit</th>
+                                <th class="border border-black p-2.5 text-center">Nazorat turi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in application.items.all %}
+                            <tr>
+                                <td class="border border-black p-2.5 text-center">{{ forloop.counter }}</td>
+                                <td class="border border-black p-2.5">{{ item.subject_snapshot.subject_name }}</td>
+                                <td class="border border-black p-2.5 text-center">{{ item.subject_snapshot.credit }}</td>
+                                <td class="border border-black p-2.5 text-center">{{ item.required_control_type }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="flex justify-between mt-16">
+                        <span>Sana: {{ application.created_at|uz_date }}</span>
+                        <span>Imzo: _______________</span>
+                    </div>
+                </div>
+            </div>
+
+            {% if application.contract_file or application.receipt_file %}
+            <div class="space-y-6">
+                <h4 class="font-bold text-sm text-text-primary uppercase tracking-wider">Ilova qilingan hujjatlar</h4>
+
+                {% if can_supervisor_review %}
+                <div class="rounded-3xl border-2 border-dashed border-primary bg-primary/5 p-6">
+                    <div class="flex items-center gap-4 mb-5">
+                        <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                            <i data-lucide="shield-check" class="h-6 w-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-text-primary">Rahbar tasdig'i kutilmoqda</h4>
+                            <p class="text-xs text-text-muted mt-0.5">Buxgalteriya tomonidan tasdiqlangan. Yakuniy tasdiqni bering.</p>
+                        </div>
+                    </div>
+                    <div class="rounded-2xl bg-white p-4 mb-5 flex items-center justify-between border border-border">
+                        <span class="font-semibold text-text-primary text-sm">Buxgalteriya kiritgan summa:</span>
+                        <span class="font-extrabold text-green-600 text-lg">{{ application.accountant_amount }} UZS</span>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="block text-xs font-bold text-text-muted mb-1">Izoh (qaytarish uchun majburiy)</label>
+                            <input type="text" name="comment" class="w-full rounded-xl border border-border px-4 py-3 text-sm focus:border-primary focus:outline-none" placeholder="Nima sababdan rad etilyapti yoki qo'shimcha fikr...">
+                        </div>
+                        <div class="flex gap-3">
+                            <button type="submit" name="action" value="supervisor_approve" class="flex-1 py-3 rounded-xl bg-primary text-white font-bold text-sm hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="check-circle" class="h-4 w-4"></i> Tasdiqlash
+                            </button>
+                            <button type="submit" name="action" value="supervisor_reject" class="flex-1 py-3 rounded-xl bg-red-500 text-white font-bold text-sm hover:bg-red-600 transition-colors flex items-center justify-center gap-2" onclick="return confirm('Haqiqatdan ham rad etasizmi?');">
+                                <i data-lucide="x-circle" class="h-4 w-4"></i> Rad etish
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+
+                {% if application.contract_file %}
+                <div class="rounded-3xl border border-border bg-white p-5 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h5 class="font-bold text-text-primary flex items-center gap-2">
+                            <i data-lucide="file-text" class="h-4 w-4 text-red-500"></i> Kredit modul shartnomasi
+                        </h5>
+                        <a href="{{ application.contract_file.url }}" target="_blank" class="text-xs font-bold text-primary flex items-center gap-1">
+                            <i data-lucide="external-link" class="h-3 w-3"></i> To'liq ochish
+                        </a>
+                    </div>
+                    <iframe src="{{ application.contract_file.url }}" class="w-full h-[600px] rounded-2xl border border-border bg-slate-50"></iframe>
+                </div>
+                {% endif %}
+
+                {% if application.receipt_file %}
+                <div class="rounded-3xl border border-border bg-white p-5 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h5 class="font-bold text-text-primary flex items-center gap-2">
+                            <i data-lucide="image" class="h-4 w-4 text-primary"></i> To'lov cheki
+                        </h5>
+                        <a href="{{ application.receipt_file.url }}" target="_blank" class="text-xs font-bold text-primary flex items-center gap-1">
+                            <i data-lucide="external-link" class="h-3 w-3"></i> To'liq ochish
+                        </a>
+                    </div>
+
+                    {% if can_account_review %}
+                    <div class="rounded-2xl bg-slate-50 border-2 border-dashed border-border p-5 mb-4">
+                        <h5 class="font-bold text-sm text-text-primary mb-4">Buxgalteriya tasdig'i</h5>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-text-muted mb-1">Talaba kiritgan summa: <span class="text-primary">{{ application.declared_amount }} UZS</span></label>
+                                    <input type="number" step="0.01" name="accountant_amount" class="w-full rounded-xl border border-border px-4 py-3 text-sm font-bold focus:border-primary focus:outline-none" placeholder="Tushgan summa (UZS)" value="{{ application.declared_amount|stringformat:'f' }}" required>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-text-muted mb-1">Izoh (ixtiyoriy)</label>
+                                    <input type="text" name="comment" class="w-full rounded-xl border border-border px-4 py-3 text-sm focus:border-primary focus:outline-none" placeholder="Sabab...">
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <button type="submit" name="action" value="verify_payment" class="flex-1 py-2.5 rounded-xl bg-green-500 text-white font-bold text-sm hover:bg-green-600 transition-colors flex items-center justify-center gap-2">
+                                    <i data-lucide="check" class="h-4 w-4"></i> Tasdiqlash
+                                </button>
+                                <button type="submit" name="action" value="reject_payment" class="flex-1 py-2.5 rounded-xl bg-red-500 text-white font-bold text-sm hover:bg-red-600 transition-colors flex items-center justify-center gap-2" onclick="return confirm('Haqiqatdan ham rad etasizmi?');">
+                                    <i data-lucide="x" class="h-4 w-4"></i> Rad etish
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    {% endif %}
+
+                    <iframe src="{{ application.receipt_file.url }}" class="w-full h-[600px] rounded-2xl border border-border bg-slate-50"></iframe>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            <!-- Info Card -->
+            <div class="rounded-3xl border border-border bg-white p-6 shadow-sm">
+                <h5 class="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-5">Ma'lumotlar</h5>
+                <div class="space-y-4">
+                    <div class="flex justify-between">
+                        <span class="text-sm text-text-muted font-semibold">Ariza ID</span>
+                        <span class="font-bold text-text-primary">#{{ application.id }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-text-muted font-semibold">Holati</span>
+                        <span class="status-pill {{ application.status|status_badge_class }}">{{ application.status|status_label }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-text-muted font-semibold">Kredit summasi</span>
+                        <span class="font-extrabold text-primary text-lg">{{ application.declared_amount|default:"0" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions Card -->
+            <div class="rounded-3xl border-t-4 border-primary border border-border bg-white p-6 shadow-sm">
+                <h5 class="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-5">Harakatlar</h5>
+                {% if can_edit_submission %}
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-text-muted mb-1">To'lov summasi (Shartnoma bo'yicha)</label>
+                            <input type="text" name="declared_amount" class="w-full rounded-xl border border-border px-3 py-3 text-sm focus:border-primary focus:outline-none" value="{{ application.declared_amount }}" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-text-muted mb-1">Kredit modul shartnomasi (.pdf, .jpg, .png)</label>
+                            <input type="file" name="contract_file" class="w-full rounded-xl border border-border px-3 py-2.5 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-1 file:text-xs file:font-bold file:text-primary">
+                            {% if application.contract_file %}
+                            <a href="{{ application.contract_file.url }}" target="_blank" class="block mt-1 text-xs text-primary font-bold flex items-center gap-1">
+                                <i data-lucide="file" class="h-3 w-3"></i> {{ application.contract_original_name|default:"Yuklangan fayl" }}
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-text-muted mb-1">To'lov cheki (.pdf, .jpg, .png)</label>
+                            <input type="file" name="receipt_file" class="w-full rounded-xl border border-border px-3 py-2.5 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-1 file:text-xs file:font-bold file:text-primary">
+                            {% if application.receipt_file %}
+                            <a href="{{ application.receipt_file.url }}" target="_blank" class="block mt-1 text-xs text-primary font-bold flex items-center gap-1">
+                                <i data-lucide="file" class="h-3 w-3"></i> {{ application.receipt_original_name|default:"Yuklangan fayl" }}
+                            </a>
+                            {% endif %}
+                        </div>
+                        <button type="submit" name="action" value="submit_to_accounting" class="w-full py-3 rounded-xl bg-primary text-white font-bold text-sm hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="send" class="h-4 w-4"></i> Buxgalteriyaga yuborish
+                        </button>
+                    </div>
+                </form>
+                {% else %}
+                <div class="space-y-3">
+                    {% if application.contract_file %}
+                    <div>
+                        <p class="text-xs font-bold text-text-muted mb-1">Kredit modul shartnomasi:</p>
+                        <a href="{{ application.contract_file.url }}" target="_blank" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-border text-sm font-semibold text-text-primary flex items-center gap-2 hover:bg-slate-100 transition-colors">
+                            <i data-lucide="file-text" class="h-4 w-4 text-red-500"></i> {{ application.contract_original_name|default:"Yuklangan fayl" }}
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% if application.receipt_file %}
+                    <div>
+                        <p class="text-xs font-bold text-text-muted mb-1">To'lov cheki:</p>
+                        <a href="{{ application.receipt_file.url }}" target="_blank" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-border text-sm font-semibold text-text-primary flex items-center gap-2 hover:bg-slate-100 transition-colors">
+                            <i data-lucide="image" class="h-4 w-4 text-primary"></i> {{ application.receipt_original_name|default:"Yuklangan fayl" }}
+                        </a>
+                    </div>
+                    {% endif %}
+                    <div class="text-center pt-4 border-t border-dashed border-border">
+                        <i data-lucide="lock" class="h-6 w-6 mx-auto text-text-muted opacity-30 mb-1"></i>
+                        <p class="text-xs text-text-muted font-semibold">Hujjatlarni o'zgartirish yopiq</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- History -->
+            <div>
+                <h5 class="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-4 px-2">Ariza tarixi</h5>
+                <div class="space-y-3">
+                    {% for event in workflow_events %}
+                    <div class="rounded-2xl border border-border bg-white p-4 shadow-sm flex gap-3 items-start">
+                        <div class="w-8 h-8 rounded-xl bg-slate-100 text-text-muted flex items-center justify-center shrink-0">
+                            <i data-lucide="history" class="h-4 w-4"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="font-bold text-sm text-text-primary">{{ event.action|title }}</p>
+                            <p class="text-[10px] text-text-muted mt-0.5">{{ event.created_at|date:"d.m.Y H:i" }} · {{ event.actor.username }}</p>
+                            {% if event.comment %}
+                            <div class="mt-2 rounded-lg bg-slate-50 px-3 py-2 text-xs text-text-primary">{{ event.comment }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

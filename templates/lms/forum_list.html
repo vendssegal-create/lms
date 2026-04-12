@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load lms_filters %}
+{% load static %}
+
+{% block title %}Kurs Forumi: {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="animate-slideUp space-y-8 pb-20">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="space-y-1">
+            <h2 class="text-3xl font-black text-text-primary tracking-tight flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                    <i data-lucide="message-square" size="24"></i>
+                </div>
+                Kurs Forumi
+            </h2>
+            <p class="text-sm font-medium text-text-secondary pl-14">{{ course.title }} mavzulari va muhokamalari</p>
+        </div>
+        
+        <a href="{% url 'lms:create_forum_topic' course.id %}" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-primary text-white font-black text-sm shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all group">
+            <i data-lucide="plus" size="18" class="group-hover:rotate-90 transition-transform"></i>
+            Yangi mavzu ochish
+        </a>
+    </div>
+
+    <!-- Forum List Card -->
+    <div class="card-premium overflow-hidden">
+        <div class="overflow-x-auto no-scrollbar">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/50 border-b border-border/50">
+                        <th class="px-10 py-6 text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">Mavzu nomi</th>
+                        <th class="px-10 py-6 text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">Muallif</th>
+                        <th class="px-10 py-6 text-[10px] font-black text-text-muted uppercase tracking-[0.2em] text-center">Javoblar</th>
+                        <th class="px-10 py-6 text-[10px] font-black text-text-muted uppercase tracking-[0.2em] text-right">Oxirgi faollik</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border/30">
+                    {% for topic in topics %}
+                    <tr class="hover:bg-slate-50/30 transition-all cursor-pointer group" onclick="window.location='{% url 'lms:forum_topic_detail' topic.id %}'">
+                        <td class="px-10 py-7">
+                            <div class="space-y-2">
+                                <p class="text-base font-bold text-text-primary group-hover:text-primary transition-colors">{{ topic.title }}</p>
+                                {% if topic.section %}
+                                <span class="label-micro bg-slate-100 text-slate-500 rounded-lg px-2.5 py-1">
+                                    {{ topic.section.name }}
+                                </span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="px-10 py-7">
+                            <div class="flex items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name={{ topic.author.get_full_name|default:topic.author.username }}&background=random&color=fff" class="w-8 h-8 rounded-lg shadow-sm border border-white">
+                                <span class="text-sm font-bold text-text-secondary">{{ topic.author.get_full_name|default:topic.author.username }}</span>
+                            </div>
+                        </td>
+                        <td class="px-10 py-7 text-center">
+                            <div class="inline-flex items-center justify-center min-w-[32px] h-8 rounded-xl bg-indigo-50 text-indigo-600 font-extrabold text-xs px-2">
+                                {{ topic.posts.count }}
+                            </div>
+                        </td>
+                        <td class="px-10 py-7 text-right">
+                            <div class="flex flex-col items-end gap-1">
+                                <span class="text-xs font-bold text-text-muted uppercase tracking-wider">{{ topic.created_at|timesince }} avval</span>
+                                <i data-lucide="chevron-right" size="14" class="text-text-muted group-hover:text-primary transition-all group-hover:translate-x-1"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-10 py-32 text-center">
+                            <div class="flex flex-col items-center gap-6 max-w-sm mx-auto">
+                                <div class="w-24 h-24 rounded-[40px] bg-slate-50 flex items-center justify-center text-slate-200">
+                                    <i data-lucide="message-square" size="48"></i>
+                                </div>
+                                <div class="space-y-2">
+                                    <p class="text-xl font-black text-text-primary tracking-tight">Hozircha mavzular yo'q</p>
+                                    <p class="text-sm font-medium text-text-secondary">Ushbu kurs forumi bo'sh. Savolingiz bo'lsa, yangi mavzu oching.</p>
+                                </div>
+                                <a href="{% url 'lms:create_forum_topic' course.id %}" class="btn btn-primary px-8 py-4 rounded-2xl text-xs font-bold">
+                                    Yangi mavzu ochish
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

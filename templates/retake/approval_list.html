@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Arizalarni tasdiqlash — Django LMS{% endblock %}
+
+{% block content %}
+<div class="space-y-8 animate-in fade-in duration-500">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h2 class="font-display text-3xl font-extrabold tracking-tight text-text-primary">Arizalarni tasdiqlash</h2>
+            <p class="text-sm font-medium text-text-muted mt-1">Rahbar — ko'rib chiqish kutilayotgan arizalar</p>
+        </div>
+        <form method="get" class="flex gap-2">
+            <div class="relative">
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"><i data-lucide="search" class="h-4 w-4"></i></div>
+                <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Ism yoki ID..." class="rounded-xl border border-border pl-9 pr-4 py-2 text-sm font-semibold focus:border-primary focus:outline-none w-56">
+            </div>
+            <button type="submit" class="px-4 py-2 rounded-xl bg-slate-100 text-text-primary text-sm font-bold hover:bg-slate-200 transition-colors">Qidirish</button>
+        </form>
+    </div>
+
+    <div class="rounded-3xl border border-border bg-white shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bg-slate-50 text-text-muted text-xs uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left font-bold">ID</th>
+                        <th class="px-4 py-3 text-left font-bold">Talaba</th>
+                        <th class="px-4 py-3 text-left font-bold">Guruh</th>
+                        <th class="px-4 py-3 text-left font-bold">Fanlar</th>
+                        <th class="px-4 py-3 text-left font-bold">Tasdiqlangan summa</th>
+                        <th class="px-4 py-3 text-left font-bold">Sana</th>
+                        <th class="px-6 py-3 text-right font-bold">Amallar</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border">
+                    {% for app in applications %}
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4 font-bold text-text-muted">#{{ app.id }}</td>
+                        <td class="px-4 py-4">
+                            <p class="font-bold text-text-primary">{{ app.student_snapshot.full_name }}</p>
+                            <p class="text-xs text-text-muted">ID: {{ app.student_snapshot.student_id_number }}</p>
+                        </td>
+                        <td class="px-4 py-4 font-semibold text-text-primary">{{ app.student_snapshot.group_name }}</td>
+                        <td class="px-4 py-4">
+                            <div class="flex flex-wrap gap-1">
+                                {% for item in app.items.all %}
+                                <span class="px-2 py-0.5 rounded-md bg-slate-100 text-text-muted text-[10px] font-semibold" title="{{ item.subject_snapshot.subject_name }}">{{ item.subject_snapshot.subject_name|truncatechars:20 }}</span>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 font-bold text-green-600">{{ app.accountant_amount }}</td>
+                        <td class="px-4 py-4 text-xs text-text-muted">{{ app.items.first.payment_date|date:"d.m.Y"|default:"-" }}</td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="{% url 'retake:application_detail' app.id %}" class="inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-green-500 text-white text-xs font-bold hover:bg-green-600 transition-colors">
+                                <i data-lucide="pencil" class="h-3.5 w-3.5"></i> Ko'rib chiqish
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-16 text-text-muted">
+                            <i data-lucide="smile" class="h-10 w-10 mx-auto text-green-500 opacity-30 mb-3"></i>
+                            <p class="font-bold text-text-primary">Tasdiqlash kutilayotgan arizalar yo'q</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

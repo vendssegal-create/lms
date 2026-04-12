@@ -1,0 +1,2261 @@
+Watching for file changes with StatReloader
+INFO 2026-04-10 10:53:15,905 autoreload 13704 9400 Watching for file changes with StatReloader
+[10/Apr/2026 10:53:20] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 10:53:20] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 10:53:20] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 4098
+[10/Apr/2026 10:53:20] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 4098
+[10/Apr/2026 10:53:20] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 10:53:27] "GET /api/lms/courses/3/ HTTP/1.1" 200 1726
+[10/Apr/2026 10:53:27] "GET /api/lms/courses/3/ HTTP/1.1" 200 1726
+[10/Apr/2026 10:53:29] "GET /api/lms/courses/3/certificate/check/ HTTP/1.1" 200 131
+[10/Apr/2026 10:53:29] "GET /api/lms/courses/3/certificate/check/ HTTP/1.1" 200 131
+Method Not Allowed (GET): /api/lms/teacher/tests/3/delete/
+WARNING 2026-04-10 10:53:34,722 log 13704 14952 Method Not Allowed (GET): /api/lms/teacher/tests/3/delete/
+[10/Apr/2026 10:53:34] "GET /api/lms/teacher/tests/3/delete/ HTTP/1.1" 405 0
+[10/Apr/2026 10:53:34,801] - Broken pipe from ('127.0.0.1', 49920)
+[10/Apr/2026 10:53:51] "GET /api/lms/teacher/courses/3/gradebook/ HTTP/1.1" 200 371
+[10/Apr/2026 10:53:51] "GET /api/lms/teacher/courses/3/gradebook/ HTTP/1.1" 200 371
+[10/Apr/2026 10:53:52] "GET /api/lms/courses/3/ HTTP/1.1" 200 1726
+[10/Apr/2026 10:53:52] "GET /api/lms/courses/3/ HTTP/1.1" 200 1726
+[10/Apr/2026 10:53:53] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 4098
+[10/Apr/2026 10:53:53] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 4098
+[10/Apr/2026 10:54:45] "POST /api/lms/teacher/sections/8/update/ HTTP/1.1" 200 181
+[10/Apr/2026 10:54:45] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 4106
+[10/Apr/2026 10:54:49] "GET /api/lms/courses/3/ HTTP/1.1" 200 1734
+[10/Apr/2026 10:54:49] "GET /api/lms/courses/3/ HTTP/1.1" 200 1734
+D:\djangolms\django_lms\lms\services\certificate_service.py changed, reloading.
+INFO 2026-04-10 10:54:52,552 autoreload 13704 9400 D:\djangolms\django_lms\lms\services\certificate_service.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 10:54:54,212 autoreload 16912 5008 Watching for file changes with StatReloader
+[10/Apr/2026 10:55:55] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 10:55:55] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 10:55:55] "GET /api/lms/courses/3/ HTTP/1.1" 200 1734
+[10/Apr/2026 10:55:55] "GET /api/lms/courses/3/ HTTP/1.1" 200 1734
+[10/Apr/2026 10:55:55] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 10:55:57] "GET /api/lms/courses/3/certificate/check/ HTTP/1.1" 200 140
+[10/Apr/2026 10:55:57] "GET /api/lms/courses/3/certificate/check/ HTTP/1.1" 200 140
+ERROR 2026-04-10 10:55:58,608 context 16912 10544 Error while parsing CSS file
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\xhtml2pdf\context.py", line 519, in parseExternal
+    result = self.parse(cssFile.getData())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\xhtml2pdf\w3c\cssParser.py", line 458, in parse
+    src, stylesheet = self._parseStylesheet(src)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\xhtml2pdf\w3c\cssParser.py", line 542, in _parseStylesheet
+    src = self.re_comment.sub("", src)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: expected string or bytes-like object, got 'NoneType'
+WARNING 2026-04-10 10:55:58,644 util 16912 10544 getSize: Not a float '100%'
+[10/Apr/2026 10:55:58] "GET /api/lms/courses/3/certificate/download/ HTTP/1.1" 200 12792
+D:\djangolms\django_lms\lms\models.py changed, reloading.
+INFO 2026-04-10 10:58:00,790 autoreload 16912 5008 D:\djangolms\django_lms\lms\models.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 10:58:02,056 autoreload 8480 5424 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 10:58:09,026 autoreload 8480 5424 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 10:58:09,903 autoreload 11848 9772 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 10:58:15,553 autoreload 11848 9772 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 10:58:16,344 autoreload 16476 12252 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 10:58:49,324 autoreload 16476 12252 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 10:58:50,135 autoreload 17068 15556 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 10:59:43,156 autoreload 17068 15556 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 10:59:44,022 autoreload 16916 10852 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 10:59:54,821 autoreload 16916 10852 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 10:59:55,658 autoreload 15332 17132 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_urls.py changed, reloading.
+INFO 2026-04-10 11:00:02,357 autoreload 15332 17132 D:\djangolms\django_lms\lms\api_urls.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:00:03,151 autoreload 17032 6952 Watching for file changes with StatReloader
+[10/Apr/2026 11:00:19] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:00:19] "GET /api/auth/session/ HTTP/1.1" 200 1723
+Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2873, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+ERROR 2026-04-10 11:00:20,405 log 17032 7096 Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2873, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+[10/Apr/2026 11:00:20] "GET /api/lms/courses/3/ HTTP/1.1" 500 23658
+Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2873, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+ERROR 2026-04-10 11:00:20,437 log 17032 6720 Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2873, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+[10/Apr/2026 11:00:20] "GET /api/lms/courses/3/ HTTP/1.1" 500 23658
+[10/Apr/2026 11:00:21] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 11:01:24] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:01:24] "GET /api/lms/courses/ HTTP/1.1" 200 484
+Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2873, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+ERROR 2026-04-10 11:01:25,286 log 17032 8080 Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2873, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+[10/Apr/2026 11:01:25] "GET /api/lms/courses/3/ HTTP/1.1" 500 23658
+Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2873, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+ERROR 2026-04-10 11:01:25,317 log 17032 16196 Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2873, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+[10/Apr/2026 11:01:25] "GET /api/lms/courses/3/ HTTP/1.1" 500 23658
+[10/Apr/2026 11:01:26] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:01:26] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:03:48] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:03:48] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:03:49] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:03:49] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:03:50] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 11:03:54,490 autoreload 17032 6952 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:03:55,305 autoreload 1892 15064 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_urls.py changed, reloading.
+INFO 2026-04-10 11:03:57,593 autoreload 1892 15064 D:\djangolms\django_lms\lms\api_urls.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:03:58,449 autoreload 7216 6664 Watching for file changes with StatReloader
+[10/Apr/2026 11:08:43] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:08:43] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:15:06] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:15:06] "GET /api/auth/session/ HTTP/1.1" 200 1723
+Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2891, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+ERROR 2026-04-10 11:15:06,534 log 7216 8892 Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2891, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+[10/Apr/2026 11:15:06] "GET /api/lms/courses/3/ HTTP/1.1" 500 23658
+Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2891, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+ERROR 2026-04-10 11:15:06,573 log 7216 13004 Internal Server Error: /api/lms/courses/3/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: lms_sectionresource.description
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\http.py", line 43, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\djangolms\django_lms\lms\api_views.py", line 2891, in course_detail
+    for resource in resources:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: lms_sectionresource.description
+[10/Apr/2026 11:15:06] "GET /api/lms/courses/3/ HTTP/1.1" 500 23658
+[10/Apr/2026 11:15:06] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 11:15:07] "GET /api/messages/contacts/ HTTP/1.1" 200 196
+[10/Apr/2026 11:15:07] "GET /api/messages/threads/ HTTP/1.1" 200 331
+[10/Apr/2026 11:15:08] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1823
+[10/Apr/2026 11:15:09] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1823
+[10/Apr/2026 11:15:10] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 11:15:18] "GET /api/auth/profile/ HTTP/1.1" 200 674
+[10/Apr/2026 11:15:18] "GET /api/auth/profile/ HTTP/1.1" 200 674
+Forbidden: /api/retake/applications/
+WARNING 2026-04-10 11:15:19,701 log 7216 12920 Forbidden: /api/retake/applications/
+[10/Apr/2026 11:15:19] "GET /api/retake/applications/ HTTP/1.1" 403 48
+[10/Apr/2026 11:15:20] "GET /api/retake/teacher-groups/ HTTP/1.1" 200 629
+[10/Apr/2026 11:15:20] "GET /api/retake/teacher-groups/ HTTP/1.1" 200 629
+[10/Apr/2026 11:15:22] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 72
+[10/Apr/2026 11:15:22] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 72
+[10/Apr/2026 11:15:22] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:15:22] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:15:24] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:15:24] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:15:26] "GET /api/messages/threads/2/?limit=80 HTTP/1.1" 200 305
+[10/Apr/2026 11:15:57] "GET /api/messages/threads/2/?limit=80 HTTP/1.1" 200 305
+[10/Apr/2026 11:18:18] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:18:18] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:18:18] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:18:19] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:18:20] "GET /api/lms/courses/3/ HTTP/1.1" 200 3093
+[10/Apr/2026 11:18:20] "GET /api/lms/courses/3/ HTTP/1.1" 200 3093
+[10/Apr/2026 11:18:27] "GET /api/lms/courses/3/certificate/check/ HTTP/1.1" 200 139
+[10/Apr/2026 11:18:27] "GET /api/lms/courses/3/certificate/check/ HTTP/1.1" 200 139
+[10/Apr/2026 11:18:34] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5216
+[10/Apr/2026 11:18:34] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5216
+D:\djangolms\django_lms\messaging\models.py changed, reloading.
+INFO 2026-04-10 11:34:25,115 autoreload 7216 6664 D:\djangolms\django_lms\messaging\models.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:34:27,435 autoreload 20572 21284 Watching for file changes with StatReloader
+D:\djangolms\django_lms\messaging\api_views.py changed, reloading.
+INFO 2026-04-10 11:34:52,625 autoreload 20572 21284 D:\djangolms\django_lms\messaging\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:34:53,948 autoreload 17040 21056 Watching for file changes with StatReloader
+D:\djangolms\django_lms\messaging\api_urls.py changed, reloading.
+INFO 2026-04-10 11:35:24,380 autoreload 17040 21056 D:\djangolms\django_lms\messaging\api_urls.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:35:25,538 autoreload 20792 20976 Watching for file changes with StatReloader
+D:\djangolms\django_lms\core\settings.py changed, reloading.
+INFO 2026-04-10 11:38:23,556 autoreload 20792 20976 D:\djangolms\django_lms\core\settings.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:38:26,723 autoreload 9260 20672 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 11:38:51,778 autoreload 9260 20672 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:38:53,616 autoreload 19904 17416 Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1073, in _bootstrap_inner
+    self.run()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1010, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\utils\autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\management\commands\runserver.py", line 133, in inner_run
+    self.check(display_num_errors=True)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\management\base.py", line 485, in check
+    all_issues = checks.run_checks(
+                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\checks\registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\checks\urls.py", line 42, in check_url_namespaces_unique
+    all_namespaces = _load_all_namespaces(resolver)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\checks\urls.py", line 61, in _load_all_namespaces
+    url_patterns = getattr(resolver, "url_patterns", [])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\urls\resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\urls\resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "D:\djangolms\django_lms\core\urls.py", line 19, in <module>
+    path('api/lms/', include('lms.api_urls')),
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\urls\conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "D:\djangolms\django_lms\lms\api_urls.py", line 3, in <module>
+    from . import api_views
+  File "D:\djangolms\django_lms\lms\api_views.py", line 1631
+    resource.h5p_embed_code = (request.POST.get("h5p_embed_code") if is_multipart else payload.get("h5p_embed_code")) or ""
+IndentationError: unexpected indent
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 11:39:01,404 autoreload 19904 17416 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:39:02,845 autoreload 19304 2232 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 11:39:17,604 autoreload 19304 2232 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:39:19,286 autoreload 17028 12404 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_urls.py changed, reloading.
+INFO 2026-04-10 11:39:33,192 autoreload 17028 12404 D:\djangolms\django_lms\lms\api_urls.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 11:39:34,115 autoreload 20272 5332 Watching for file changes with StatReloader
+[10/Apr/2026 11:40:35] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:40:35] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:40:35] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5216
+[10/Apr/2026 11:40:35] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5216
+[10/Apr/2026 11:40:36] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 11:42:45] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:42:45] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:42:46] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5216
+[10/Apr/2026 11:42:46] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5216
+[10/Apr/2026 11:42:46] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+Forbidden: /api/retake/applications/
+WARNING 2026-04-10 11:42:47,748 log 20272 20624 Forbidden: /api/retake/applications/
+[10/Apr/2026 11:42:47] "GET /api/retake/applications/ HTTP/1.1" 403 48
+[10/Apr/2026 11:42:47] "GET /api/messages/contacts/ HTTP/1.1" 200 196
+[10/Apr/2026 11:42:47] "GET /api/messages/threads/ HTTP/1.1" 200 331
+[10/Apr/2026 11:42:52] "GET /api/messages/users/search/?q=ruhs HTTP/1.1" 200 387
+[10/Apr/2026 11:42:54] "POST /api/messages/threads/start/ HTTP/1.1" 200 237
+[10/Apr/2026 11:42:54] "GET /api/messages/threads/2/?limit=80 HTTP/1.1" 200 305
+[10/Apr/2026 11:42:54] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:42:54] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 11:42:54] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:42:54] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:42:54] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:42:54] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:42:54] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 11:43:02] "POST /api/messages/threads/2/send/ HTTP/1.1" 200 391
+[10/Apr/2026 11:43:02] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:02] "GET /api/messages/threads/2/?limit=80 HTTP/1.1" 200 666
+[10/Apr/2026 11:43:02] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:02] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 11:43:02] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:43:02] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:02] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:03] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 11:43:09] "POST /api/messages/messages/7/react/ HTTP/1.1" 200 70
+[10/Apr/2026 11:43:09] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:10] "POST /api/messages/messages/7/react/ HTTP/1.1" 200 55
+[10/Apr/2026 11:43:10] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:11] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:17] "GET /api/auth/profile/ HTTP/1.1" 200 674
+[10/Apr/2026 11:43:17] "GET /api/auth/profile/ HTTP/1.1" 200 674
+[10/Apr/2026 11:43:18] "GET /api/messages/threads/ HTTP/1.1" 200 688
+[10/Apr/2026 11:43:19] "GET /api/messages/threads/2/?limit=80 HTTP/1.1" 200 666
+[10/Apr/2026 11:43:19] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:19] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 11:43:19] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:19] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:43:19] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:19] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 11:43:26] "GET /api/messages/users/search/?q=admin HTTP/1.1" 200 139
+[10/Apr/2026 11:43:32] "POST /api/messages/threads/start/ HTTP/1.1" 200 180
+[10/Apr/2026 11:43:32] "GET /ws/messages/thread/3/ HTTP/1.1" 200 722
+[10/Apr/2026 11:43:32] "GET /api/messages/threads/3/?limit=80 HTTP/1.1" 200 248
+[10/Apr/2026 11:43:32] "POST /api/messages/threads/3/read/ HTTP/1.1" 200 17
+[10/Apr/2026 11:43:32] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:43:32] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 11:47:37] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:47:37] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:47:38] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:47:38] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:47:40] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:47:40] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:47:46] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:47:46] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:48:23] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:48:23] "GET /api/auth/session/ HTTP/1.1" 200 1723
+[10/Apr/2026 11:48:24] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:48:24] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:48:25] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1825
+[10/Apr/2026 11:51:41] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 72
+[10/Apr/2026 11:51:41] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 72
+[10/Apr/2026 11:51:41] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:51:42] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:51:43] "GET /api/lms/courses/3/ HTTP/1.1" 200 3093
+[10/Apr/2026 11:51:43] "GET /api/lms/courses/3/ HTTP/1.1" 200 3093
+[10/Apr/2026 11:51:45] "GET /api/lms/teacher/resources/8/stats/ HTTP/1.1" 200 142
+[10/Apr/2026 11:51:53] "GET /api/lms/teacher/resources/6/stats/ HTTP/1.1" 200 142
+[10/Apr/2026 11:51:56] "GET /api/lms/teacher/resources/7/stats/ HTTP/1.1" 200 142
+[10/Apr/2026 11:52:05] "GET /api/messages/contacts/ HTTP/1.1" 200 196
+[10/Apr/2026 11:52:05] "GET /api/messages/threads/ HTTP/1.1" 200 932
+[10/Apr/2026 11:52:05] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 72
+[10/Apr/2026 11:52:05] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 72
+[10/Apr/2026 11:52:06] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:52:06] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:52:07] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:52:07] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 11:52:07] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:52:07] "GET /api/lms/tests/ HTTP/1.1" 200 184
+[10/Apr/2026 11:52:08] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 72
+[10/Apr/2026 11:52:08] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 72
+[10/Apr/2026 12:03:31] "GET /api/lms/dashboard/ HTTP/1.1" 200 946
+[10/Apr/2026 12:03:31] "GET /api/lms/dashboard/ HTTP/1.1" 200 946
+[10/Apr/2026 12:03:31] "GET /api/lms/courses/ HTTP/1.1" 200 484
+[10/Apr/2026 12:03:31] "GET /api/lms/courses/ HTTP/1.1" 200 484
+Forbidden: /api/retake/applications/
+WARNING 2026-04-10 12:03:36,809 log 20272 7548 Forbidden: /api/retake/applications/
+[10/Apr/2026 12:03:36] "GET /api/retake/applications/ HTTP/1.1" 403 48
+[10/Apr/2026 12:03:42] "GET /api/lms/courses/3/ HTTP/1.1" 200 3093
+[10/Apr/2026 12:03:42] "GET /api/lms/courses/3/ HTTP/1.1" 200 3093
+[10/Apr/2026 12:03:44] "GET /api/lms/teacher/resources/6/stats/ HTTP/1.1" 200 142
+[10/Apr/2026 12:03:54] "GET /api/auth/session/ HTTP/1.1" 200 237
+[10/Apr/2026 12:03:54] "GET /api/auth/session/ HTTP/1.1" 200 237
+[10/Apr/2026 12:04:14] "POST /api/auth/login/ HTTP/1.1" 200 1882
+[10/Apr/2026 12:04:15] "GET /api/lms/courses/3/ HTTP/1.1" 200 3178
+[10/Apr/2026 12:04:15] "GET /api/lms/courses/3/ HTTP/1.1" 200 3178
+[10/Apr/2026 12:04:15] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:04:19] "POST /api/lms/resources/6/viewed/ HTTP/1.1" 200 34
+[10/Apr/2026 12:04:52] "GET /api/messages/contacts/ HTTP/1.1" 200 268
+[10/Apr/2026 12:04:52] "GET /api/messages/threads/ HTTP/1.1" 200 1217
+[10/Apr/2026 12:04:54] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:04:54] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:04:55] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1956
+[10/Apr/2026 12:04:56] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:04:57] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1952
+[10/Apr/2026 12:04:57] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:04:58] "GET /api/messages/threads/2/?limit=80 HTTP/1.1" 200 610
+[10/Apr/2026 12:04:58] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:04:58] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:04:58] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 12:04:58] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:04:58] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 12:04:58] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 12:04:58] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:04:58] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:04:58] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:04:58] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:04:58] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:04:58] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:04:58] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:05:05] "POST /api/auth/logout/ HTTP/1.1" 200 17
+[10/Apr/2026 12:05:08] "POST /api/auth/login/ HTTP/1.1" 200 5879
+[10/Apr/2026 12:05:08] "GET /api/lms/courses/3/ HTTP/1.1" 200 3098
+[10/Apr/2026 12:05:08] "GET /api/lms/courses/3/ HTTP/1.1" 200 3098
+[10/Apr/2026 12:05:09] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 12:05:11] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5383
+[10/Apr/2026 12:05:11] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5383
+[10/Apr/2026 12:05:24] "GET /api/lms/courses/ HTTP/1.1" 200 1315
+[10/Apr/2026 12:05:24] "GET /api/lms/courses/ HTTP/1.1" 200 1315
+[10/Apr/2026 12:05:27] "GET /api/lms/courses/2/ HTTP/1.1" 200 8400
+[10/Apr/2026 12:05:27] "GET /api/lms/courses/2/ HTTP/1.1" 200 8400
+[10/Apr/2026 12:05:34] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:34] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:35] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:35] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:35] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:36] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:37] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1952
+[10/Apr/2026 12:05:38] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1952
+[10/Apr/2026 12:05:38] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 12:05:38] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:05:39] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:39] "GET /api/messages/threads/1/?limit=80 HTTP/1.1" 200 2391
+[10/Apr/2026 12:05:39] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:39] "POST /api/messages/threads/1/read/ HTTP/1.1" 200 17
+[10/Apr/2026 12:05:39] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:39] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:05:39] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:39] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:05:40] "GET /api/messages/threads/2/?limit=80 HTTP/1.1" 200 639
+[10/Apr/2026 12:05:40] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:40] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 12:05:40] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:40] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:05:40] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:40] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:05:40] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:40] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:40] "GET /api/messages/threads/1/?limit=80 HTTP/1.1" 200 2449
+[10/Apr/2026 12:05:40] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:40] "POST /api/messages/threads/1/read/ HTTP/1.1" 200 17
+[10/Apr/2026 12:05:40] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:05:40] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:40] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:41] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:05:41] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:41] "GET /api/messages/threads/2/?limit=80 HTTP/1.1" 200 639
+[10/Apr/2026 12:05:41] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 12:05:41] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:05:41] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:41] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:05:41] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:05:44] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 571
+[10/Apr/2026 12:05:44] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 571
+[10/Apr/2026 12:05:47] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 12:05:47] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 12:05:49] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 12:05:49] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 12:05:52] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 12:05:52] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 12:05:52] "GET /api/lms/courses/ HTTP/1.1" 200 1001
+[10/Apr/2026 12:05:52] "GET /api/lms/courses/ HTTP/1.1" 200 1001
+[10/Apr/2026 12:05:56] "GET /api/lms/courses/2/ HTTP/1.1" 200 8604
+[10/Apr/2026 12:05:56] "GET /api/lms/courses/2/ HTTP/1.1" 200 8604
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 12:06:05,585 log 20272 14960 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 12:06:05] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 12:06:05,598 log 20272 21368 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 12:06:05] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+[10/Apr/2026 12:06:06] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 12:06:06] "GET /api/lms/tests/ HTTP/1.1" 200 970
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 12:06:08,266 log 20272 19288 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 12:06:08] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 12:06:08,276 log 20272 5840 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 12:06:08] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+[10/Apr/2026 12:06:09] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 12:06:09] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 12:06:10] "GET /api/lms/dashboard/ HTTP/1.1" 200 2229
+[10/Apr/2026 12:06:10] "GET /api/lms/dashboard/ HTTP/1.1" 200 2229
+[10/Apr/2026 12:06:10] "GET /api/lms/courses/ HTTP/1.1" 200 1001
+[10/Apr/2026 12:06:10] "GET /api/lms/courses/ HTTP/1.1" 200 1001
+[10/Apr/2026 12:06:12] "GET /api/lms/courses/2/ HTTP/1.1" 200 8604
+[10/Apr/2026 12:06:12] "GET /api/lms/courses/2/ HTTP/1.1" 200 8604
+[10/Apr/2026 12:06:16] "GET /api/lms/dashboard/ HTTP/1.1" 200 2229
+[10/Apr/2026 12:06:16] "GET /api/lms/dashboard/ HTTP/1.1" 200 2229
+[10/Apr/2026 12:17:25] "GET /api/lms/courses/ HTTP/1.1" 200 1001
+[10/Apr/2026 12:17:25] "GET /api/lms/courses/ HTTP/1.1" 200 1001
+[10/Apr/2026 12:17:28] "GET /api/lms/courses/3/ HTTP/1.1" 200 3178
+[10/Apr/2026 12:17:28] "GET /api/lms/courses/3/ HTTP/1.1" 200 3178
+[10/Apr/2026 12:17:29] "POST /api/lms/resources/6/viewed/ HTTP/1.1" 200 34
+[10/Apr/2026 12:17:33] "POST /api/lms/resources/7/viewed/ HTTP/1.1" 200 34
+[10/Apr/2026 12:17:33] "GET /api/lms/courses/3/certificate/check/ HTTP/1.1" 200 140
+[10/Apr/2026 12:17:33] "GET /api/lms/courses/3/certificate/check/ HTTP/1.1" 200 140
+ERROR 2026-04-10 12:17:35,590 context 20272 21112 Error while parsing CSS file
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\xhtml2pdf\context.py", line 519, in parseExternal
+    result = self.parse(cssFile.getData())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\xhtml2pdf\w3c\cssParser.py", line 458, in parse
+    src, stylesheet = self._parseStylesheet(src)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\xhtml2pdf\w3c\cssParser.py", line 542, in _parseStylesheet
+    src = self.re_comment.sub("", src)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: expected string or bytes-like object, got 'NoneType'
+WARNING 2026-04-10 12:17:35,656 util 20272 21112 getSize: Not a float '100%'
+[10/Apr/2026 12:17:35] "GET /api/lms/courses/3/certificate/download/ HTTP/1.1" 200 12903
+[10/Apr/2026 12:17:51] "POST /api/lms/resources/7/complete/ HTTP/1.1" 200 69
+[10/Apr/2026 12:17:53] "POST /api/lms/resources/8/viewed/ HTTP/1.1" 200 34
+[10/Apr/2026 12:18:00] "GET /api/lms/courses/3/forum/topics/ HTTP/1.1" 200 80
+[10/Apr/2026 12:18:00] "GET /api/lms/courses/3/forum/topics/ HTTP/1.1" 200 80
+[10/Apr/2026 12:18:02] "GET /api/lms/dashboard/ HTTP/1.1" 200 2264
+[10/Apr/2026 12:18:02] "GET /api/lms/dashboard/ HTTP/1.1" 200 2264
+D:\djangolms\django_lms\lms\models.py changed, reloading.
+INFO 2026-04-10 12:18:18,468 autoreload 20272 5332 D:\djangolms\django_lms\lms\models.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 12:18:21,277 autoreload 17392 7376 Watching for file changes with StatReloader
+[10/Apr/2026 12:20:21] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:20:21] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:20:22] "GET /api/lms/courses/ HTTP/1.1" 200 1036
+[10/Apr/2026 12:20:22] "GET /api/lms/courses/ HTTP/1.1" 200 1036
+[10/Apr/2026 12:20:22] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+D:\djangolms\django_lms\lms\apps.py changed, reloading.
+INFO 2026-04-10 12:20:23,879 autoreload 17392 7376 D:\djangolms\django_lms\lms\apps.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 12:20:26,538 autoreload 6968 8328 Watching for file changes with StatReloader
+[10/Apr/2026 12:20:28] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1950
+D:\djangolms\django_lms\lms\tasks.py changed, reloading.
+INFO 2026-04-10 12:20:30,402 autoreload 6968 8328 D:\djangolms\django_lms\lms\tasks.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 12:20:31,056 autoreload 12552 14512 Watching for file changes with StatReloader
+[10/Apr/2026 12:20:32] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 12:20:33] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1956
+[10/Apr/2026 12:20:34] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+D:\djangolms\django_lms\core\settings.py changed, reloading.
+INFO 2026-04-10 12:20:34,362 autoreload 12552 14512 D:\djangolms\django_lms\core\settings.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 12:20:35,109 autoreload 18112 6784 Watching for file changes with StatReloader
+[10/Apr/2026 12:20:37] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:20:37] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1956
+[10/Apr/2026 12:20:38] "GET /api/messages/threads/2/?limit=80 HTTP/1.1" 200 639
+[10/Apr/2026 12:20:38] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:20:38] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 12:20:38] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:20:38] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 12:20:38] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:20:38] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 12:20:38] "GET /api/auth/session/ HTTP/1.1" 200 1853
+[10/Apr/2026 12:20:38] "GET /api/auth/session/ HTTP/1.1" 200 1853
+[10/Apr/2026 12:20:38] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:20:38] "GET /api/auth/session/ HTTP/1.1" 200 1853
+[10/Apr/2026 12:20:38] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:20:38] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 12:20:38] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1956
+[10/Apr/2026 12:20:43] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:20:43] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 12:20:44] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1956
+[10/Apr/2026 12:20:45] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:20:45] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 571
+[10/Apr/2026 12:20:45] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 571
+[10/Apr/2026 12:20:46] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 12:20:46] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 12:20:48] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 12:20:48] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 12:20:48] "GET /api/lms/courses/ HTTP/1.1" 200 1036
+[10/Apr/2026 12:20:48] "GET /api/lms/courses/ HTTP/1.1" 200 1036
+[10/Apr/2026 12:20:49] "GET /api/lms/dashboard/ HTTP/1.1" 200 2264
+[10/Apr/2026 12:20:49] "GET /api/lms/dashboard/ HTTP/1.1" 200 2264
+[10/Apr/2026 12:20:52] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:20:53] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 12:21:10,990 autoreload 18112 6784 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 12:21:12,010 autoreload 14268 10680 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\api_urls.py changed, reloading.
+INFO 2026-04-10 12:21:15,627 autoreload 14268 10680 D:\djangolms\django_lms\lms\api_urls.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 12:21:16,295 autoreload 15720 2312 Watching for file changes with StatReloader
+[10/Apr/2026 12:21:38] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:21:38] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:21:39] "GET /api/lms/dashboard/ HTTP/1.1" 200 2264
+[10/Apr/2026 12:21:39] "GET /api/lms/dashboard/ HTTP/1.1" 200 2264
+[10/Apr/2026 12:21:40] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:22:49] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:22:49] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:22:50] "GET /api/lms/dashboard/ HTTP/1.1" 200 2264
+[10/Apr/2026 12:22:50] "GET /api/lms/dashboard/ HTTP/1.1" 200 2264
+[10/Apr/2026 12:22:50] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:22:52] "GET /api/messages/contacts/ HTTP/1.1" 200 268
+[10/Apr/2026 12:22:52] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 12:22:53] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 12:22:53] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 12:22:54] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 571
+[10/Apr/2026 12:22:54] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 571
+[10/Apr/2026 12:22:55] "POST /api/lms/notifications/8/read/ HTTP/1.1" 200 36
+[10/Apr/2026 12:22:55] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:22:55] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 12:22:55] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:22:59] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 12:23:00] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 12:23:00] "GET /api/lms/courses/2/ HTTP/1.1" 200 8400
+[10/Apr/2026 12:23:00] "GET /api/lms/courses/2/ HTTP/1.1" 200 8400
+[10/Apr/2026 12:23:00] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 12:23:08] "GET /api/lms/admin/dashboard/ HTTP/1.1" 200 2443
+[10/Apr/2026 12:23:08] "GET /api/lms/admin/dashboard/ HTTP/1.1" 200 2443
+[10/Apr/2026 12:23:15] "GET /api/auth/sidebar-management/ HTTP/1.1" 200 22594
+[10/Apr/2026 12:23:15] "GET /api/auth/sidebar-management/ HTTP/1.1" 200 22594
+[10/Apr/2026 12:23:16] "GET /api/retake/applications/ HTTP/1.1" 200 1859
+[10/Apr/2026 12:23:16] "GET /api/retake/applications/1/ HTTP/1.1" 200 2066
+[10/Apr/2026 12:23:19] "GET /api/retake/sync/ HTTP/1.1" 200 1764
+[10/Apr/2026 12:23:19] "GET /api/retake/sync/ HTTP/1.1" 200 1764
+[10/Apr/2026 12:23:25] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 12:23:25] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 12:23:27] "GET /api/messages/threads/ HTTP/1.1" 200 917
+[10/Apr/2026 12:23:27] "GET /api/messages/contacts/ HTTP/1.1" 200 8797
+[10/Apr/2026 12:23:34] "GET /api/lms/courses/ HTTP/1.1" 200 1315
+[10/Apr/2026 12:23:34] "GET /api/lms/courses/ HTTP/1.1" 200 1315
+[10/Apr/2026 12:23:35] "GET /api/lms/courses/3/ HTTP/1.1" 200 3098
+[10/Apr/2026 12:23:35] "GET /api/lms/courses/3/ HTTP/1.1" 200 3098
+[10/Apr/2026 12:23:37] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5383
+[10/Apr/2026 12:23:37] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5383
+[10/Apr/2026 12:23:47] "POST /api/lms/teacher/courses/3/update/ HTTP/1.1" 200 17
+[10/Apr/2026 12:23:47] "GET /api/lms/teacher/courses/3/manage/ HTTP/1.1" 200 5391
+[10/Apr/2026 12:23:51] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 12:23:51] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 12:23:52] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 12:23:52] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 12:23:52] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 12:23:58] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:23:58] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 12:23:58] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 12:23:58] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 12:23:58] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:24:01] "GET /api/messages/contacts/ HTTP/1.1" 200 268
+[10/Apr/2026 12:24:01] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 12:24:01] "GET /api/retake/applications/ HTTP/1.1" 200 994
+[10/Apr/2026 12:24:02] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 12:24:02] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 12:24:05] "POST /api/auth/logout/ HTTP/1.1" 200 17
+[10/Apr/2026 12:24:11] "POST /api/auth/login/ HTTP/1.1" 200 1882
+[10/Apr/2026 12:24:11] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 12:24:11] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 12:24:11] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:24:15] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 12:24:15] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 12:27:02] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 12:27:02] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 12:27:02] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 12:27:02] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 12:27:03] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 12:27:03] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:27:08] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 12:27:08] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 12:27:08] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 12:27:08] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 12:27:08] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 12:27:08] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 12:27:08] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 12:27:08] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 12:27:10] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 12:27:10] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:30:23] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:30:23] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:30:24] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:30:24] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 13:30:24] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:30:24] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 13:30:25] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:33:57] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 13:33:57] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 13:33:57] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:33:57] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:33:57] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 13:33:57] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 13:33:57] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:34:01] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:34:01] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:34:01] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:34:01] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 13:34:01] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:34:01] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 570
+[10/Apr/2026 13:34:02] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:34:04] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 13:34:04] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 13:34:04] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 13:34:04] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 13:34:05] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:34:05] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:34:05] "GET /api/lms/dashboard/ HTTP/1.1" 200 2272
+[10/Apr/2026 13:34:05] "GET /api/lms/dashboard/ HTTP/1.1" 200 2272
+[10/Apr/2026 13:34:06] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:34:06] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:34:35] "GET /api/auth/sidebar-management/ HTTP/1.1" 200 22594
+[10/Apr/2026 13:34:35] "GET /api/auth/sidebar-management/ HTTP/1.1" 200 22594
+[10/Apr/2026 13:34:38] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:34:50] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:34:50] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:34:51] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:34:51] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:34:51] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:34:52] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:34:53] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:34:54] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:34:57] "GET /api/lms/admin/dashboard/ HTTP/1.1" 200 2443
+[10/Apr/2026 13:34:57] "GET /api/lms/admin/dashboard/ HTTP/1.1" 200 2443
+[10/Apr/2026 13:35:03] "GET /api/lms/dashboard/ HTTP/1.1" 200 2255
+[10/Apr/2026 13:35:03] "GET /api/lms/dashboard/ HTTP/1.1" 200 2255
+[10/Apr/2026 13:35:04] "GET /api/messages/threads/ HTTP/1.1" 200 917
+[10/Apr/2026 13:35:04] "GET /api/messages/contacts/ HTTP/1.1" 200 8797
+[10/Apr/2026 13:35:04] "GET /api/lms/courses/ HTTP/1.1" 200 1323
+[10/Apr/2026 13:35:04] "GET /api/lms/courses/ HTTP/1.1" 200 1323
+[10/Apr/2026 13:35:10] "POST /api/auth/switch-role/RET_DB_MANAGER/ HTTP/1.1" 200 3492
+[10/Apr/2026 13:35:10] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 3564
+[10/Apr/2026 13:35:15] "GET /api/auth/session/ HTTP/1.1" 200 3462
+[10/Apr/2026 13:35:15] "GET /api/auth/session/ HTTP/1.1" 200 3462
+[10/Apr/2026 13:35:16] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:35:16] "GET /api/lms/courses/ HTTP/1.1" 200 1341
+[10/Apr/2026 13:35:16] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:35:16] "GET /api/lms/courses/ HTTP/1.1" 200 1341
+[10/Apr/2026 13:35:16] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 3564
+[10/Apr/2026 13:35:17] "GET /api/auth/session/ HTTP/1.1" 200 3462
+[10/Apr/2026 13:35:17] "GET /api/auth/session/ HTTP/1.1" 200 3462
+[10/Apr/2026 13:35:18] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:35:18] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:35:18] "GET /api/lms/courses/ HTTP/1.1" 200 1341
+[10/Apr/2026 13:35:18] "GET /api/lms/courses/ HTTP/1.1" 200 1341
+[10/Apr/2026 13:35:18] "GET /api/retake/applications/ HTTP/1.1" 200 1862
+[10/Apr/2026 13:35:18] "GET /api/retake/applications/1/ HTTP/1.1" 200 2066
+[10/Apr/2026 13:35:18] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 3564
+[10/Apr/2026 13:35:18] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:35:18] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:35:19] "GET /api/messages/threads/ HTTP/1.1" 200 917
+[10/Apr/2026 13:35:19] "GET /api/messages/contacts/ HTTP/1.1" 200 8797
+[10/Apr/2026 13:35:19] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:35:19] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:35:19] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:35:19] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:35:19] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:35:19] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:35:20] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:35:21] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:35:21] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:35:21] "GET /api/retake/schedules/ HTTP/1.1" 200 54921
+[10/Apr/2026 13:35:21] "GET /api/retake/schedules/ HTTP/1.1" 200 54921
+[10/Apr/2026 13:35:24] "GET /api/retake/exam-calendar/ HTTP/1.1" 200 54472
+[10/Apr/2026 13:35:24] "GET /api/retake/exam-calendar/ HTTP/1.1" 200 54472
+C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\fields\__init__.py:1595: RuntimeWarning: DateTimeField AssessmentSchedule.scheduled_at received a naive datetime (2026-04-10 08:00:00) while time zone support is active.
+  warnings.warn(
+[10/Apr/2026 13:35:40] "POST /api/retake/exam-calendar/save/ HTTP/1.1" 200 17
+[10/Apr/2026 13:35:40] "GET /api/retake/exam-calendar/?year=2026&month=4 HTTP/1.1" 200 54792
+[10/Apr/2026 13:35:41] "POST /api/retake/exam-calendar/save/ HTTP/1.1" 200 17
+[10/Apr/2026 13:35:41] "GET /api/retake/exam-calendar/?year=2026&month=4 HTTP/1.1" 200 54472
+[10/Apr/2026 13:35:47] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 3564
+[10/Apr/2026 13:35:48] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 3564
+[10/Apr/2026 13:35:55] "GET /api/retake/exam-calendar/?year=2026&month=4&group_id=3 HTTP/1.1" 200 54469
+[10/Apr/2026 13:35:56] "GET /api/retake/exam-calendar/?year=2026&month=4&group_id=4 HTTP/1.1" 200 54469
+[10/Apr/2026 13:36:00] "GET /api/retake/exam-calendar/?year=2026&month=5&group_id=4 HTTP/1.1" 200 54468
+[10/Apr/2026 13:36:00] "GET /api/retake/exam-calendar/?year=2026&month=6&group_id=4 HTTP/1.1" 200 54468
+[10/Apr/2026 13:36:01] "GET /api/retake/exam-calendar/?year=2026&month=5&group_id=4 HTTP/1.1" 200 54468
+[10/Apr/2026 13:36:01] "GET /api/retake/exam-calendar/?year=2026&month=4&group_id=4 HTTP/1.1" 200 54469
+[10/Apr/2026 13:36:02] "GET /api/retake/exam-calendar/?year=2026&month=3&group_id=4 HTTP/1.1" 200 54492
+[10/Apr/2026 13:36:02] "GET /api/retake/exam-calendar/?year=2026&month=2&group_id=4 HTTP/1.1" 200 54468
+[10/Apr/2026 13:36:03] "GET /api/retake/schedules/ HTTP/1.1" 200 54921
+[10/Apr/2026 13:36:03] "GET /api/retake/schedules/ HTTP/1.1" 200 54921
+Bad Request: /api/retake/groups/3/assessments/create/
+WARNING 2026-04-10 13:36:07,311 log 15720 18952 Bad Request: /api/retake/groups/3/assessments/create/
+[10/Apr/2026 13:36:07] "POST /api/retake/groups/3/assessments/create/ HTTP/1.1" 400 127
+Bad Request: /api/retake/groups/3/assessments/create/
+WARNING 2026-04-10 13:36:07,778 log 15720 1168 Bad Request: /api/retake/groups/3/assessments/create/
+[10/Apr/2026 13:36:07] "POST /api/retake/groups/3/assessments/create/ HTTP/1.1" 400 127
+[10/Apr/2026 13:36:09] "GET /api/retake/exam-calendar/ HTTP/1.1" 200 54472
+[10/Apr/2026 13:36:09] "GET /api/retake/exam-calendar/ HTTP/1.1" 200 54472
+[10/Apr/2026 13:36:10] "GET /api/retake/applications/ HTTP/1.1" 200 1862
+[10/Apr/2026 13:36:10] "GET /api/retake/applications/1/ HTTP/1.1" 200 2066
+Forbidden: /api/retake/cycles/
+WARNING 2026-04-10 13:36:10,549 log 15720 15472 Forbidden: /api/retake/cycles/
+[10/Apr/2026 13:36:10] "GET /api/retake/cycles/ HTTP/1.1" 403 48
+Forbidden: /api/retake/cycles/
+WARNING 2026-04-10 13:36:10,557 log 15720 5468 Forbidden: /api/retake/cycles/
+[10/Apr/2026 13:36:10] "GET /api/retake/cycles/ HTTP/1.1" 403 48
+[10/Apr/2026 13:36:21] "GET /api/auth/profile/ HTTP/1.1" 200 1654
+[10/Apr/2026 13:36:21] "GET /api/auth/profile/ HTTP/1.1" 200 1654
+[10/Apr/2026 13:36:21] "GET /api/messages/threads/ HTTP/1.1" 200 917
+[10/Apr/2026 13:36:22] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:36:22] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:36:23] "GET /api/lms/dashboard/ HTTP/1.1" 200 2275
+[10/Apr/2026 13:36:23] "GET /api/lms/dashboard/ HTTP/1.1" 200 2275
+[10/Apr/2026 13:36:25] "POST /api/auth/switch-role/SUPER_ADMIN/ HTTP/1.1" 200 5879
+[10/Apr/2026 13:36:26] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:36:28] "GET /api/retake/cycles/ HTTP/1.1" 200 487
+[10/Apr/2026 13:36:28] "GET /api/retake/cycles/ HTTP/1.1" 200 487
+[10/Apr/2026 13:36:29] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:36:29] "GET /api/retake/cycles/ HTTP/1.1" 200 487
+[10/Apr/2026 13:36:29] "GET /api/retake/cycles/ HTTP/1.1" 200 487
+[10/Apr/2026 13:36:29] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:36:29] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:36:29] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:36:29] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:36:29] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:36:29] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:36:30] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:36:32] "GET /api/lms/admin/dashboard/ HTTP/1.1" 200 2443
+[10/Apr/2026 13:36:32] "GET /api/lms/admin/dashboard/ HTTP/1.1" 200 2443
+[10/Apr/2026 13:36:34] "GET /api/auth/sidebar-management/ HTTP/1.1" 200 22594
+[10/Apr/2026 13:36:34] "GET /api/auth/sidebar-management/ HTTP/1.1" 200 22594
+[10/Apr/2026 13:36:37] "GET /api/retake/applications/ HTTP/1.1" 200 1859
+[10/Apr/2026 13:36:37] "GET /api/retake/applications/1/ HTTP/1.1" 200 2066
+[10/Apr/2026 13:36:38] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 13:36:38] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 13:36:46] "GET /api/retake/applications/ HTTP/1.1" 200 1859
+[10/Apr/2026 13:36:47] "GET /api/retake/schedules/ HTTP/1.1" 200 54918
+[10/Apr/2026 13:36:47] "GET /api/retake/schedules/ HTTP/1.1" 200 54918
+[10/Apr/2026 13:36:48] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 13:36:48] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 13:36:55] "GET /api/retake/cycles/ HTTP/1.1" 200 487
+[10/Apr/2026 13:36:55] "GET /api/retake/cycles/ HTTP/1.1" 200 487
+[10/Apr/2026 13:36:55] "GET /api/retake/exam-calendar/ HTTP/1.1" 200 54469
+[10/Apr/2026 13:36:55] "GET /api/retake/exam-calendar/ HTTP/1.1" 200 54469
+[10/Apr/2026 13:36:56] "GET /api/retake/schedules/ HTTP/1.1" 200 54918
+[10/Apr/2026 13:36:56] "GET /api/retake/schedules/ HTTP/1.1" 200 54918
+[10/Apr/2026 13:36:57] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 13:36:57] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 13:36:58] "GET /api/retake/applications/1/ HTTP/1.1" 200 2066
+[10/Apr/2026 13:37:08] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:37:08] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:37:11] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:40:47] "POST /api/auth/logout/ HTTP/1.1" 200 17
+[10/Apr/2026 13:40:55] "POST /api/auth/login/ HTTP/1.1" 200 1882
+[10/Apr/2026 13:40:55] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:40:55] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:40:55] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:40:55] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:40:55] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:40:59] "GET /api/messages/contacts/ HTTP/1.1" 200 268
+[10/Apr/2026 13:40:59] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 13:41:00] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1956
+[10/Apr/2026 13:41:01] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:41:01] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:41:02] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:41:02] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1956
+[10/Apr/2026 13:41:04] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:41:05] "GET /api/messages/threads/1/?limit=80 HTTP/1.1" 200 2449
+[10/Apr/2026 13:41:05] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 13:41:05] "POST /api/messages/threads/1/read/ HTTP/1.1" 200 17
+[10/Apr/2026 13:41:05] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 13:41:05] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:41:05] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 13:41:05] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 13:41:05] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:41:06] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 13:41:06] "GET /api/messages/threads/2/?limit=80 HTTP/1.1" 200 639
+[10/Apr/2026 13:41:06] "POST /api/messages/threads/2/read/ HTTP/1.1" 200 17
+[10/Apr/2026 13:41:06] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 13:41:06] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:41:06] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 13:41:06] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 13:41:06] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:41:07] "GET /ws/messages/thread/2/ HTTP/1.1" 200 722
+[10/Apr/2026 13:41:07] "GET /api/messages/threads/1/?limit=80 HTTP/1.1" 200 2449
+[10/Apr/2026 13:41:07] "POST /api/messages/threads/1/read/ HTTP/1.1" 200 17
+[10/Apr/2026 13:41:07] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:41:07] "GET /ws/messages/thread/1/ HTTP/1.1" 200 722
+[10/Apr/2026 13:41:07] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:41:10] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 13:41:10] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:41:12] "GET /api/lms/dashboard/ HTTP/1.1" 200 2272
+[10/Apr/2026 13:41:12] "GET /api/lms/dashboard/ HTTP/1.1" 200 2272
+[10/Apr/2026 13:41:14] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:41:36] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 13:41:36] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 13:41:36] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:41:36] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:41:36] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:41:36] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:41:36] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+Not Found: /admin/extension-requests
+WARNING 2026-04-10 13:41:46,454 log 15720 20176 Not Found: /admin/extension-requests
+[10/Apr/2026 13:41:46] "GET /admin/extension-requests HTTP/1.1" 404 8985
+[10/Apr/2026 13:41:48] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:41:48] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:41:48] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:41:48] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 815
+[10/Apr/2026 13:41:48] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:41:50] "GET /api/messages/threads/ HTTP/1.1" 200 917
+[10/Apr/2026 13:41:50] "GET /api/messages/contacts/ HTTP/1.1" 200 8797
+[10/Apr/2026 13:41:50] "GET /api/retake/applications/ HTTP/1.1" 200 1859
+[10/Apr/2026 13:41:50] "GET /api/retake/applications/1/ HTTP/1.1" 200 2066
+Not Found: /admin/extension-requests
+WARNING 2026-04-10 13:42:08,843 log 15720 19740 Not Found: /admin/extension-requests
+[10/Apr/2026 13:42:08] "GET /admin/extension-requests HTTP/1.1" 404 8985
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 13:42:46,224 autoreload 15720 2312 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 13:42:47,306 autoreload 20148 6684 Watching for file changes with StatReloader
+D:\djangolms\django_lms\core\urls.py changed, reloading.
+INFO 2026-04-10 13:42:50,996 autoreload 20148 6684 D:\djangolms\django_lms\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 13:42:51,769 autoreload 17872 10236 Watching for file changes with StatReloader
+[10/Apr/2026 13:43:09] "GET /admin/extension-requests HTTP/1.1" 302 0
+[10/Apr/2026 13:43:09] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 13:43:09] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 13:43:10] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:43:10] "GET /api/lms/admin/extension-requests/?status=pending HTTP/1.1" 200 16
+[10/Apr/2026 13:43:10] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:43:10] "GET /api/lms/admin/extension-requests/?status=pending HTTP/1.1" 200 16
+[10/Apr/2026 13:43:10] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 13:43:11] "GET /api/lms/admin/extension-requests/?status=approved HTTP/1.1" 200 16
+[10/Apr/2026 13:43:11] "GET /api/lms/admin/extension-requests/?status=rejected HTTP/1.1" 200 16
+[10/Apr/2026 13:43:12] "GET /api/lms/admin/extension-requests/?status=pending HTTP/1.1" 200 16
+[10/Apr/2026 13:43:13] "GET /api/lms/admin/extension-requests/?status=pending HTTP/1.1" 200 16
+[10/Apr/2026 13:43:14] "GET /api/lms/admin/extension-requests/?status=pending HTTP/1.1" 200 16
+[10/Apr/2026 13:43:14] "GET /api/lms/admin/extension-requests/?status=pending HTTP/1.1" 200 16
+[10/Apr/2026 13:43:14] "GET /api/lms/admin/extension-requests/?status=pending HTTP/1.1" 200 16
+[10/Apr/2026 13:43:17] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:43:17] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:43:17] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:43:17] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:43:17] "GET /api/lms/dashboard/ HTTP/1.1" 200 2272
+[10/Apr/2026 13:43:18] "GET /api/lms/dashboard/ HTTP/1.1" 200 2272
+[10/Apr/2026 13:43:18] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 13:46:27,254 autoreload 17872 10236 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 13:46:28,546 autoreload 9324 17812 Watching for file changes with StatReloader
+[10/Apr/2026 13:55:01] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:55:01] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 13:55:01] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:55:01] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:55:01] "GET /api/lms/dashboard/ HTTP/1.1" 200 2272
+[10/Apr/2026 13:55:01] "GET /api/lms/dashboard/ HTTP/1.1" 200 2272
+[10/Apr/2026 13:55:01] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:55:03] "POST /api/auth/logout/ HTTP/1.1" 200 17
+[10/Apr/2026 13:57:46] "POST /api/auth/login/ HTTP/1.1" 200 1882
+[10/Apr/2026 13:57:46] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:57:46] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 13:57:46] "GET /api/lms/dashboard/ HTTP/1.1" 200 2272
+[10/Apr/2026 13:57:46] "GET /api/lms/dashboard/ HTTP/1.1" 200 2272
+[10/Apr/2026 13:57:46] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 13:57:49] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 13:57:49] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 13:57:49] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:57:49] "GET /api/lms/courses/ HTTP/1.1" 200 1044
+[10/Apr/2026 13:57:52] "GET /api/lms/courses/3/ HTTP/1.1" 200 3251
+[10/Apr/2026 13:57:52] "GET /api/lms/courses/3/ HTTP/1.1" 200 3251
+[10/Apr/2026 13:58:12] "GET /api/retake/applications/ HTTP/1.1" 200 994
+[10/Apr/2026 13:58:13] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 13:58:13] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 14:00:58] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 14:00:58] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 14:00:58] "GET /api/lms/courses/ HTTP/1.1" 200 1323
+[10/Apr/2026 14:00:58] "GET /api/lms/courses/ HTTP/1.1" 200 1323
+[10/Apr/2026 14:01:04] "GET /api/lms/courses/2/ HTTP/1.1" 200 8400
+[10/Apr/2026 14:01:04] "GET /api/lms/courses/2/ HTTP/1.1" 200 8400
+[10/Apr/2026 14:01:07] "GET /api/lms/courses/2/forum/topics/ HTTP/1.1" 200 80
+[10/Apr/2026 14:01:07] "GET /api/lms/courses/2/forum/topics/ HTTP/1.1" 200 80
+[10/Apr/2026 14:01:08] "GET /api/lms/courses/2/ HTTP/1.1" 200 8400
+[10/Apr/2026 14:01:08] "GET /api/lms/courses/2/ HTTP/1.1" 200 8400
+[10/Apr/2026 14:01:27] "GET /api/lms/dashboard/ HTTP/1.1" 200 2255
+[10/Apr/2026 14:01:27] "GET /api/lms/dashboard/ HTTP/1.1" 200 2255
+[10/Apr/2026 14:01:31] "GET /api/lms/admin/dashboard/ HTTP/1.1" 200 2443
+[10/Apr/2026 14:01:31] "GET /api/lms/admin/dashboard/ HTTP/1.1" 200 2443
+[10/Apr/2026 14:01:33] "GET /api/messages/threads/ HTTP/1.1" 200 917
+[10/Apr/2026 14:01:33] "GET /api/messages/contacts/ HTTP/1.1" 200 8797
+[10/Apr/2026 14:01:34] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 14:01:34] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 14:01:35] "GET /api/lms/courses/ HTTP/1.1" 200 1323
+[10/Apr/2026 14:01:35] "GET /api/lms/courses/ HTTP/1.1" 200 1323
+[10/Apr/2026 14:01:36] "GET /api/lms/courses/1/ HTTP/1.1" 200 3623
+[10/Apr/2026 14:01:36] "GET /api/lms/courses/1/ HTTP/1.1" 200 3623
+[10/Apr/2026 14:01:42] "GET /api/lms/courses/ HTTP/1.1" 200 1323
+[10/Apr/2026 14:01:42] "GET /api/lms/courses/ HTTP/1.1" 200 1323
+[10/Apr/2026 14:01:42] "GET /api/lms/courses/2/ HTTP/1.1" 200 8400
+[10/Apr/2026 14:01:42] "GET /api/lms/courses/2/ HTTP/1.1" 200 8400
+[10/Apr/2026 14:01:45] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8311
+[10/Apr/2026 14:01:45] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8311
+[10/Apr/2026 14:01:56] "POST /api/lms/teacher/courses/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 14:01:56] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8319
+[10/Apr/2026 14:01:58] "POST /api/lms/teacher/courses/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 14:01:58] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8319
+[10/Apr/2026 14:01:59] "POST /api/lms/teacher/courses/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 14:01:59] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8319
+[10/Apr/2026 14:02:00] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 14:02:00] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 14:02:10] "GET /api/lms/courses/2/ HTTP/1.1" 200 8408
+[10/Apr/2026 14:02:10] "GET /api/lms/courses/2/ HTTP/1.1" 200 8408
+[10/Apr/2026 14:02:14] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 14:02:14] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 14:02:17] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8319
+[10/Apr/2026 14:02:17] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8319
+[10/Apr/2026 14:02:23] "POST /api/lms/teacher/courses/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 14:02:23] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8319
+[10/Apr/2026 14:02:23] "POST /api/lms/teacher/courses/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 14:02:23] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8319
+[10/Apr/2026 14:02:38] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:02:38] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:02:38] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 14:02:38] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 14:02:38] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 14:02:38] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 14:02:38] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:02:39] "GET /api/messages/contacts/ HTTP/1.1" 200 268
+[10/Apr/2026 14:02:39] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 14:02:40] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:04:08] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:04:08] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:04:15] "POST /api/auth/logout/ HTTP/1.1" 200 17
+[10/Apr/2026 14:04:23] "POST /api/auth/login/ HTTP/1.1" 200 1882
+[10/Apr/2026 14:04:23] "GET /api/lms/login-alerts/ HTTP/1.1" 200 432
+[10/Apr/2026 14:04:23] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:04:23] "GET /api/lms/login-alerts/ HTTP/1.1" 200 432
+[10/Apr/2026 14:04:23] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:04:23] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:04:35] "GET /api/lms/courses/3/ HTTP/1.1" 200 3251
+[10/Apr/2026 14:04:35] "GET /api/lms/courses/3/ HTTP/1.1" 200 3251
+[10/Apr/2026 14:04:38] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 14:04:39] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:04:39] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:04:42] "GET /api/lms/assignments/3/ HTTP/1.1" 200 1006
+[10/Apr/2026 14:04:42] "GET /api/lms/assignments/3/ HTTP/1.1" 200 1006
+[10/Apr/2026 14:04:48] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:04:48] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:04:49] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:04:49] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:04:49] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:04:49] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:04:52] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:04:52] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:04:54] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:04:54] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:04:55] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:04:55] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:05:24] "POST /api/lms/teacher/tests/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 14:05:24] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 14:05:27] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:27] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:29] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:05:29] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:05:29] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:29] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:30] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:05:30] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:05:30] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:05:30] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:30] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:31] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:05:31] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:32] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:32] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:35] "POST /api/auth/logout/ HTTP/1.1" 200 17
+Bad Request: /api/auth/login/
+WARNING 2026-04-10 14:05:46,057 log 9324 19016 Bad Request: /api/auth/login/
+[10/Apr/2026 14:05:46] "POST /api/auth/login/ HTTP/1.1" 400 72
+[10/Apr/2026 14:05:49] "POST /api/auth/login/ HTTP/1.1" 200 1882
+[10/Apr/2026 14:05:49] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:49] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 811
+[10/Apr/2026 14:05:49] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:05:54] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:05:54] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:05:55] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:05:55] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:05:55] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:05:55] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+D:\djangolms\django_lms\lms\services\notification_service.py changed, reloading.
+INFO 2026-04-10 14:07:00,766 autoreload 9324 17812 D:\djangolms\django_lms\lms\services\notification_service.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 14:07:01,704 autoreload 14612 14668 Watching for file changes with StatReloader
+D:\djangolms\django_lms\lms\tasks.py changed, reloading.
+INFO 2026-04-10 14:07:11,509 autoreload 14612 14668 D:\djangolms\django_lms\lms\tasks.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 14:07:13,093 autoreload 5280 20664 Watching for file changes with StatReloader
+[10/Apr/2026 14:14:57] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:14:57] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:14:57] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:14:57] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:14:57] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:14:58] "POST /api/auth/logout/ HTTP/1.1" 200 17
+Bad Request: /api/auth/login/
+WARNING 2026-04-10 14:15:09,368 log 5280 11088 Bad Request: /api/auth/login/
+[10/Apr/2026 14:15:09] "POST /api/auth/login/ HTTP/1.1" 400 72
+[10/Apr/2026 14:15:16] "POST /api/auth/login/ HTTP/1.1" 200 1882
+[10/Apr/2026 14:15:16] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:15:16] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:15:16] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:15:19] "GET /api/messages/contacts/ HTTP/1.1" 200 268
+[10/Apr/2026 14:15:19] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 14:15:19] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:15:19] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:15:41] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:15:41] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:15:41] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:15:41] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:15:54] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:15:54] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:16:02] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:16:02] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:16:03] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:16:03] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:16:04] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:16:04] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:18:43] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:18:43] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:18:43] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:18:43] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:18:44] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:23:07] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:23:07] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:23:09] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:23:54] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 14:23:54] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 14:23:54] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 14:23:54] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 14:23:54] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 14:24:02] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 14:24:02] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 14:24:03] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:24:03] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:24:07] "GET /api/lms/teacher/resources/5/stats/ HTTP/1.1" 200 142
+[10/Apr/2026 14:24:08] "GET /api/lms/teacher/resources/4/stats/ HTTP/1.1" 200 142
+[10/Apr/2026 14:24:09] "GET /api/lms/teacher/resources/3/stats/ HTTP/1.1" 200 142
+[10/Apr/2026 14:24:23] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 14:24:27] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 14:24:30] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:24:30] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:24:31] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:24:31] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:24:36] "GET /api/lms/assignments/3/ HTTP/1.1" 200 801
+[10/Apr/2026 14:24:36] "GET /api/lms/assignments/3/ HTTP/1.1" 200 801
+[10/Apr/2026 14:24:36] "GET /api/lms/assignments/3/ HTTP/1.1" 200 801
+[10/Apr/2026 14:24:36] "GET /api/lms/assignments/3/ HTTP/1.1" 200 801
+[10/Apr/2026 14:24:39] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:24:39] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:24:39] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:24:39] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:24:43] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 14:24:43] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 14:24:43] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 14:24:43] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 14:25:15] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:25:15] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:25:15] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:25:15] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:25:16] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:25:16] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:16] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:17] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:17] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:17] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:17] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:17] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:17] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:18] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:25:18] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:25:18] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:25:18] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:25:18] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:18] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:19] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:19] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:19] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:19] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:20] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:20] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:21] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:25:21] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:25:21] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:25:21] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:25:22] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:25:22] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:25:22] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:25:22] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:25:23] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:25:23] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:25:23] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:25:23] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:25:25] "GET /api/lms/courses/3/ HTTP/1.1" 200 3251
+[10/Apr/2026 14:25:25] "GET /api/lms/courses/3/ HTTP/1.1" 200 3251
+[10/Apr/2026 14:25:25] "GET /api/lms/courses/3/ HTTP/1.1" 200 3251
+[10/Apr/2026 14:25:25] "GET /api/lms/courses/3/ HTTP/1.1" 200 3251
+[10/Apr/2026 14:25:32] "POST /api/lms/resources/6/viewed/ HTTP/1.1" 200 34
+[10/Apr/2026 14:25:34] "POST /api/lms/resources/7/viewed/ HTTP/1.1" 200 34
+[10/Apr/2026 14:25:34] "GET /api/lms/courses/3/certificate/check/ HTTP/1.1" 200 139
+[10/Apr/2026 14:25:34] "GET /api/lms/courses/3/certificate/check/ HTTP/1.1" 200 139
+[10/Apr/2026 14:25:35] "GET /api/lms/courses/3/certificate/download/ HTTP/1.1" 200 12903
+[10/Apr/2026 14:25:43] "POST /api/lms/resources/7/complete/ HTTP/1.1" 200 69
+[10/Apr/2026 14:25:56] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:56] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:56] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:56] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:25:57] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:57] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:58] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:25:58] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:05] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:26:05] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:26:05] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:26:05] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:26:06] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:06] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:06] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:06] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:06] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:26:07] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:26:07] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:26:07] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:26:07] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:07] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:07] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:07] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:11] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:26:11] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:26:11] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:26:11] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:26:12] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:13] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:13] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:13] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:26:20] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:26:20] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:26:20] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:26:20] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:27:27] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:27:27] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:27:27] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:27:27] "GET /api/lms/tests/ HTTP/1.1" 200 970
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:27:29,954 log 5280 6168 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:27:29] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:27:29,978 log 5280 21348 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:27:29] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:27:30,153 log 5280 14128 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:27:30] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:27:30,160 log 5280 9068 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:27:30] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+[10/Apr/2026 14:27:31] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:27:31] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:27:31] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:27:31] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:27:40] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:27:40] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:27:40] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:27:40] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:27:47] "GET /api/lms/teacher/courses/2/gradebook/ HTTP/1.1" 200 442
+[10/Apr/2026 14:27:47] "GET /api/lms/teacher/courses/2/gradebook/ HTTP/1.1" 200 442
+[10/Apr/2026 14:27:47] "GET /api/lms/teacher/courses/2/gradebook/ HTTP/1.1" 200 442
+[10/Apr/2026 14:27:47] "GET /api/lms/teacher/courses/2/gradebook/ HTTP/1.1" 200 442
+[10/Apr/2026 14:27:49] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:27:49] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:27:49] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:27:49] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 14:27:50] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 14:27:50] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 14:27:51] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 14:27:51] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 14:28:07] "POST /api/lms/teacher/tests/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 14:28:07] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 14:28:11] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 14:28:11] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 14:28:11] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 14:28:11] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 14:28:14] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 555
+[10/Apr/2026 14:28:14] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 555
+[10/Apr/2026 14:28:16] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 555
+[10/Apr/2026 14:28:16] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 555
+[10/Apr/2026 14:28:22] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 14:28:22] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 14:28:23] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 14:28:23] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 14:28:41] "POST /api/lms/teacher/tests/2/questions/ HTTP/1.1" 200 444
+[10/Apr/2026 14:28:41] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 619
+[10/Apr/2026 14:28:50] "POST /api/lms/teacher/tests/2/questions/ HTTP/1.1" 200 444
+[10/Apr/2026 14:28:50] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 1033
+[10/Apr/2026 14:28:53] "POST /api/lms/teacher/questions/765/delete/ HTTP/1.1" 200 17
+[10/Apr/2026 14:29:13] "POST /api/lms/teacher/tests/2/questions/ HTTP/1.1" 200 449
+[10/Apr/2026 14:29:13] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 1038
+[10/Apr/2026 14:29:15] "POST /api/lms/teacher/questions/766/delete/ HTTP/1.1" 200 17
+[10/Apr/2026 14:29:33] "POST /api/lms/teacher/questions/764/delete/ HTTP/1.1" 200 17
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:29:56,896 log 5280 18428 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:29:56] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:29:56,914 log 5280 20436 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:29:56] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:29:57,032 log 5280 3096 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:29:57] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:29:57,039 log 5280 13964 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:29:57] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+[10/Apr/2026 14:29:57] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:29:57] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:29:58] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:29:58] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:29:58] "GET /api/messages/contacts/ HTTP/1.1" 200 268
+[10/Apr/2026 14:29:58] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 14:30:33] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:30:33] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:30:34] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:30:34] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:30:41] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:30:41] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:30:42] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:30:42] "GET /api/lms/courses/ HTTP/1.1" 200 1052
+[10/Apr/2026 14:30:52] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:30:52] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:30:52] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:30:52] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:30:52] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:30:54] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 14:31:02] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:31:02] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:31:03] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:31:03] "GET /api/lms/courses/2/ HTTP/1.1" 200 8619
+[10/Apr/2026 14:31:03] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:31:11,873 log 5280 2184 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:31:11] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:31:11,882 log 5280 13936 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:31:11] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:31:12,057 log 5280 372 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:31:12] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+Bad Request: /api/lms/tests/2/take/
+WARNING 2026-04-10 14:31:12,067 log 5280 7392 Bad Request: /api/lms/tests/2/take/
+[10/Apr/2026 14:31:12] "GET /api/lms/tests/2/take/ HTTP/1.1" 400 32
+[10/Apr/2026 14:31:12] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:31:12] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:31:13] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:31:13] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:31:20] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:31:20] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:31:20] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:31:20] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:31:20] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:31:21] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:31:21] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 14:31:21] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:31:21] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 14:31:21] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 14:31:22] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:31:22] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:31:22] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:31:22] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:31:23] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:31:23] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:31:23] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:31:23] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:31:23] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:31:23] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:31:23] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:31:23] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 14:31:24] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:31:24] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:31:24] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:31:24] "GET /api/lms/notifications/?page=1&page_size=20 HTTP/1.1" 200 1288
+[10/Apr/2026 14:31:26] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:31:26] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:31:26] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 14:31:26] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 15:29:26] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 15:29:26] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 15:29:26] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 15:29:26] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 15:29:26] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 15:29:26] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 15:29:26] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 16:14:37] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 16:14:37] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 16:14:40] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 16:14:40] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 16:14:40] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 16:14:40] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 16:14:40] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 16:14:43] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 16:14:43] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 16:14:43] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 16:14:43] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 16:14:44] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 16:14:44] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 16:14:44] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 16:14:45] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 16:14:50] "GET /api/lms/teacher/resources/8/stats/ HTTP/1.1" 200 280
+[10/Apr/2026 16:24:03] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 16:24:03] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 16:24:03] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 16:24:03] "GET /api/lms/courses/3/ HTTP/1.1" 200 3106
+[10/Apr/2026 16:24:03] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 16:24:13] "GET /api/lms/dashboard/ HTTP/1.1" 200 2266
+[10/Apr/2026 16:24:13] "GET /api/lms/dashboard/ HTTP/1.1" 200 2266
+[10/Apr/2026 16:24:15] "GET /api/lms/admin/dashboard/ HTTP/1.1" 200 2443
+[10/Apr/2026 16:24:15] "GET /api/lms/admin/dashboard/ HTTP/1.1" 200 2443
+[10/Apr/2026 16:24:16] "GET /api/auth/sidebar-management/ HTTP/1.1" 200 22594
+[10/Apr/2026 16:24:16] "GET /api/auth/sidebar-management/ HTTP/1.1" 200 22594
+Forbidden: /api/lms/student/grades/
+WARNING 2026-04-10 16:24:25,951 log 5280 16196 Forbidden: /api/lms/student/grades/
+[10/Apr/2026 16:24:25] "GET /api/lms/student/grades/ HTTP/1.1" 403 26
+Forbidden: /api/lms/student/grades/
+WARNING 2026-04-10 16:24:25,959 log 5280 20860 Forbidden: /api/lms/student/grades/
+[10/Apr/2026 16:24:25] "GET /api/lms/student/grades/ HTTP/1.1" 403 26
+[10/Apr/2026 16:24:26] "GET /api/retake/applications/ HTTP/1.1" 200 1859
+[10/Apr/2026 16:24:26] "GET /api/retake/applications/1/ HTTP/1.1" 200 2066
+[10/Apr/2026 16:24:29] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 16:24:29] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 16:24:30] "GET /api/retake/schedules/ HTTP/1.1" 200 54918
+[10/Apr/2026 16:24:30] "GET /api/retake/schedules/ HTTP/1.1" 200 54918
+[10/Apr/2026 16:24:31] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+[10/Apr/2026 16:24:31] "GET /api/retake/groups/ HTTP/1.1" 200 54653
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 16:37:12,622 autoreload 5280 20664 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 16:37:14,231 autoreload 13544 20528 Watching for file changes with StatReloader
+[10/Apr/2026 17:03:37] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 17:03:37] "GET /api/auth/session/ HTTP/1.1" 200 5849
+[10/Apr/2026 17:03:37] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 17:03:37] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 17:03:37] "GET /api/lms/dashboard/ HTTP/1.1" 200 2266
+[10/Apr/2026 17:03:37] "GET /api/lms/dashboard/ HTTP/1.1" 200 2266
+[10/Apr/2026 17:03:37] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 17:03:39] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 17:03:39] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 17:03:39] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 17:03:40] "GET /api/lms/courses/ HTTP/1.1" 200 1331
+[10/Apr/2026 17:03:41] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 17:03:41] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 17:03:42] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 17:03:42] "GET /api/lms/courses/2/ HTTP/1.1" 200 8415
+[10/Apr/2026 17:03:43] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 17:03:43] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 17:03:43] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 17:03:43] "GET /api/lms/teacher/courses/2/manage/ HTTP/1.1" 200 8326
+[10/Apr/2026 17:04:04] "GET /api/messages/threads/ HTTP/1.1" 200 917
+[10/Apr/2026 17:04:04] "GET /api/messages/contacts/ HTTP/1.1" 200 8797
+[10/Apr/2026 17:04:05] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:04:05] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:04:05] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:04:05] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:04:06] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 555
+[10/Apr/2026 17:04:06] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 555
+[10/Apr/2026 17:04:06] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 555
+[10/Apr/2026 17:04:06] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 555
+[10/Apr/2026 17:04:08] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 17:04:08] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 17:04:08] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 17:04:08] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 207
+[10/Apr/2026 17:04:14] "POST /api/lms/teacher/tests/2/questions/ HTTP/1.1" 200 42972
+[10/Apr/2026 17:04:15] "GET /api/lms/teacher/tests/2/questions/list/?page=1&page_size=20 HTTP/1.1" 200 7099
+[10/Apr/2026 17:04:30] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 17:04:30] "GET /api/auth/session/ HTTP/1.1" 200 1852
+[10/Apr/2026 17:04:31] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 17:04:31] "GET /api/lms/dashboard/ HTTP/1.1" 200 2280
+[10/Apr/2026 17:04:31] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 17:04:34] "GET /api/messages/contacts/ HTTP/1.1" 200 268
+[10/Apr/2026 17:04:34] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 17:04:35] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 17:04:35] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 17:04:35] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 17:04:35] "GET /api/lms/tests/ HTTP/1.1" 200 970
+[10/Apr/2026 17:04:36] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13063
+[10/Apr/2026 17:04:36] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13063
+[10/Apr/2026 17:04:36] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13063
+[10/Apr/2026 17:04:36] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13063
+[10/Apr/2026 17:04:39] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 17:04:39] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 1954
+[10/Apr/2026 17:04:51] "POST /api/lms/proctor-log/ HTTP/1.1" 200 56
+D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+INFO 2026-04-10 17:05:26,429 autoreload 13544 20528 D:\djangolms\django_lms\lms\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 17:05:28,148 autoreload 9984 6860 Watching for file changes with StatReloader
+[10/Apr/2026 17:05:29] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 17:05:29] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 17:05:29] "GET /api/lms/dashboard/ HTTP/1.1" 200 2266
+[10/Apr/2026 17:05:29] "GET /api/lms/dashboard/ HTTP/1.1" 200 2266
+[10/Apr/2026 17:05:30] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 5951
+[10/Apr/2026 17:05:31] "GET /api/retake/applications/ HTTP/1.1" 200 1859
+[10/Apr/2026 17:05:31] "GET /api/retake/applications/1/ HTTP/1.1" 200 2066
+[10/Apr/2026 17:05:52] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:05:52] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:05:52] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:05:52] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:05:55] "GET /admin/ HTTP/1.1" 200 19263
+[10/Apr/2026 17:05:55] "GET /static/admin/css/base.css HTTP/1.1" 200 21207
+[10/Apr/2026 17:05:55] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[10/Apr/2026 17:05:55] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2929
+[10/Apr/2026 17:05:55] "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+[10/Apr/2026 17:05:55] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2694
+[10/Apr/2026 17:05:55] "GET /static/admin/css/responsive.css HTTP/1.1" 200 18557
+[10/Apr/2026 17:05:55] "GET /static/admin/js/theme.js HTTP/1.1" 200 1943
+[10/Apr/2026 17:05:55] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[10/Apr/2026 17:05:55] "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[10/Apr/2026 17:05:58] "GET /admin/users/user/ HTTP/1.1" 200 64910
+[10/Apr/2026 17:05:58] "GET /static/admin/css/changelists.css HTTP/1.1" 200 6584
+[10/Apr/2026 17:05:58] "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[10/Apr/2026 17:05:58] "GET /static/admin/js/core.js HTTP/1.1" 200 5682
+[10/Apr/2026 17:05:58] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 8943
+[10/Apr/2026 17:05:58] "GET /static/admin/js/actions.js HTTP/1.1" 200 7872
+[10/Apr/2026 17:05:58] "GET /admin/jsi18n/ HTTP/1.1" 200 6254
+[10/Apr/2026 17:05:58] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 292458
+[10/Apr/2026 17:05:58] "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+[10/Apr/2026 17:05:58] "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[10/Apr/2026 17:05:58] "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[10/Apr/2026 17:05:58] "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+[10/Apr/2026 17:05:58] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+[10/Apr/2026 17:05:58] "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[10/Apr/2026 17:05:58] "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+[10/Apr/2026 17:05:58] "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[10/Apr/2026 17:05:58] "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+[10/Apr/2026 17:06:01] "GET /admin/users/user/3/change/ HTTP/1.1" 200 99962
+[10/Apr/2026 17:06:01] "GET /static/admin/css/forms.css HTTP/1.1" 200 8953
+[10/Apr/2026 17:06:01] "GET /static/admin/js/SelectBox.js HTTP/1.1" 200 4530
+[10/Apr/2026 17:06:01] "GET /static/admin/js/calendar.js HTTP/1.1" 200 8466
+[10/Apr/2026 17:06:01] "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 200 15292
+[10/Apr/2026 17:06:01] "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+[10/Apr/2026 17:06:01] "GET /static/admin/js/inlines.js HTTP/1.1" 200 15526
+[10/Apr/2026 17:06:01] "GET /admin/jsi18n/ HTTP/1.1" 200 6254
+[10/Apr/2026 17:06:01] "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+[10/Apr/2026 17:06:01] "GET /static/admin/css/widgets.css HTTP/1.1" 200 11952
+[10/Apr/2026 17:06:01] "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+[10/Apr/2026 17:06:01] "GET /static/admin/img/inline-delete.svg HTTP/1.1" 200 560
+[10/Apr/2026 17:06:01] "GET /static/admin/img/icon-unknown.svg HTTP/1.1" 200 655
+[10/Apr/2026 17:06:01] "GET /static/admin/img/selector-icons.svg HTTP/1.1" 200 3291
+[10/Apr/2026 17:06:01] "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+[10/Apr/2026 17:06:01] "GET /static/admin/img/icon-clock.svg HTTP/1.1" 200 677
+[10/Apr/2026 17:06:01] "GET /static/admin/img/icon-unknown-alt.svg HTTP/1.1" 200 655
+[10/Apr/2026 17:06:39] "GET /api/retake/applications/ HTTP/1.1" 200 994
+[10/Apr/2026 17:06:40] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 17:06:40] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 17:06:40] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+[10/Apr/2026 17:06:40] "GET /api/auth/profile/ HTTP/1.1" 200 1089
+D:\djangolms\django_lms\users\context_processors.py changed, reloading.
+INFO 2026-04-10 17:07:32,082 autoreload 9984 6860 D:\djangolms\django_lms\users\context_processors.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-10 17:07:33,045 autoreload 8584 12028 Watching for file changes with StatReloader
+[10/Apr/2026 17:08:54] "GET /api/auth/session/ HTTP/1.1" 200 1931
+[10/Apr/2026 17:08:54] "GET /api/auth/session/ HTTP/1.1" 200 1931
+[10/Apr/2026 17:08:54] "GET /api/auth/profile/ HTTP/1.1" 200 1168
+[10/Apr/2026 17:08:54] "GET /api/auth/profile/ HTTP/1.1" 200 1168
+[10/Apr/2026 17:08:55] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 2033
+[10/Apr/2026 17:09:40] "GET /api/auth/session/ HTTP/1.1" 200 1931
+[10/Apr/2026 17:09:40] "GET /api/auth/session/ HTTP/1.1" 200 1931
+[10/Apr/2026 17:09:40] "GET /api/auth/profile/ HTTP/1.1" 200 1168
+[10/Apr/2026 17:09:40] "GET /api/auth/profile/ HTTP/1.1" 200 1168
+[10/Apr/2026 17:09:41] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 2033
+[10/Apr/2026 17:11:43] "GET /api/auth/session/ HTTP/1.1" 200 1931
+[10/Apr/2026 17:11:43] "GET /api/auth/session/ HTTP/1.1" 200 1931
+[10/Apr/2026 17:11:43] "GET /api/auth/profile/ HTTP/1.1" 200 1168
+[10/Apr/2026 17:11:43] "GET /api/auth/profile/ HTTP/1.1" 200 1168
+[10/Apr/2026 17:11:44] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 2033
+[10/Apr/2026 17:12:10] "POST /api/auth/logout/ HTTP/1.1" 200 17
+Bad Request: /api/auth/login/
+WARNING 2026-04-10 17:12:21,382 log 8584 4928 Bad Request: /api/auth/login/
+[10/Apr/2026 17:12:21] "POST /api/auth/login/ HTTP/1.1" 400 72
+[10/Apr/2026 17:12:30] "POST /api/auth/login/ HTTP/1.1" 200 1961
+[10/Apr/2026 17:12:30] "GET /api/auth/profile/ HTTP/1.1" 200 1168
+[10/Apr/2026 17:12:30] "GET /api/auth/profile/ HTTP/1.1" 200 1168
+[10/Apr/2026 17:12:30] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 2033
+[10/Apr/2026 17:12:33] "GET /api/retake/applications/ HTTP/1.1" 200 994
+[10/Apr/2026 17:12:33] "GET /api/messages/contacts/ HTTP/1.1" 200 268
+[10/Apr/2026 17:12:33] "GET /api/messages/threads/ HTTP/1.1" 200 1246
+[10/Apr/2026 17:12:34] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 17:12:34] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 17:12:34] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 17:12:34] "GET /api/lms/student/grades/ HTTP/1.1" 200 329
+[10/Apr/2026 17:12:34] "GET /api/lms/tests/ HTTP/1.1" 200 980
+[10/Apr/2026 17:12:34] "GET /api/lms/tests/ HTTP/1.1" 200 980
+[10/Apr/2026 17:12:34] "GET /api/lms/tests/ HTTP/1.1" 200 980
+[10/Apr/2026 17:12:34] "GET /api/lms/tests/ HTTP/1.1" 200 980
+[10/Apr/2026 17:12:35] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13064
+[10/Apr/2026 17:12:35] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13064
+[10/Apr/2026 17:12:35] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13064
+[10/Apr/2026 17:12:35] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13064
+[10/Apr/2026 17:12:37] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 2033
+[10/Apr/2026 17:12:57] "POST /api/lms/proctor-log/ HTTP/1.1" 200 56
+[10/Apr/2026 17:12:57] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 2033
+Bad Request: /api/lms/tests/2/submit/
+WARNING 2026-04-10 17:12:58,848 log 8584 9340 Bad Request: /api/lms/tests/2/submit/
+[10/Apr/2026 17:12:58] "POST /api/lms/tests/2/submit/ HTTP/1.1" 400 36
+[10/Apr/2026 17:13:02] "GET /api/lms/tests/ HTTP/1.1" 200 980
+[10/Apr/2026 17:13:02] "GET /api/lms/tests/ HTTP/1.1" 200 980
+[10/Apr/2026 17:13:02] "GET /api/lms/tests/ HTTP/1.1" 200 980
+[10/Apr/2026 17:13:02] "GET /api/lms/tests/ HTTP/1.1" 200 980
+[10/Apr/2026 17:13:03] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13064
+[10/Apr/2026 17:13:03] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13064
+[10/Apr/2026 17:13:04] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13064
+[10/Apr/2026 17:13:04] "GET /api/lms/tests/2/take/ HTTP/1.1" 200 13064
+[10/Apr/2026 17:13:20] "POST /api/lms/proctor-log/ HTTP/1.1" 200 55
+Bad Request: /api/lms/tests/2/submit/
+WARNING 2026-04-10 17:13:20,873 log 8584 17852 Bad Request: /api/lms/tests/2/submit/
+[10/Apr/2026 17:13:20] "POST /api/lms/tests/2/submit/ HTTP/1.1" 400 36
+[10/Apr/2026 17:13:30] "GET /admin/users/user/ HTTP/1.1" 200 64910
+[10/Apr/2026 17:13:31] "GET /admin/ HTTP/1.1" 200 19263
+[10/Apr/2026 17:13:32] "GET /api/auth/session/ HTTP/1.1" 200 5905
+[10/Apr/2026 17:13:32] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 17:13:32] "GET /api/lms/login-alerts/ HTTP/1.1" 200 26
+[10/Apr/2026 17:13:32] "POST /api/auth/quick-chat/preferences/ HTTP/1.1" 200 6007
+[10/Apr/2026 17:13:33] "GET /api/retake/applications/ HTTP/1.1" 200 1859
+[10/Apr/2026 17:13:33] "GET /api/retake/applications/1/ HTTP/1.1" 200 2066
+[10/Apr/2026 17:13:37] "GET /api/lms/dashboard/ HTTP/1.1" 200 2492
+[10/Apr/2026 17:13:37] "GET /api/lms/dashboard/ HTTP/1.1" 200 2492
+[10/Apr/2026 17:13:37] "GET /api/lms/dashboard/ HTTP/1.1" 200 2492
+[10/Apr/2026 17:13:38] "GET /api/lms/dashboard/ HTTP/1.1" 200 2492
+[10/Apr/2026 17:13:38] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:13:38] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:13:38] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:13:38] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:13:41] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 43495
+[10/Apr/2026 17:13:41] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 43495
+[10/Apr/2026 17:13:41] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 43495
+[10/Apr/2026 17:13:41] "GET /api/lms/teacher/tests/2/ HTTP/1.1" 200 43495
+[10/Apr/2026 17:13:45] "POST /api/lms/teacher/tests/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 17:13:47] "POST /api/lms/teacher/tests/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 17:13:47] "POST /api/lms/teacher/tests/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 17:13:47] "POST /api/lms/teacher/tests/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 17:13:47] "POST /api/lms/teacher/tests/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 17:13:47] "POST /api/lms/teacher/tests/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 17:13:48] "POST /api/lms/teacher/tests/2/update/ HTTP/1.1" 200 17
+[10/Apr/2026 17:13:50] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:13:50] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:13:50] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:13:50] "GET /api/lms/tests/ HTTP/1.1" 200 1725
+[10/Apr/2026 17:13:51] "GET /api/lms/teacher/tests/1/ HTTP/1.1" 200 599
+[10/Apr/2026 17:13:51] "GET /api/lms/teacher/tests/1/ HTTP/1.1" 200 599
+[10/Apr/2026 17:13:51] "GET /api/lms/teacher/tests/1/ HTTP/1.1" 200 599
+[10/Apr/2026 17:13:51] "GET /api/lms/teacher/tests/1/ HTTP/1.1" 200 599
+[10/Apr/2026 17:13:54] "POST /api/lms/teacher/tests/1/update/ HTTP/1.1" 200 17
+[10/Apr/2026 17:13:55] "GET /api/lms/tests/ HTTP/1.1" 200 1710
+[10/Apr/2026 17:13:55] "GET /api/lms/tests/ HTTP/1.1" 200 1710
+[10/Apr/2026 17:13:56] "GET /api/lms/tests/ HTTP/1.1" 200 1710
+[10/Apr/2026 17:13:56] "GET /api/lms/tests/ HTTP/1.1" 200 1710
+[10/Apr/2026 17:13:57] "GET /api/lms/teacher/tests/1/ HTTP/1.1" 200 583
+[10/Apr/2026 17:13:57] "GET /api/lms/teacher/tests/1/ HTTP/1.1" 200 583
+[10/Apr/2026 17:13:57] "GET /api/lms/teacher/tests/1/ HTTP/1.1" 200 583
+[10/Apr/2026 17:13:57] "GET /api/lms/teacher/tests/1/ HTTP/1.1" 200 583
+[10/Apr/2026 17:14:02] "GET /api/lms/tests/ HTTP/1.1" 200 969
+[10/Apr/2026 17:14:02] "GET /api/lms/tests/ HTTP/1.1" 200 969
+[10/Apr/2026 17:14:02] "GET /api/lms/tests/ HTTP/1.1" 200 969
+[10/Apr/2026 17:14:02] "GET /api/lms/tests/ HTTP/1.1" 200 969
+[10/Apr/2026 17:14:04] "GET /api/lms/tests/2/result/ HTTP/1.1" 200 9478
+[10/Apr/2026 17:14:04] "GET /api/lms/tests/2/result/ HTTP/1.1" 200 9478
+[10/Apr/2026 17:14:04] "GET /api/lms/tests/2/result/ HTTP/1.1" 200 9478
+[10/Apr/2026 17:14:04] "GET /api/lms/tests/2/result/ HTTP/1.1" 200 9478
+[10/Apr/2026 17:14:18] "GET /api/lms/tests/ HTTP/1.1" 200 969
+[10/Apr/2026 17:14:18] "GET /api/lms/tests/ HTTP/1.1" 200 969
+[10/Apr/2026 17:14:19] "GET /api/lms/tests/ HTTP/1.1" 200 969
+[10/Apr/2026 17:14:19] "GET /api/lms/tests/ HTTP/1.1" 200 969

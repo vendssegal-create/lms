@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% load lms_filters %}
+
+{% block title %}Qaydnoma Shablon Studiyasi (Gibrid) — Django LMS{% endblock %}
+
+{% block content %}
+<style>
+    .editor-container { background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; overflow: hidden; height: calc(100vh - 120px); }
+    .editor-header { padding: 15px 25px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; background: #fafbfc; }
+    .editor-title { font-weight: 800; font-size: 16px; color: #1e293b; margin: 0; }
+    
+    .editor-layout { display: flex; flex: 1; overflow: hidden; }
+    
+    /* Code/Visual Pane */
+    .edit-side { width: 45%; display: flex; flex-direction: column; border-right: 1px solid #f1f5f9; min-width: 500px; background: #fff; }
+    .editor-wrapper { flex: 1; position: relative; width: 100%; height: 100%; overflow: hidden; }
+    #ace-html-editor, #ace-css-editor { position: absolute; top: 0; right: 0; bottom: 0; left: 0; font-size: 14px; }
+    
+    /* Preview Pane */
+    .preview-side { flex: 1; background: #f1f5f9; padding: 20px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+    .preview-header { padding: 8px 15px; background: #fff; border: 1px solid #e2e8f0; border-bottom: none; border-radius: 8px 8px 0 0; font-size: 11px; font-weight: 700; color: #64748b; display: flex; justify-content: space-between; }
+    #visual-preview { flex: 1; background: #fff; border: 1px solid #e2e8f0; border-radius: 0 0 8px 8px; width: 100%; overflow: auto; background-image: 
+        linear-gradient(45deg, #f9fafb 25%, transparent 25%), 
+        linear-gradient(-45deg, #f9fafb 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #f9fafb 75%), 
+        linear-gradient(-45deg, transparent 75%, #f9fafb 75%);
+        background-size: 20px 20px;
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0px; 
+    }
+    
+    /* Help Pane */
+    .help-side { width: 180px; background: #fff; padding: 15px; font-size: 11px; color: #64748b; border-left: 1px solid #f1f5f9; overflow-y: auto; }
+    
+    .tabs-main { display: flex; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+    .tab-main { padding: 10px 20px; font-weight: 800; font-size: 11px; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; text-transform: uppercase; letter-spacing: 0.5px; }
+    .tab-main.active { color: #4361ee; border-bottom-color: #4361ee; background: #fff; }
+    
+    .placeholder-badge { display: inline-block; background: #f1f5f9; color: #475569; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-family: monospace; margin-bottom: 5px; cursor: copy; border: 1px solid #e2e8f0; transition: all 0.2s; width: 100%; text-overflow: ellipsis; overflow: hidden; }
+    .placeholder-badge:hover { background: #eef2ff; color: #4361ee; border-color: #4361ee; }
+    .section-title { font-weight: 800; color: #1e293b; margin-top: 15px; margin-bottom: 8px; display: block; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
+</style>
+
+<form method="post" id="templateForm" class="editor-container">
+    {% csrf_token %}
+    <!-- Hidden fields for Django POST -->
+    <textarea name="html_content" id="final_html" style="display:none;"></textarea>
+    <textarea name="css_content" id="final_css" style="display:none;"></textarea>
+
+    <div class="editor-header">
+        <h3 class="editor-title"><i class="fa fa-magic text-primary"></i> Gibrid Shablon Studiyasi (Vizual + Kod)</h3>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'retake:retake_admin_assessment_control' %}" class="btn btn-default" style="font-weight: 700;">Bekor qilish</a>
+            <button type="submit" class="btn btn-primary" onclick="prepareSave()" style="font-weight: 700; background: #4361ee; border: none; padding: 8px 25px;"><i class="fa fa-save"></i> Saqlash</button>
+        </div>
+    </div>
+    
+    <div class="editor-layout">
+        <!-- EDIT SIDE (TINYMCE + ACE) -->
+        <div class="edit-side">
+            <div class="tabs-main">
+                <div class="tab-main active" data-mode="visual" data-target="visual-pane"><i class="fa fa-eye"></i> VIZUAL</div>
+                <div class="tab-main" data-mode="code" data-target="code-pane"><i class="fa fa-code"></i> KOD (HTML)</div>
+                <div class="tab-main" data-mode="style" data-target="style-pane"><i class="fa fa-paint-brush"></i> STILLAR (CSS)</div>
+            </div>
+            
+            <div class="editor-wrapper" id="visual-pane">
+                <textarea id="tiny-visual-editor">{{ template.html_content }}</textarea>
+            </div>
+            
+            <div class="editor-wrapper" id="code-pane" style="display: none;">
+                <div id="ace-html-editor">{{ template.html_content }}</div>
+            </div>
+            
+            <div class="editor-wrapper" id="style-pane" style="display: none;">
+                <div id="ace-css-editor">{{ template.css_content }}</div>
+            </div>
+        </div>
+        
+        <!-- VISUAL PREVIEW SIDE -->
+        <div class="preview-side">
+            <div class="preview-header">
+                <span><i class="fa fa-print"></i> CHOP ETILISH KO'RINISHI</span>
+                <span id="sync-status" class="text-success"><i class="fa fa-check-circle"></i> Tayyor</span>
+            </div>
+            <iframe id="visual-preview" frameborder="0"></iframe>
+        </div>
+        
+        <!-- HELP / PLACEHOLDERS SIDE -->
+        <div class="help-side">
+            <span class="section-title">O'ZGARCHUVCHILAR</span>
+            <div class="placeholder-badge">[[UNIVERSITY_NAME]]</div>
+            <div class="placeholder-badge">[[STUDENT_TABLE]]</div>
+            <div class="placeholder-badge">[[STATS_SUMMARY]]</div>
+            <div class="placeholder-badge">{{ sheet_no }}</div>
+            <div class="placeholder-badge">{{ subject_name }}</div>
+            <div class="placeholder-badge">{{ group_code }}</div>
+            
+            <span class="section-title">IDE TEXNOLOGIYA</span>
+            <p style="font-size: 10px;">TinyMCE 6 (Visual)<br>Ace Editor (Code)</p>
+        </div>
+    </div>
+</form>
+
+<!-- Load Libraries from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js"></script>
+
+<script>
+    // --- INITIALIZATION ---
+    let currentMode = 'visual';
+    const aceHtml = ace.edit("ace-html-editor");
+    const aceCss = ace.edit("ace-css-editor");
+    const syncStatus = document.getElementById('sync-status');
+    const previewFrame = document.getElementById('visual-preview');
+    let debounceTimer;
+
+    // Ace Config
+    [aceHtml, aceCss].forEach(ed => {
+        ed.setTheme("ace/theme/chrome"); // Use light theme for the hybrid layout
+        ed.setOptions({ useSoftTabs: true, tabSize: 4, wrap: true });
+    });
+    aceHtml.session.setMode("ace/mode/html");
+    aceCss.session.setMode("ace/mode/css");
+
+    // TinyMCE Config
+    tinymce.init({
+        selector: '#tiny-visual-editor',
+        height: '100%',
+        plugins: 'table lists link image code visualblocks',
+        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | table | list bullist numlist | code',
+        setup: (editor) => {
+            editor.on('Change KeyUp Input', () => updatePreviewFromTiny());
+        }
+    });
+
+    // Dummy Data for Preview
+    const dummyData = {
+        university: "BUXORO DAVLAT TEXNIKA UNIVERSITETI",
+        sheet_no: "RET-105-YN-2026",
+        subject: "Dasturlash",
+        group: "TATU-101",
+        date: "05.04.2026",
+        student_table: `
+            <table border="1" style="width:100%; border-collapse: collapse; font-family: serif; font-size: 11px; text-align: center;">
+                <tr style="background:#f1f5f9;"><th>№</th><th>F.I.Sh</th><th>ID</th><th>JN</th><th>ON</th><th>YN</th><th>Jami</th><th>Baho</th></tr>
+                <tr><td>1</td><td align="left">&nbsp;AXMEDOV TEMUR</td><td>S-001</td><td>28</td><td>26</td><td>32</td><td>86</td><td>5</td></tr>
+                <tr><td>2</td><td align="left">&nbsp;BERDIYEV ISOXON</td><td>S-002</td><td>24</td><td>22</td><td>30</td><td>76</td><td>4</td></tr>
+            </table>`,
+        stats: 'Jami: 2, "5": 1, "4": 1, "3": 0, "2": 0'
+    };
+
+    function updatePreview(html, css) {
+        syncStatus.innerHTML = '<i class="fa fa-refresh fa-spin"></i> ...';
+        syncStatus.className = 'text-warning';
+
+        // Simulate Placeholders
+        let processedHtml = html
+            .replace(/\[\[UNIVERSITY_NAME\]\]/g, dummyData.university)
+            .replace(/\[\[STUDENT_TABLE\]\]/g, dummyData.student_table)
+            .replace(/\[\[STATS_SUMMARY\]\]/g, dummyData.stats)
+            .replace(/\{\{\s*sheet_no\s*\}\}/g, dummyData.sheet_no)
+            .replace(/\{\{\s*subject_name\s*\}\}/g, dummyData.subject)
+            .replace(/\{\{\s*group_code\s*\}\}/g, dummyData.group)
+            .replace(/\{\{\s*date\s*\}\}/g, dummyData.date);
+
+        const frameDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+        frameDoc.open();
+        frameDoc.write(`<html><head><style>body { padding: 30px; font-family: serif; background: #fff; width: 210mm; margin: 0 auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); min-height: 297mm; } ${css}</style></head><body>${processedHtml}</body></html>`);
+        frameDoc.close();
+
+        setTimeout(() => {
+            syncStatus.innerHTML = '<i class="fa fa-check-circle"></i> Tayyor';
+            syncStatus.className = 'text-success';
+        }, 300);
+    }
+
+    function updatePreviewFromTiny() {
+        const html = tinymce.get('tiny-visual-editor').getContent();
+        const css = aceCss.getValue();
+        updatePreview(html, css);
+    }
+
+    function updatePreviewFromAce() {
+        const html = aceHtml.getValue();
+        const css = aceCss.getValue();
+        updatePreview(html, css);
+    }
+
+    // --- TAB SWITCH LOGIC ---
+    document.querySelectorAll('.tab-main').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const nextMode = this.dataset.mode;
+            
+            // Sync Logic When Switching AWAY from current mode
+            if (currentMode === 'visual') {
+                const html = tinymce.get('tiny-visual-editor').getContent();
+                aceHtml.setValue(html, -1);
+            } else if (currentMode === 'code') {
+                const html = aceHtml.getValue();
+                tinymce.get('tiny-visual-editor').setContent(html);
+            }
+
+            // UI Switch
+            document.querySelectorAll('.tab-main').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.editor-wrapper').forEach(p => p.style.display = 'none');
+            document.getElementById(this.dataset.target).style.display = 'block';
+
+            currentMode = nextMode;
+            if (nextMode === 'code') aceHtml.resize();
+            if (nextMode === 'style') aceCss.resize();
+        });
+    });
+
+    // Ace Listeners
+    aceHtml.session.on('change', () => { if(currentMode === 'code') updatePreviewFromAce(); });
+    aceCss.session.on('change', () => updatePreviewFromAce());
+
+    // Prepare for Django Save
+    function prepareSave() {
+        let finalHtml = '';
+        if (currentMode === 'visual') {
+            finalHtml = tinymce.get('tiny-visual-editor').getContent();
+        } else {
+            finalHtml = aceHtml.getValue();
+        }
+        document.getElementById('final_html').value = finalHtml;
+        document.getElementById('final_css').value = aceCss.getValue();
+    }
+
+    // Initial Load
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => { updatePreviewFromTiny(); }, 500);
+    });
+</script>
+{% endblock %}

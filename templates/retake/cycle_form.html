@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if cycle %}Tahrirlash: {{ cycle.name }}{% else %}Yangi davr yaratish{% endif %} — Django LMS{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto space-y-6 animate-in fade-in duration-500">
+    <a href="{% url 'retake:retake_cycle_list' %}" class="inline-flex items-center gap-1 text-sm font-bold text-text-muted hover:text-primary transition-colors">
+        <i data-lucide="arrow-left" class="h-4 w-4"></i> Ro'yxatga qaytish
+    </a>
+
+    <div class="rounded-3xl border border-border bg-white shadow-sm overflow-hidden">
+        <div class="px-6 py-5 border-b border-border">
+            <h3 class="font-display text-xl font-extrabold text-text-primary flex items-center gap-2">
+                <i data-lucide="calendar-plus" class="h-5 w-5 text-primary"></i>
+                {% if cycle %}Davrni tahrirlash{% else %}Yangi davr yaratish{% endif %}
+            </h3>
+        </div>
+
+        <form method="post" action="." class="p-6 space-y-6">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Davr nomi</label>
+                <input type="text" name="name" value="{{ cycle.name|default:'' }}" placeholder="Masalan: 2023-2024 kuzgi qayta o'qish" required class="w-full rounded-2xl border border-border px-4 py-3.5 text-sm font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/10">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">O'quv yili</label>
+                <input type="text" name="academic_year" value="{{ cycle.academic_year|default:'2023-2024' }}" placeholder="2023-2024" required class="w-full rounded-2xl border border-border px-4 py-3.5 text-sm font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/10">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Boshlanish sanasi</label>
+                    <input type="text" name="starts_at" value="{{ cycle.starts_at|date:'Y-m-d'|default:'' }}" data-uz-datepicker="1" class="w-full rounded-2xl border border-border px-4 py-3.5 text-sm font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/10">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Tugash sanasi</label>
+                    <input type="text" name="ends_at" value="{{ cycle.ends_at|date:'Y-m-d'|default:'' }}" data-uz-datepicker="1" class="w-full rounded-2xl border border-border px-4 py-3.5 text-sm font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/10">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Maksimal ruxsat etilgan kredit</label>
+                <input type="text" name="max_allowed_credits" value="{{ cycle.max_allowed_credits|floatformat:1|default:'15.0' }}" placeholder="15.0" required class="w-full rounded-2xl border border-border px-4 py-3.5 text-lg font-extrabold text-primary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/10">
+                <p class="text-xs text-text-muted mt-2 flex items-center gap-1">
+                    <i data-lucide="info" class="h-3 w-3"></i>
+                    Talaba ushbu davrda jami necha kreditgacha ariza bera olishini belgilang.
+                </p>
+            </div>
+
+            {% if cycle %}
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Davr holati</label>
+                <select name="status" class="w-full rounded-2xl border border-border px-4 py-3.5 text-sm font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/10">
+                    <option value="draft" {% if cycle.status == 'draft' %}selected{% endif %}>Qoralama (Arizalar qabul qilinmaydi)</option>
+                    <option value="open" {% if cycle.status == 'open' %}selected{% endif %}>OCHIQ (Arizalar qabul qilish faol)</option>
+                    <option value="closed" {% if cycle.status == 'closed' %}selected{% endif %}>YOPILGAN (Arxiv)</option>
+                </select>
+            </div>
+            {% endif %}
+
+            <div class="flex justify-end gap-3 pt-4">
+                <a href="{% url 'retake:retake_cycle_list' %}" class="px-6 py-3 rounded-2xl bg-slate-100 text-text-primary text-sm font-bold hover:bg-slate-200 transition-colors">Bekor qilish</a>
+                <button type="submit" class="px-8 py-3 rounded-2xl bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all flex items-center gap-2">
+                    <i data-lucide="save" class="h-4 w-4"></i> Saqlash
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

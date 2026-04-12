@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load lms_filters %}
+{% load static %}
+
+{% block title %}Imtihon guruhlarim — Django LMS{% endblock %}
+
+{% block content %}
+<div class="space-y-8 animate-in fade-in duration-500">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h2 class="font-display text-3xl font-extrabold tracking-tight text-text-primary">Imtihon qaydnomalari</h2>
+            <p class="text-sm font-medium text-text-muted mt-1">Sizga biriktirilgan qayta topshirish guruhlari va nazorat jadvallari</p>
+        </div>
+        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <i data-lucide="clipboard-list" class="h-6 w-6"></i>
+        </div>
+    </div>
+
+    <div class="rounded-2xl bg-sky-50 border border-sky-200 p-4 flex items-start gap-3">
+        <i data-lucide="info" class="h-5 w-5 text-sky-500 shrink-0 mt-0.5"></i>
+        <p class="text-sm text-sky-800">Hurmatli o'qituvchi, ushbu ro'yxatda sizga biriktirilgan qayta topshirish guruhlari va ularning nazorat jadvallari ko'rsatilgan. Baholash uchun <strong>Qaydnomani ochish</strong> tugmasini bosing.</p>
+    </div>
+
+    <div class="rounded-3xl border border-border bg-white shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bg-slate-50 text-text-muted text-xs uppercase tracking-wider">
+                        <th class="px-5 py-3 text-left font-bold">Guruh</th>
+                        <th class="px-4 py-3 text-left font-bold">Fan</th>
+                        <th class="px-4 py-3 text-left font-bold">Nazorat turi</th>
+                        <th class="px-4 py-3 text-center font-bold">Vaqti</th>
+                        <th class="px-4 py-3 text-center font-bold">Talabalar</th>
+                        <th class="px-4 py-3 text-center font-bold">Holati</th>
+                        <th class="px-5 py-3 text-right font-bold">Amallar</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border">
+                    {% for a in assessments %}
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-5 py-4">
+                            <span class="px-2.5 py-1 rounded-lg bg-primary text-white text-xs font-bold">{{ a.group.code }}</span>
+                        </td>
+                        <td class="px-4 py-4">
+                            <p class="font-bold text-text-primary">{{ a.group.subject_snapshot.subject_name }}</p>
+                            <p class="text-xs text-text-muted">{{ a.group.subject_snapshot.subject_code }}</p>
+                        </td>
+                        <td class="px-4 py-4">
+                            <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 text-xs font-semibold border border-amber-200">{{ a.control_type_label }}</span>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <p class="text-xs font-semibold text-text-primary">{{ a.scheduled_at|uz_date }}</p>
+                            <p class="text-[10px] text-text-muted">{{ a.scheduled_at|time:"H:i" }} · {{ a.room }}</p>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <span class="px-2.5 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold">{{ a.group.memberships.count }}</span>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            {% if a.exam_sheet %}
+                                {% if a.exam_sheet.status == 'locked' %}
+                                <span class="status-pill status-pill-danger flex items-center gap-1 justify-center"><i data-lucide="lock" class="h-3 w-3"></i> Yopilgan</span>
+                                {% elif a.exam_sheet.status == 'submitted' %}
+                                <span class="status-pill status-pill-success flex items-center gap-1 justify-center"><i data-lucide="check" class="h-3 w-3"></i> Topshirilgan</span>
+                                {% else %}
+                                <span class="status-pill status-pill-warning flex items-center gap-1 justify-center"><i data-lucide="refresh-cw" class="h-3 w-3"></i> Ochiq</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-text-muted text-[10px] font-bold">Qaydnoma yo'q</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-5 py-4 text-right">
+                            {% if a.exam_sheet %}
+                            <a href="{% url 'retake:retake_exam_sheet' a.exam_sheet.id %}" class="inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-colors">
+                                <i data-lucide="pencil" class="h-3.5 w-3.5"></i> {% if a.exam_sheet.status == 'locked' %}Ko'rish{% else %}Baholash{% endif %}
+                            </a>
+                            {% else %}
+                            <button class="px-4 py-2 rounded-xl bg-slate-100 text-text-muted text-xs font-bold opacity-50 cursor-not-allowed" disabled>
+                                <i data-lucide="file-text" class="h-3.5 w-3.5 inline"></i> Kutmoqda
+                            </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-20 text-text-muted">
+                            <i data-lucide="calendar" class="h-12 w-12 mx-auto opacity-20 mb-3"></i>
+                            <p class="font-bold text-text-primary">Sizga biriktirilgan imtihon guruhlari topilmadi.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

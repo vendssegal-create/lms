@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Mening Testlarim — Django LMS{% endblock %}
+
+{% block content %}
+<div class="space-y-10 animate-in fade-in duration-700">
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-indigo-900 p-8 text-white shadow-2xl lg:p-12">
+        <div class="relative z-10 space-y-4">
+            <h2 class="font-display text-4xl font-extrabold tracking-tight">Mening Testlarim 📝</h2>
+            <p class="max-w-2xl text-lg font-medium text-slate-300 leading-relaxed">
+                Bilimingizni sinab ko'ring va natijalaringizni yaxshilang. Barcha faol testlar shu yerda jamlangan.
+            </p>
+        </div>
+        <!-- Background Elements -->
+        <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute bottom-5 right-10 h-32 w-32 items-center justify-center rounded-2xl bg-white/5 backdrop-blur-3xl hidden lg:flex">
+             <i data-lucide="award" class="h-16 w-16 text-white/20"></i>
+        </div>
+    </div>
+
+    <!-- Stat Grid -->
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div class="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg">
+            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <i data-lucide="file-text" class="h-6 w-6"></i>
+            </div>
+            <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Jami Testlar</p>
+            <p class="font-display text-3xl font-extrabold text-slate-800">{{ tests_with_attempts|length }}</p>
+        </div>
+        <div class="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg">
+            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-warning/10 text-warning">
+                <i data-lucide="hourglass" class="h-6 w-6"></i>
+            </div>
+            <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Faol Urinishlar</p>
+            <p class="font-display text-3xl font-extrabold text-slate-800">{% if any_active %}1{% else %}0{% endif %}</p>
+        </div>
+        <div class="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg">
+            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-success/10 text-success">
+                <i data-lucide="trophy" class="h-6 w-6"></i>
+            </div>
+            <p class="text-xs font-bold uppercase tracking-widest text-slate-400">O'rtacha Ball</p>
+            <p class="font-display text-3xl font-extrabold text-slate-800">{% if avg_score %}{{ avg_score|floatformat:1 }}{% else %}0{% endif %}%</p>
+        </div>
+    </div>
+
+    <!-- Tests Grid -->
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {% for item in tests_with_attempts %}
+        <div class="group relative flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-8 transition-all hover:-translate-y-2 hover:border-primary/30 hover:shadow-2xl hover:shadow-slate-200/50">
+            <!-- Header -->
+            <div>
+                <div class="mb-6 flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest 
+                        {% if item.has_active_attempt %}bg-amber-100 text-amber-700{% elif item.last_score is not none %}bg-emerald-100 text-emerald-700{% else %}bg-indigo-100 text-indigo-700{% endif %}">
+                        <i data-lucide="{% if item.has_active_attempt %}loader-2{% elif item.last_score is not none %}check-circle{% else %}sparkles{% endif %}" class="h-3 w-3 {% if item.has_active_attempt %}animate-spin{% endif %}"></i>
+                        {% if item.has_active_attempt %}Davom etmoqda{% elif item.last_score is not none %}Yakunlangan{% else %}Yangi{% endif %}
+                    </span>
+                    <span class="text-[10px] font-bold text-slate-300">#{{ item.test.id }}</span>
+                </div>
+
+                <h4 class="mb-2 font-display text-xl font-bold text-slate-800 leading-snug group-hover:text-primary transition-colors">{{ item.test.name }}</h4>
+                <p class="mb-4 flex items-center gap-2 text-xs font-bold text-slate-400">
+                    <i data-lucide="book-open" class="h-3.5 w-3.5 text-primary"></i> {{ item.test.course.title }}
+                </p>
+
+                <!-- Security Badges -->
+                <div class="mb-6 flex flex-wrap gap-2">
+                    {% if item.test.face_id_required %}
+                    <div class="flex items-center gap-1.5 rounded-lg bg-rose-50 px-3 py-1.5 text-[10px] font-bold text-rose-600 border border-rose-100/50">
+                        <i data-lucide="scan-face" class="h-3.5 w-3.5"></i> Face ID
+                    </div>
+                    {% endif %}
+                    {% if item.test.proctoring_enabled %}
+                    <div class="flex items-center gap-1.5 rounded-lg bg-amber-50 px-3 py-1.5 text-[10px] font-bold text-amber-600 border border-amber-100/50">
+                        <i data-lucide="eye" class="h-3.5 w-3.5"></i> Proctoring
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Stats -->
+                <div class="mb-8 space-y-4 rounded-2xl bg-slate-50 p-5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Urinishlar</span>
+                        <span class="text-xs font-extrabold text-slate-700">{{ item.attempts_done }} / {{ item.test.attempts }}</span>
+                    </div>
+                    <div class="h-2 w-full overflow-hidden rounded-full bg-slate-200">
+                        <div class="h-full bg-primary transition-all duration-1000" style="width: {% if item.test.attempts > 0 %}{{ item.attempts_done_percent|default:0 }}{% else %}0{% endif %}%"></div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between border-t border-slate-200 pt-3">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Oxirgi natija</span>
+                        {% if item.last_score is not none %}
+                        <span class="text-xl font-black {% if item.last_score >= 80 %}text-emerald-600{% elif item.last_score >= 40 %}text-amber-600{% else %}text-rose-600{% endif %}">
+                            {{ item.last_score|floatformat:0 }}%
+                        </span>
+                        {% else %}
+                        <span class="text-[10px] font-bold italic text-slate-300">Noma'lum</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-3">
+                {% if item.last_score is not none %}
+                <a href="{% url 'lms:view_test_result' item.test.id %}" class="flex-1 inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-slate-100 text-sm font-bold text-slate-700 transition-all hover:bg-slate-200 active:scale-95">
+                    <i data-lucide="line-chart" class="h-4 w-4"></i> Natija
+                </a>
+                {% endif %}
+                
+                {% if item.has_active_attempt %}
+                <a href="{% url 'lms:take_test' item.test.id %}" class="flex-[1.5] inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-amber-500 text-sm font-bold text-white shadow-lg shadow-amber-200 transition-all hover:scale-105 active:scale-95">
+                    Davom ettirish <i data-lucide="play" class="h-4 w-4 fill-current"></i>
+                </a>
+                {% elif item.attempts_left > 0 %}
+                <a href="{% url 'lms:take_test' item.test.id %}" class="flex-[1.5] inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-slate-900 text-sm font-bold text-white shadow-lg shadow-slate-300 transition-all hover:scale-105 hover:bg-black active:scale-95">
+                    Boshlash <i data-lucide="zap" class="h-4 w-4 fill-current"></i>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/50 p-20 text-center">
+            <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-sm text-slate-300">
+                <i data-lucide="clipboard-list" class="h-10 w-10"></i>
+            </div>
+            <div class="space-y-2">
+                <h4 class="font-display text-xl font-bold text-slate-600">Sizda tayinlangan testlar yo'q</h4>
+                <p class="text-slate-400">Xavotir olmang, yangi testlar paydo bo'lishi bilan bu yerda ko'rasiz.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

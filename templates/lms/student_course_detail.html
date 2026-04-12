@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% load lms_filters static %}
+
+{% block title %}{{ course.title }} — O'quv kursi — Django LMS{% endblock %}
+
+{% block content_inner_class %}lms-content-inner--wide{% endblock %}
+
+{% block content %}
+<div class="course-hero animate-fadeIn">
+    <div class="course-icon-box">
+        <i class="fa fa-graduation-cap"></i>
+    </div>
+    <div class="hero-content">
+        <h1 class="hero-title">{{ course.title }}</h1>
+        <div class="hero-meta">
+            <span><i class="fa fa-user-circle text-primary"></i> {{ course.teacher.get_full_name|default:course.teacher.username }}</span>
+            <span><i class="fa fa-folder-open text-primary"></i> {{ total_count }} ta mavzu</span>
+            <span><i class="fa fa-clock-o text-primary"></i> {{ percentage }}% yakunlandi</span>
+        </div>
+        <div class="lms-student-progress-wrap">
+            <div class="progress lms-progress-track">
+                <div class="progress-bar progress-bar-striped active lms-progress-bar-success" style="width: {{ percentage }}%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="course-stats-grid animate-stagger">
+    {% for icon, label, val, color in stats %}
+    <div class="c-stat-card">
+        <div class="c-stat-icon" style="background: {{ color }}15; color: {{ color }};"><i class="fa {{ icon }}"></i></div>
+        <div>
+            <div class="lms-cstat-label">{{ label }}</div>
+            <div class="lms-cstat-value">{{ val }}</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if orphan_assignments %}
+<div class="animate-fadeInUp lms-orphan-assignments-block">
+    <h4 class="lms-orphan-assignments-title">
+        <i class="fa fa-tasks"></i> Kurs bo'ylab topshiriqlar
+    </h4>
+    <p class="lms-orphan-assignments-lead">Ushbu topshiriqlar alohida mavzuga biriktirilmagan.</p>
+    <div class="lms-material-grid">
+        {% for assignment in orphan_assignments %}
+        <div class="material-card material-card--danger" onclick="window.location.href='{% url 'lms:submit_assignment' assignment.id %}'">
+            <div class="mat-icon text-danger"><i class="fa fa-tasks"></i></div>
+            <div class="mat-info">
+                <div class="mat-title">{{ assignment.title }}</div>
+                <div class="mat-type mat-type--danger">Topshiriq &bull; {{ assignment.max_score }} ball</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-9 animate-fadeInUp">
+        <h4 class="lms-section-list-title">O'quv rejasidagi mavzular</h4>
+
+        {% for item in sections_with_status %}
+        {% with section=item.section %}
+        <div class="section-card {% if item.is_locked %}locked{% endif %}" id="section-{{ section.id }}">
+            <div class="section-header" onclick="toggleSection('{{ section.id }}', {{ item.is_locked|lower }})">
+                <div class="section-title-group">
+                    <div class="section-idx">{{ forloop.counter }}</div>
+                    <div class="section-name">{{ section.name }}</div>
+                </div>
+                <div class="lms-section-head-meta">
+                    {% if item.is_completed %}
+                    <span class="status-pill status-pill-success"><i class="fa fa-check"></i> Tugatildi</span>
+                    {% elif item.is_locked %}
+                    <span class="status-pill status-pill-default"><i class="fa fa-lock"></i> Qulflangan</span>
+                    {% else %}
+                    <span class="status-pill status-pill-primary"><i class="fa fa-play"></i> Ochiq</span>
+                    {% endif %}
+                    <i class="fa fa-chevron-down text-muted lms-chevron-rotate"></i>
+                </div>
+            </div>
+
+            <div class="section-body" id="body-{{ section.id }}">
+                <div class="lms-section-body-intro">
+                    {{ section.description|default:"Ushbu mavzu bo'yicha batafsil ma'lumot kiritilmagan." }}
+                </div>
+
+                <div class="lms-material-grid">
+                    {% for res in section.resources.all %}
+                    <div class="material-card" 
+                         {% if res.resource_type == 'certificate' %}
+                            onclick="scrollToCertificate()"
+                         {% else %}
+                            onclick="markCompleteAndOpen('{{ section.id }}', '{% if res.resource_type == 'file' %}{{ res.file.url }}{% else %}{{ res.url }}{% endif %}')"
+                         {% endif %}>
+                        <div class="mat-icon {% if res.resource_type == 'certificate' %}text-warning{% else %}text-primary{% endif %}">
+                            <i class="fa {% if res.resource_type == 'file' %}fa-file-text-o{% elif res.resource_type == 'certificate' %}fa-certificate{% else %}fa-link{% endif %}"></i>
+                        </div>
+                        <div class="mat-info">
+                            <div class="mat-title">{{ res.title }}</div>
+                            <div class="mat-type {% if res.resource_type == 'certificate' %}text-warning font-bold{% endif %}">
+                                {% if res.resource_type == 'certificate' %}Sertifikat{% else %}{{ res.resource_type }}{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% for assignment in section.assignments.all %}
+                    {% if assignment.is_active %}
+                    <div class="material-card material-card--danger" onclick="window.location.href='{% url 'lms:submit_assignment' assignment.id %}'">
+                        <div class="mat-icon text-danger"><i class="fa fa-tasks"></i></div>
+                        <div class="mat-info">
+                            <div class="mat-title">{{ assignment.title }}</div>
+                            <div class="mat-type mat-type--danger">Topshiriq &bull; {{ assignment.max_score }} Ball</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for meeting in section.meetings.all %}
+                    <div class="material-card material-card--success" onclick="window.open('{{ meeting.meeting_url }}', '_blank')">
+                        <div class="mat-icon text-success"><i class="fa fa-video-camera"></i></div>
+                        <div class="mat-info">
+                            <div class="mat-title">{{ meeting.title }}</div>
+                            <div class="mat-type mat-type--success">Online Dars</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+        {% endfor %}
+    </div>
+
+    <div class="col-md-3 animate-fadeInRight">
+        <div class="box lms-student-sidebar-box">
+            <h5 class="lms-student-sidebar-title">Qo'shimcha</h5>
+            <div class="lms-student-sidebar-stack">
+                <a href="{% url 'lms:course_forum' course.id %}" class="btn btn-primary lms-student-sidebar-btn">
+                    <i class="fa fa-comments-o lms-sidebar-icon-lead"></i> Kurs Forumi
+                </a>
+                <a href="#" class="btn btn-default lms-student-sidebar-btn lms-student-sidebar-btn-muted">
+                    <i class="fa fa-bar-chart lms-sidebar-icon-lead"></i> Imtihon Natijalari
+                </a>
+                <hr class="lms-sidebar-hr">
+                <button type="button" class="btn btn-default lms-student-sidebar-btn lms-student-sidebar-btn-muted" data-toggle="modal" data-target="#feedbackModal">
+                    <i class="fa fa-star-o lms-sidebar-icon-lead"></i> Fikr Qoldirish
+                </button>
+
+                {% if course_cert_data %}
+                <hr class="lms-sidebar-hr">
+                <div class="lms-certificate-block" id="studentCertificateBlock">
+                    <h5 class="lms-student-sidebar-title"><i class="fa fa-certificate text-warning"></i> Sertifikat</h5>
+                    {% if course_cert_data.is_generated %}
+                        <a href="{{ course_cert_data.url }}" class="btn btn-success lms-student-sidebar-btn" target="_blank">
+                            <i class="fa fa-download lms-sidebar-icon-lead"></i> Sertifikatni yuklab olish
+                        </a>
+                        <p class="text-xs text-muted mt-1">Seriya: {{ course_cert_data.serial }}</p>
+                    {% elif course_cert_data.is_available %}
+                        <button onclick="generateCertificate({{ course.id }})" class="btn btn-primary lms-student-sidebar-btn" id="genCertBtn">
+                            <i class="fa fa-magic lms-sidebar-icon-lead"></i> Sertifikatni olish
+                        </button>
+                    {% else %}
+                        <button class="btn btn-default lms-student-sidebar-btn lms-student-sidebar-btn-muted" disabled title="{{ course_cert_data.message }}">
+                            <i class="fa fa-lock lms-sidebar-icon-lead"></i> Sertifikat (Yopiq)
+                        </button>
+                        <p class="text-xs text-muted mt-1" style="font-size: 0.85em; line-height: 1.2;">{{ course_cert_data.message }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade lms-feedback-modal" id="feedbackModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{% url 'lms:submit_course_feedback' course.id %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-bold">Kurs haqida fikringiz</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">Kurs sifati va o'qituvchi haqida o'z fikringizni bildiring. Bu bizga tizimni yaxshilashga yordam beradi.</p>
+                    <div class="form-group">
+                        <label>Sizning bahoingiz</label>
+                        <select name="rating" class="form-control" required>
+                            <option value="5">A'lo (5)</option>
+                            <option value="4">Yaxshi (4)</option>
+                            <option value="3">Qoniqarli (3)</option>
+                            <option value="2">Yomon (2)</option>
+                            <option value="1">Juda yomon (1)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fikr-mulohaza</label>
+                        <textarea name="comment" class="form-control" rows="5" placeholder="Batafsil yozishingiz mumkin..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary btn-flat">Yuborish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function toggleSection(id, locked) {
+    if (locked) return;
+    const card = document.getElementById('section-' + id);
+    const arrow = card.querySelector('.lms-chevron-rotate');
+    const isActive = card.classList.contains('active');
+    if (isActive) {
+        card.classList.remove('active');
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+    } else {
+        card.classList.add('active');
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+    }
+}
+
+function markCompleteAndOpen(sectionId, url) {
+    fetch('/lms/student/section/' + sectionId + '/mark_complete/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': '{{ csrf_token }}', 'X-Requested-With': 'XMLHttpRequest' }
+    }).finally(function() {
+        window.open(url, '_blank');
+        setTimeout(function() { location.reload(); }, 500);
+    });
+}
+
+function generateCertificate(courseId) {
+    const btn = document.getElementById('genCertBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Tayyorlanmoqda...';
+
+    fetch('/api/lms/courses/' + courseId + '/certificate/download/', {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.reload();
+        } else {
+            alert("Xatolik: " + data.error);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa fa-magic"></i> Sertifikatni olish';
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Server bilan aloqada xatolik.");
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa fa-magic"></i> Sertifikatni olish';
+    });
+}
+</script>
+{% endblock %}

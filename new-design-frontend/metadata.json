@@ -1,0 +1,5 @@
+{
+  "name": "Django LMS Premium",
+  "description": "A professional Learning Management System with advanced features like course management, testing with proctoring, and retake workflow.",
+  "requestFramePermissions": ["camera", "microphone"]
+}

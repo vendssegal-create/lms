@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Yuzni tekshirish — Django LMS{% endblock %}
+
+{% block content %}
+<div class="row animate-fadeIn">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="box" style="border-radius: 32px; box-shadow: var(--shadow-lg); border: none; overflow: hidden; background: #fff; padding: 0;">
+            <div class="row no-gutter">
+                <!-- Left Info Side -->
+                <div class="col-md-5" style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); color: #fff; padding: 50px; min-height: 550px; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="margin-bottom: 30px;">
+                        <span class="status-pill status-pill-primary" style="background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.3);">Face ID Verification</span>
+                    </div>
+                    <h2 style="font-weight: 800; font-size: 32px; margin-bottom: 20px; line-height: 1.2;">Salom, {{ student.user.first_name }}! 👋</h2>
+                    <p style="font-size: 16px; opacity: 0.9; line-height: 1.6; margin-bottom: 40px;">
+                        Xavfsizlikni ta'minlash maqsadida, "<b>{{ test.name }}</b>" testini boshlashdan avval shaxsingizni tasdiqlashingiz zarur.
+                    </p>
+                    
+                    <div style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; border: 1px solid rgba(255,255,255,0.15);">
+                        <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; opacity: 0.8;">Profil Rasmi</h4>
+                        <div style="text-align: center;">
+                            <img id="ref-img" src="{{ face_image_url|default:'' }}" 
+                                 style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2);" 
+                                 crossorigin="anonymous">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px; font-size: 13px; opacity: 0.7; font-style: italic;">
+                        <i class="fa fa-shield"></i> Ma'lumotlaringiz shifrlangan va xavfsiz holda saqlanadi.
+                    </div>
+                </div>
+
+                <!-- Right Camera Side -->
+                <div class="col-md-7" style="padding: 50px; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;">
+                    <div id="camera-container" style="position: relative; width: 100%; max-width: 380px; aspect-ratio: 4/3; margin-bottom: 40px; border-radius: 24px; overflow: hidden; background: #0f172a; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 4px solid #f1f5f9;">
+                        <video id="webcam" autoplay muted playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);"></video>
+                        <canvas id="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; transform: scaleX(-1);"></canvas>
+                        
+                        <!-- High Tech Overlays -->
+                        <div style="position: absolute; top: 20px; left: 20px; color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;">
+                            <i class="fa fa-circle text-danger animate-pulse"></i> Live Feed
+                        </div>
+                        <div style="position: absolute; bottom: 20px; right: 20px; color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;">
+                            Proctoring Active
+                        </div>
+
+                        <!-- Face Frame -->
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60%; height: 75%; border: 2px dashed rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none;"></div>
+
+                        <div id="loader" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #1e293b; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10;">
+                            <div class="cube-loader">
+                                <div class="cube-top"></div>
+                                <div class="cube-wrapper">
+                                    <span style="--i:0" class="cube-span"></span>
+                                    <span style="--i:1" class="cube-span"></span>
+                                    <span style="--i:2" class="cube-span"></span>
+                                    <span style="--i:3" class="cube-span"></span>
+                                </div>
+                            </div>
+                            <span style="margin-top: 30px; font-weight: 700; color: #fff;" id="loader-text">Tizim tayyorlanmoqda...</span>
+                        </div>
+                    </div>
+
+                    <div id="status-msg" style="width: 100%; max-width: 380px; padding: 15px 20px; border-radius: 16px; font-weight: 700; display: none; margin-bottom: 25px; text-align: center; font-size: 14px; animation: slideDown 0.3s ease-out;"></div>
+
+                    <div style="display: flex; gap: 15px; width: 100%; max-width: 380px;">
+                        <button id="verify-btn" class="btn btn-primary btn-block" style="border-radius: 16px; padding: 16px; font-weight: 800; font-size: 16px; box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);" disabled>
+                            <i class="fa fa-expand" style="margin-right: 8px;"></i> Tasdiqlash
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; text-align: center;">
+            <a href="{% url 'lms:student_tests' %}" style="color: #94a3b8; font-weight: 700; text-decoration: none; font-size: 14px;">
+                <i class="fa fa-arrow-left" style="margin-right: 5px;"></i> Orqaga qaytish
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+<script>
+    const video = document.getElementById('webcam');
+    const canvas = document.getElementById('overlay');
+    const refImg = document.getElementById('ref-img');
+    const verifyBtn = document.getElementById('verify-btn');
+    const statusMsg = document.getElementById('status-msg');
+    const loader = document.getElementById('loader');
+    const loaderText = document.getElementById('loader-text');
+    
+    let referenceDescriptor = null;
+    let cameraStream = null;
+    const MODEL_URL = "{% static 'models/' %}";
+
+    async function initFaceAPI() {
+        try {
+            loaderText.innerText = "AI Modellar yuklanmoqda...";
+            await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+            await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+            await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+            
+            loaderText.innerText = "Profil tahlil qilinmoqda...";
+            if (!refImg.complete) await new Promise(r => refImg.onload = r);
+
+            const refDetection = await faceapi.detectSingleFace(refImg).withFaceLandmarks().withFaceDescriptor();
+            if (!refDetection) {
+                showStatus("Profil rasmida yuz aniqlanmadi. Iltimos, profil rasmingizni yangilang.", "danger");
+                loader.style.display = 'none';
+                return;
+            }
+            referenceDescriptor = refDetection.descriptor;
+            
+            loaderText.innerText = "Kamera tayyorlanmoqda...";
+            startVideo();
+        } catch (e) {
+            console.error(e);
+            showStatus("Xatolik: " + e.message, "danger");
+            loader.style.display = 'none';
+        }
+    }
+
+    async function startVideo() {
+        try {
+            cameraStream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+            video.srcObject = cameraStream;
+            video.onloadedmetadata = () => {
+                loader.style.display = 'none';
+                verifyBtn.disabled = false;
+                showStatus("Tayyor! Yuzingizni markazga to'g'rilang.", "info");
+            };
+        } catch (err) {
+            showStatus("Kamera topilmadi. Ruxsat berilganini tekshiring.", "danger");
+            loader.style.display = 'none';
+        }
+    }
+
+    function showStatus(text, type) {
+        statusMsg.style.display = 'block';
+        statusMsg.innerText = text;
+        if (type === 'danger') {
+            statusMsg.style.background = '#fef2f2';
+            statusMsg.style.color = '#991b1b';
+            statusMsg.style.border = '1px solid #fee2e2';
+        } else if (type === 'success') {
+            statusMsg.style.background = '#f0fdf4';
+            statusMsg.style.color = '#166534';
+            statusMsg.style.border = '1px solid #dcfce7';
+        } else {
+            statusMsg.style.background = '#f0f9ff';
+            statusMsg.style.color = '#0369a1';
+            statusMsg.style.border = '1px solid #e0f2fe';
+        }
+    }
+
+    verifyBtn.addEventListener('click', async () => {
+        verifyBtn.disabled = true;
+        verifyBtn.innerHTML = '<i class="fa fa-cog fa-spin"></i> Tahlil qilinmoqda...';
+        
+        try {
+            const detection = await faceapi.detectSingleFace(video).withFaceLandmarks().withFaceDescriptor();
+            if (!detection) {
+                showStatus("Yuz aniqlanmadi. Yaxshiroq yoritilgan joyda urinib ko'ring.", "danger");
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '<i class="fa fa-expand"></i> Qayta urinish';
+                return;
+            }
+            
+            const distance = faceapi.euclideanDistance(referenceDescriptor, detection.descriptor);
+            if (distance <= 0.6) {
+                showStatus("Shaxsingiz tasdiqlandi! Testga yo'naltirilmoqda...", "success");
+                
+                const formData = new FormData();
+                formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+                
+                fetch("{% url 'lms:verify_face_success' test.id %}", {
+                    method: 'POST',
+                    body: formData
+                }).then(r => r.json()).then(res => {
+                    if (res.success) {
+                        setTimeout(() => {
+                            window.location.href = "{% url 'lms:take_test' test.id %}";
+                        }, 1000);
+                    } else {
+                        showStatus("Server bilan aloqa uzildi. Sahifani yangilang.", "danger");
+                        verifyBtn.disabled = false;
+                    }
+                });
+            } else {
+                showStatus("Yuz mos kelmadi. Iltimos, profil rasmingizdagi kishi ekanligingizga ishonch hosil qiling.", "danger");
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '<i class="fa fa-expand"></i> Qayta urinish';
+            }
+        } catch(e) {
+            showStatus("Xatolik yuz berdi. Iltimos, sahifani yangilang.", "danger");
+            verifyBtn.disabled = false;
+        }
+    });
+
+    initFaceAPI();
+</script>
+
+<style>
+    .no-gutter > [class*='col-'] { padding-right:0; padding-left:0; }
+    .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* Premium Cube Loader */
+    .cube-loader { position: relative; width: 75px; height: 75px; transform-style: preserve-3d; transform: rotateX(-30deg); animation: animateCube 4s linear infinite; }
+    @keyframes animateCube { 0% { transform: rotateX(-30deg) rotateY(0); } 100% { transform: rotateX(-30deg) rotateY(360deg); } }
+    .cube-wrapper { position: absolute; width: 100%; height: 100%; transform-style: preserve-3d; }
+    .cube-span { position: absolute; width: 100%; height: 100%; transform: rotateY(calc(90deg * var(--i))) translateZ(37.5px); background: linear-gradient(#1e293b, #4361ee); }
+    .cube-top { position: absolute; width: 75px; height: 75px; background: #1e293b; transform: rotateX(90deg) translateZ(37.5px); }
+    .cube-top::before { content: ""; position: absolute; width: 100%; height: 100%; background: #4361ee; transform: translateZ(-90px); filter: blur(20px); box-shadow: 0 0 10px #4361ee; }
+</style>
+{% endblock %}

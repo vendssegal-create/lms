@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Talabalarni biriktirish — {{ course.title }}{% endblock %}
+
+{% block page_header %}
+<i class="fa fa-user-plus margin-r-5"></i> Talabalarni kursga biriktirish
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <!-- Filter Box -->
+        <div class="box box-primary premium-box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-filter"></i> Filtrlash</h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>GURUHLAR</label>
+                    <select id="groupSelect" class="form-control select2" style="width: 100%;">
+                        <option value="">Barcha guruhlar</option>
+                        {% for g in group_names %}
+                            <option value="{{ g }}" {% if selected_group == g %}selected{% endif %}>{{ g }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <hr>
+                <div class="course-mini-info">
+                    <h5 class="text-bold text-primary">{{ course.title }}</h5>
+                    <div class="flex-between">
+                        <span>Hozirgi biriktirilganlar:</span>
+                        <span class="badge bg-blue">{{ enrolled_count }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Add Box -->
+        <div class="box box-info premium-box mt-4">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-keyboard-o"></i> Qo'lda qo'shish</h3>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Username / Loginlar</label>
+                        <textarea name="student_usernames" rows="4" class="form-control" placeholder="Har qatorda bitta login..."></textarea>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info btn-block btn-flat">LOGINLARNI BIRIKTIRISH</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <!-- Students List Box -->
+        <div class="box box-solid premium-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    {% if selected_group or students_in_group %}
+                        <i class="fa fa-users text-primary"></i> Talabalar ro'yxati
+                    {% else %}
+                        <i class="fa fa-info-circle text-muted"></i> Guruh tanlang
+                    {% endif %}
+                </h3>
+                {% if students_in_group %}
+                    <div class="box-tools">
+                        <button type="button" id="selectAllBtn" class="btn btn-default btn-xs btn-flat">Barchasini tanlash</button>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <form method="post" id="bulkEnrollForm">
+                {% csrf_token %}
+                <div class="box-body no-padding" style="max-height: 550px; overflow-y: auto;">
+                    {% if students_in_group %}
+                        <table class="table table-hover student-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;" class="text-center">#</th>
+                                    <th>Talaba</th>
+                                    <th>Login</th>
+                                    <th class="text-center" style="width: 80px;">Tanlash</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in students_in_group %}
+                                <tr class="student-row">
+                                    <td class="text-center vertical-middle">{{ forloop.counter }}</td>
+                                    <td class="vertical-middle">
+                                        <div class="user-block">
+                                            {% if user.student_profile.image %}
+                                                <img class="img-circle" src="{{ user.student_profile.image.url }}" alt="User Image">
+                                            {% else %}
+                                                <span class="user-initials bg-gray">{{ user.username|slice:":1"|upper }}</span>
+                                            {% endif %}
+                                            <span class="username" style="margin-left: 5px;">
+                                                {{ user.student_profile.full_name|default:user.get_full_name|default:user.username }}
+                                            </span>
+                                            <span class="description" style="margin-left: 5px;">{{ user.student_profile.student_id_number|default:"ID no'malum" }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="vertical-middle"><code>{{ user.username }}</code></td>
+                                    <td class="text-center vertical-middle">
+                                        <input type="checkbox" name="selected_usernames" value="{{ user.username }}" class="student-checkbox">
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="empty-state-list">
+                            <i class="fa fa-users fa-3x"></i>
+                            <p>Talabalarni ko'rish va biriktirish uchun chap tomondan guruhni tanlang.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if students_in_group %}
+                <div class="box-footer">
+                    <div class="pull-left mt-2">
+                        <span id="selectedCount">0</span> ta talaba tanlandi
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-flat pull-right">
+                        TANLANGANLARNI BIRIKTIRISH
+                    </button>
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const groupSelect = document.getElementById('groupSelect');
+        const selectAllBtn = document.getElementById('selectAllBtn');
+        const checkboxes = document.querySelectorAll('.student-checkbox');
+        const countDisplay = document.getElementById('selectedCount');
+
+        if (groupSelect) {
+            $(groupSelect).on('change', function() {
+                const group = this.value;
+                window.location.href = '?group=' + encodeURIComponent(group);
+            });
+        }
+
+        if (selectAllBtn) {
+            selectAllBtn.addEventListener('click', function() {
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                checkboxes.forEach(cb => {
+                    cb.checked = !allChecked;
+                    handleRowStyle(cb);
+                });
+                this.textContent = allChecked ? 'Barchasini tanlash' : 'Tanlovni bekor qilish';
+                updateCount();
+            });
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                handleRowStyle(this);
+                updateCount();
+            });
+        });
+
+        function handleRowStyle(cb) {
+            const row = cb.closest('tr');
+            if (cb.checked) {
+                row.classList.add('bg-selected');
+            } else {
+                row.classList.remove('bg-selected');
+            }
+        }
+
+        function updateCount() {
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            if (countDisplay) countDisplay.textContent = checkedCount;
+        }
+    });
+</script>
+
+<style>
+    .premium-box {
+        border-top: 3px solid #3c8dbc;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-radius: 8px;
+    }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+    .mt-4 { margin-top: 20px; }
+    .mt-2 { margin-top: 8px; }
+    .vertical-middle { vertical-align: middle !important; }
+    .student-table th { background: #f9fbfe; color: #7f8c8d; font-size: 11px; text-transform: uppercase; padding: 12px !important; }
+    .student-row { transition: all 0.2s; }
+    .bg-selected { background-color: #f0f7ff !important; }
+    .empty-state-list { text-align: center; padding: 100px 20px; color: #cbd5e1; }
+    .empty-state-list i { margin-bottom: 20px; }
+    .user-initials {
+        float: left;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 40px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .btn-flat { border-radius: 4px; }
+    .student-checkbox { width: 18px; height: 18px; cursor: pointer; }
+</style>
+{% endblock %}

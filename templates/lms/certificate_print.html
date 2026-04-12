@@ -1,0 +1,371 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if error %}Sertifikat — xatolik{% else %}Sertifikat — chop etish{% endif %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0f172a;
+      --gold: #c5a059;
+      --muted: #475569;
+      --bdtu-orange: #f27a2e;
+      --bdtu-cyan: #2eb6e8;
+      --sheet-border: rgba(46, 182, 232, 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Source Sans 3", system-ui, sans-serif;
+      background: #e2e8f0;
+      color: #1a1a1a;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.97);
+      border-bottom: 1px solid #cbd5e1;
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+    }
+    .toolbar p {
+      margin: 0;
+      flex: 1;
+      min-width: 200px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .toolbar button {
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: var(--bdtu-cyan);
+      color: #fff;
+    }
+    .toolbar button:hover { filter: brightness(1.06); }
+    .toolbar button.secondary {
+      background: #fff;
+      color: var(--ink);
+      border: 2px solid #cbd5e1;
+    }
+
+    .wrap {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 24px 12px 48px;
+    }
+
+    .error-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid #f1b4b4;
+      color: #9b1c1c;
+    }
+
+    /* A4 vertikal varaq */
+    .sheet {
+      background: #fff;
+      border: 2px solid var(--sheet-border);
+      border-radius: 2px;
+      padding: 10mm 12mm 12mm;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.1);
+      position: relative;
+      max-width: 210mm;
+      margin: 0 auto;
+      min-height: 260mm;
+    }
+    .sheet::before {
+      content: "";
+      position: absolute;
+      inset: 6mm;
+      border: 1px solid rgba(197, 160, 89, 0.28);
+      pointer-events: none;
+    }
+
+    .sheet-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 235mm;
+    }
+
+    /* Sarlavha: vazirlik + logo */
+    .cert-header {
+      text-align: center;
+      margin-bottom: 6mm;
+      padding-bottom: 5mm;
+      border-bottom: 2px solid var(--bdtu-cyan);
+    }
+    .ministry {
+      font-size: 10.5pt;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      line-height: 1.35;
+      max-width: 38ch;
+      margin: 0 auto 4mm;
+      text-transform: uppercase;
+    }
+    .logo-panel {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 3mm;
+      padding: 10px 20px 14px;
+      background: #0a0a0a;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+    .logo-panel img {
+      display: block;
+      width: min(100%, 320px);
+      height: auto;
+      max-height: 78px;
+      object-fit: contain;
+    }
+    .university-name {
+      font-size: 11pt;
+      font-weight: 700;
+      color: var(--bdtu-cyan);
+      letter-spacing: 0.04em;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .institution {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      font-weight: 700;
+      text-align: center;
+      color: var(--ink);
+      letter-spacing: 0.03em;
+      margin: 4mm 0 2mm;
+      opacity: 0.92;
+    }
+
+    .title {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
+      font-weight: 700;
+      text-align: center;
+      color: var(--bdtu-orange);
+      margin: 0 0 5mm;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .lead {
+      text-align: center;
+      font-size: 11pt;
+      color: var(--muted);
+      margin-bottom: 5mm;
+      line-height: 1.45;
+    }
+
+    .student-name {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 700;
+      text-align: center;
+      color: var(--ink);
+      margin: 0 0 5mm;
+      line-height: 1.2;
+    }
+
+    .course-block {
+      text-align: center;
+      margin-bottom: 5mm;
+      font-size: 11pt;
+      line-height: 1.45;
+    }
+    .course-block .label { color: var(--muted); font-size: 9pt; text-transform: uppercase; letter-spacing: 0.08em; }
+    .course-block .value { font-weight: 600; color: #0f172a; margin-top: 4px; }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 6mm;
+      text-align: center;
+    }
+    @media (max-width: 520px) {
+      .meta-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .meta-item .label {
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .meta-item .value { font-weight: 700; color: var(--ink); margin-top: 3px; font-size: 10.5pt; }
+
+    .bottom {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: auto;
+      padding-top: 6mm;
+      border-top: 1px solid rgba(46, 182, 232, 0.25);
+    }
+    .sign {
+      text-align: center;
+      min-width: 180px;
+    }
+    .sign .line {
+      border-top: 1px solid var(--ink);
+      width: 200px;
+      margin: 8px auto 6px;
+    }
+    .sign .name { font-weight: 700; color: var(--ink); font-size: 10pt; }
+    .sign .pos { font-size: 9pt; color: var(--muted); }
+
+    .qr-block { text-align: center; }
+    .qr-block img {
+      width: 100px;
+      height: 100px;
+      display: block;
+      margin: 0 auto 6px;
+    }
+    .qr-block .hint { font-size: 9pt; color: var(--muted); max-width: 130px; margin: 0 auto; }
+
+    @page {
+      size: A4 portrait;
+      margin: 12mm;
+    }
+    .preview-banner {
+      margin: 0 0 16px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: #7c2d12;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      border: 2px dashed rgba(255,255,255,0.5);
+    }
+
+    @media (max-width: 640px) {
+      .sheet-inner { min-height: auto; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .no-print { display: none !important; }
+      .wrap { padding: 0; max-width: none; }
+      .sheet {
+        box-shadow: none;
+        border: 2px solid var(--sheet-border);
+        min-height: auto;
+        page-break-inside: avoid;
+      }
+      .sheet-inner { min-height: 0; }
+      .logo-panel img { max-height: 70px; }
+    }
+  </style>
+</head>
+<body>
+  {% if error %}
+  <div class="toolbar no-print">
+    <p><strong>{{ course_title|default:"Kurs" }}</strong> — sertifikatni ko‘rsatib bo‘lmadi.</p>
+    <button type="button" class="secondary" onclick="history.back()">Orqaga</button>
+  </div>
+  <div class="wrap">
+    <div class="error-box">{{ error }}</div>
+  </div>
+  {% else %}
+  <div class="toolbar no-print">
+    <p>
+      {% if is_preview %}
+      <strong>NAMUNA.</strong>
+      Bu rasmiy talaba sertifikati emas; tekshirish va hisobga olinmaydi.
+      {% else %}
+      <strong>Chop etish / PDF.</strong>
+      «Chop etish» ni bosing, keyin brauzerda «Saqlash» yoki «PDF ga saqlash» ni tanlang — A4 vertikal, fayl qurilmangizda yaratiladi.
+      {% endif %}
+    </p>
+    <button type="button" class="secondary" onclick="history.back()">Orqaga</button>
+    <button type="button" onclick="window.print()">Chop etish</button>
+  </div>
+
+  <div class="wrap">
+    {% if is_preview %}
+    <p class="preview-banner no-print" role="status">NAMUNA — rasmiy sertifikat emas</p>
+    {% endif %}
+    <article class="sheet" aria-label="Sertifikat">
+      <div class="sheet-inner">
+        <header class="cert-header">
+          <p class="ministry">Oliy ta‘lim, fan va innovatsiyalar vazirligi</p>
+          <div class="logo-panel">
+            <img src="{% static 'lms/img/bdtu_logo.png' %}" width="320" height="90" alt="Buxoro davlat texnika universiteti logotipi">
+          </div>
+          <p class="university-name">Buxoro davlat texnika universiteti</p>
+        </header>
+
+        {% if certificate.institution_name %}
+        <div class="institution">{{ certificate.institution_name }}</div>
+        {% endif %}
+        <h1 class="title">Sertifikat</h1>
+        <p class="lead">Quyidagi tinglovchi mazkur kursni muvaffaqiyatli tugatganligi tasdiqlanadi</p>
+        <p class="student-name">{{ certificate.student_name }}</p>
+
+        <div class="course-block">
+          <div class="label">Kurs</div>
+          <div class="value">{{ certificate.course_name }}</div>
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="label">Sana</div>
+            <div class="value">{{ certificate.certificate_date }}</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Seriya</div>
+            <div class="value">{{ certificate.serial_number }}</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Soat</div>
+            <div class="value">{{ certificate.hours }}</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Natija</div>
+            <div class="value">{{ certificate.score }} / {{ certificate.max_score }}</div>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="sign">
+            <div class="line"></div>
+            <div class="name">{{ certificate.issued_by }}</div>
+            <div class="pos">{{ certificate.position }}</div>
+          </div>
+          <div class="qr-block">
+            <img src="{{ certificate.qr_data_url }}" width="100" height="100" alt="Tekshirish QR">
+            <div class="hint">Haqiqiylikni tekshirish</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+  {% endif %}
+</body>
+</html>

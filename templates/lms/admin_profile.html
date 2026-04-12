@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Boshqaruv Paneli — Django LMS Premium{% endblock %}
+
+{% block content %}
+<div class="animate-slideUp space-y-12 pb-20">
+    <!-- Dashboard Hero (Reference Student Dashboard) -->
+    <div class="relative overflow-hidden bg-slate-900 rounded-[48px] p-10 lg:p-16 text-white shadow-2xl">
+        <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-extrabold uppercase tracking-[0.2em] mb-8 border border-white/10">
+                <i data-lucide="shield-check" size="14" class="text-primary"></i>
+                Ma'muriy boshqaruv paneli
+            </div>
+            <h2 class="text-4xl lg:text-6xl font-extrabold mb-6 tracking-tighter leading-[1.1]">
+                Xush kelibsiz, <span class="text-primary">{{ user.get_full_name|default:user.username }}</span>! 👋
+            </h2>
+            <p class="text-white/60 text-xl font-medium leading-relaxed mb-10 max-w-2xl">
+                Tizimning umumiy nazorati, foydalanuvchilarni boshqarish va statisitik ma'lumotlarni kuzatish uchun barcha vositalar shu yerda.
+            </p>
+            <div class="flex flex-wrap gap-5">
+                <a href="{% url 'lms:create_teacher' %}" class="btn btn-primary px-10 py-4 rounded-2xl text-base shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all font-bold">
+                    <i data-lucide="user-plus" size="20" class="mr-2"></i>
+                    O'qituvchi qo'shish
+                </a>
+                <a href="{% url 'lms:create_student' %}" class="btn bg-white/5 hover:bg-white/10 backdrop-blur-md text-white px-10 py-4 rounded-2xl border border-white/10 text-base font-bold transition-all">
+                    <i data-lucide="graduation-cap" size="20" class="mr-2"></i>
+                    Talaba qo'shish
+                </a>
+            </div>
+        </div>
+        
+        <!-- Abstract animated shapes -->
+        <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute -bottom-48 -left-24 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[150px] animate-pulse delay-700"></div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="card-premium p-8 group overflow-hidden relative">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+            <div class="w-16 h-16 rounded-[24px] bg-primary flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-transform duration-500 mb-6">
+                <i data-lucide="users" size="32"></i>
+            </div>
+            <p class="label-micro text-text-muted transition-colors group-hover:text-primary uppercase tracking-widest">Jami foydalanuvchi</p>
+            <p class="text-3xl font-extrabold text-text-primary tracking-tighter mt-1">{{ total_users }}</p>
+        </div>
+
+        <div class="card-premium p-8 group overflow-hidden relative">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-success/5 rounded-full blur-2xl group-hover:bg-success/10 transition-all"></div>
+            <div class="w-16 h-16 rounded-[24px] bg-success flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-transform duration-500 mb-6">
+                <i data-lucide="book-open" size="32"></i>
+            </div>
+            <p class="label-micro text-text-muted transition-colors group-hover:text-success uppercase tracking-widest">Jami kurslar</p>
+            <p class="text-3xl font-extrabold text-text-primary tracking-tighter mt-1">{{ total_courses }}</p>
+        </div>
+
+        <div class="card-premium p-8 group overflow-hidden relative">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl group-hover:bg-amber-500/10 transition-all"></div>
+            <div class="w-16 h-16 rounded-[24px] bg-amber-500 flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-transform duration-500 mb-6">
+                <i data-lucide="briefcase" size="32"></i>
+            </div>
+            <p class="label-micro text-text-muted transition-colors group-hover:text-amber-600 uppercase tracking-widest">O'qituvchilar</p>
+            <p class="text-3xl font-extrabold text-text-primary tracking-tighter mt-1">{{ teachers_count }}</p>
+        </div>
+
+        <div class="card-premium p-8 group overflow-hidden relative">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-rose-500/5 rounded-full blur-2xl group-hover:bg-rose-500/10 transition-all"></div>
+            <div class="w-16 h-16 rounded-[24px] bg-rose-500 flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-transform duration-500 mb-6">
+                <i data-lucide="user-check" size="32"></i>
+            </div>
+            <p class="label-micro text-text-muted transition-colors group-hover:text-rose-600 uppercase tracking-widest">Talabalar</p>
+            <p class="text-3xl font-extrabold text-text-primary tracking-tighter mt-1">{{ students_count }}</p>
+        </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <!-- Dashboard Left: Recent Activity -->
+        <div class="lg:col-span-2 space-y-10">
+            <!-- Recent Courses -->
+            <div class="card-premium overflow-hidden">
+                <div class="p-8 border-b border-border/50 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xl font-extrabold text-text-primary tracking-tight">Oxirgi yaratilgan kurslar</h3>
+                        <p class="text-xs font-bold text-text-muted mt-1 uppercase tracking-wider">Tizimdagi so'nggi o'quv materiallari</p>
+                    </div>
+                    {% if total_courses > 10 %}
+                    <a href="{% url 'lms:manage_courses' %}" class="text-xs font-black text-primary hover:underline uppercase tracking-widest">Barchasi</a>
+                    {% endif %}
+                </div>
+                
+                <div class="overflow-x-auto no-scrollbar">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-slate-50/50 text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">
+                                <th class="px-8 py-5">Kurs nomi</th>
+                                <th class="px-8 py-5">O'qituvchi</th>
+                                <th class="px-8 py-5 text-center">Bo'limlar</th>
+                                <th class="px-8 py-5">Holat</th>
+                                <th class="px-8 py-5 text-right"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            {% for course in courses %}
+                            <tr class="hover:bg-slate-50/50 transition-all group">
+                                <td class="px-8 py-6">
+                                    <p class="text-base font-bold text-text-primary group-hover:text-primary transition-colors">{{ course.title }}</p>
+                                    <p class="text-[10px] font-bold text-text-muted uppercase tracking-widest mt-0.5">Yaratildi: {{ course.created_at|date:"d.m.Y" }}</p>
+                                </td>
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary text-[10px] font-black">
+                                            {{ course.teacher.get_full_name|slice:":1" }}
+                                        </div>
+                                        <span class="text-sm font-bold text-text-secondary">{{ course.teacher.get_full_name|default:course.teacher.username }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-slate-500 text-[10px] font-black">
+                                        {{ course.sections.count }} mavzu
+                                    </span>
+                                </td>
+                                <td class="px-8 py-6">
+                                    {% if course.is_active %}
+                                        <span class="status-pill status-pill-success">Faol</span>
+                                    {% else %}
+                                        <span class="status-pill status-pill-muted">Nofaol</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-8 py-6 text-right">
+                                    <a href="{% url 'lms:course_detail' course.id %}" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 text-text-muted hover:bg-primary hover:text-white transition-all shadow-sm">
+                                        <i data-lucide="chevron-right" size="18"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="px-8 py-20 text-center">
+                                    <div class="flex flex-col items-center gap-4 opacity-30">
+                                        <i data-lucide="inbox" size="48"></i>
+                                        <p class="text-sm font-bold uppercase tracking-widest">Kurslar mavjud emas</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Retake Quick Actions -->
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500">
+                        <i data-lucide="zap" size="18"></i>
+                    </div>
+                    <h3 class="text-xl font-extrabold text-text-primary tracking-tight">Retake Boshqaruvi</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="{% url 'retake:retake_manage_groups' %}" class="card-premium p-8 group hover:border-primary/20 transition-all">
+                        <div class="flex items-center gap-6">
+                            <div class="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
+                                <i data-lucide="users-2" size="28"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="text-base font-black text-text-primary group-hover:text-primary transition-colors">Guruhlarni boshqarish</h4>
+                                <p class="text-xs font-medium text-text-muted">Guruhlar ochish va biriktirish</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="{% url 'retake:retake_sync_panel' %}" class="card-premium p-8 group hover:border-primary/20 transition-all">
+                        <div class="flex items-center gap-6">
+                            <div class="w-14 h-14 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 group-hover:scale-110 transition-transform">
+                                <i data-lucide="refresh-cw" size="28"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="text-base font-black text-text-primary group-hover:text-primary transition-colors">HEMIS Sinxronizatsiya</h4>
+                                <p class="text-xs font-medium text-text-muted">Ma'lumotlarni integratsiya qilish</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Right: Sidebar -->
+        <div class="space-y-10">
+            <!-- Retake Stats Widget -->
+            <div class="card-premium p-10 bg-slate-900 border-none relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all"></div>
+                
+                <div class="relative z-10 space-y-8 text-white">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-primary">
+                            <i data-lucide="pie-chart" size="20"></i>
+                        </div>
+                        <h3 class="text-lg font-extrabold tracking-tight">Retake Statistikasi</h3>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Pending Finance -->
+                        <div class="space-y-3">
+                            <div class="flex items-end justify-between items-center">
+                                <span class="text-xs font-bold text-white/40 uppercase tracking-widest">Moliya ko'rigida</span>
+                                <span class="text-lg font-black text-amber-500">{{ retake_stats.pending_finance }}</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                <div class="h-full bg-amber-500 rounded-full" style="width: 70%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Approved -->
+                        <div class="space-y-3">
+                            <div class="flex items-end justify-between items-center">
+                                <span class="text-xs font-bold text-white/40 uppercase tracking-widest">Tasdiqlangan</span>
+                                <span class="text-lg font-black text-success">{{ retake_stats.approved_retakes }}</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                <div class="h-full bg-success rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Total -->
+                        <div class="space-y-3 p-5 rounded-2xl bg-white/5 border border-white/10">
+                            <p class="text-[10px] font-black text-white/30 uppercase tracking-widest mb-1">Jami arizalar</p>
+                            <p class="text-3xl font-black text-primary tracking-tighter">{{ retake_stats.total_apps }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Users Sidebar -->
+            <div class="card-premium overflow-hidden">
+                <div class="p-8 border-b border-border/50 flex items-center justify-between">
+                    <h3 class="text-lg font-extrabold text-text-primary tracking-tight">Yaqinda qo'shilganlar</h3>
+                    <div class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-text-muted">
+                       <i data-lucide="user-plus" size="16"></i>
+                    </div>
+                </div>
+                <div class="divide-y divide-slate-50">
+                    {% for u in recent_users %}
+                    <div class="flex items-center gap-4 p-6 hover:bg-slate-50/50 transition-all cursor-pointer group">
+                        <img src="https://ui-avatars.com/api/?name={{ u.username }}&background=eef2ff&color=4361ee&bold=true" class="w-10 h-10 rounded-xl shadow-sm border border-white">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-black text-text-primary group-hover:text-primary transition-colors truncate">{{ u.username }}</p>
+                            <p class="text-[10px] font-bold text-text-muted uppercase tracking-widest">{{ u.get_role_display }}</p>
+                        </div>
+                        <span class="text-[10px] font-bold text-text-muted">{{ u.date_joined|timesince|truncatechars:10 }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

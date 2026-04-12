@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load lms_filters %}
+{% load static %}
+
+{% block title %}{{ topic.title }} — Kurs Forumi{% endblock %}
+
+{% block content %}
+<div class="animate-slideUp max-w-5xl mx-auto pb-20 space-y-10">
+    <!-- Breadcrumbs / Back navigation -->
+    <div class="flex items-center gap-4">
+        <a href="{% url 'lms:course_forum' topic.course.id %}" class="w-10 h-10 rounded-xl bg-white border border-border/50 flex items-center justify-center text-text-muted hover:text-primary transition-all shadow-sm group">
+            <i data-lucide="arrow-left" size="18" class="group-hover:-translate-x-1 transition-transform"></i>
+        </a>
+        <div class="flex items-center gap-2 text-sm font-bold text-text-secondary">
+            <a href="{% url 'lms:course_forum' topic.course.id %}" class="hover:text-primary transition-colors">Forum</a>
+            <i data-lucide="chevron-right" size="14" class="text-text-muted"></i>
+            <span class="text-text-primary truncate max-w-[200px]">{{ topic.title }}</span>
+        </div>
+    </div>
+
+    <!-- Main Topic Card -->
+    <div class="card-premium overflow-hidden">
+        <div class="p-8 lg:p-12 border-b border-border/30 bg-slate-50/30">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                <div class="flex items-center gap-4">
+                    <img src="https://ui-avatars.com/api/?name={{ topic.author.get_full_name|default:topic.author.username }}&background=random&color=fff" class="w-12 h-12 rounded-2xl shadow-sm border-2 border-white ring-1 ring-slate-200">
+                    <div>
+                        <p class="text-lg font-black text-text-primary tracking-tight">{{ topic.author.get_full_name|default:topic.author.username }}</p>
+                        <p class="text-xs font-bold text-text-muted uppercase tracking-wider">{{ topic.created_at|uz_datetime }}</p>
+                    </div>
+                </div>
+                {% if topic.section %}
+                <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/10">
+                   # {{ topic.section.name }}
+                </span>
+                {% endif %}
+            </div>
+            
+            <h1 class="text-2xl lg:text-3xl font-black text-text-primary tracking-tight leading-tight mb-6">
+                {{ topic.title }}
+            </h1>
+            
+            <div class="prose prose-slate max-w-none text-base lg:text-lg font-medium text-text-secondary leading-relaxed">
+                {{ topic.content|linebreaks }}
+            </div>
+        </div>
+
+        <!-- Replies Section -->
+        <div class="p-8 lg:p-12 space-y-12 bg-white">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
+                    <i data-lucide="message-square" size="16"></i>
+                </div>
+                <h3 class="text-lg font-black text-text-primary tracking-tight">Javoblar ({{ replies.count }})</h3>
+            </div>
+
+            <div class="space-y-10 relative">
+                <!-- Vertical line separator -->
+                <div class="absolute left-6 top-0 bottom-0 w-px bg-slate-100 hidden md:block"></div>
+
+                {% for reply in replies %}
+                <div class="relative pl-0 md:pl-16 group">
+                    <!-- Dot indicator on line -->
+                    <div class="absolute left-6 top-6 w-2 h-2 rounded-full bg-slate-200 ring-4 ring-white z-10 hidden md:block group-hover:bg-primary transition-colors"></div>
+                    
+                    <div class="p-6 rounded-[28px] border border-border/50 hover:border-primary/20 hover:bg-slate-50/50 transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name={{ reply.author.get_full_name|default:reply.author.username }}&background=random&color=fff" class="w-8 h-8 rounded-xl shadow-sm">
+                                <div>
+                                    <p class="text-sm font-black text-text-primary">{{ reply.author.get_full_name|default:reply.author.username }}</p>
+                                    <p class="text-[10px] font-bold text-text-muted uppercase tracking-wider">{{ reply.created_at|uz_datetime }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-sm font-medium text-text-secondary leading-relaxed">
+                            {{ reply.content|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-10 opacity-50">
+                    <i data-lucide="message-square" size="32" class="mx-auto mb-3 text-text-muted"></i>
+                    <p class="text-sm font-bold text-text-secondary">Hali javoblar yo'q</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Quick Reply Input -->
+        <div class="p-8 lg:p-12 border-t border-border/30 bg-slate-50/50">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                    <i data-lucide="reply" size="20"></i>
+                </div>
+                <h3 class="text-xl font-black text-text-primary tracking-tight">Javobingizni qoldiring</h3>
+            </div>
+
+            <form method="post" action="{% url 'lms:post_forum_reply' topic.id %}" class="space-y-6">
+                {% csrf_token %}
+                <div class="relative group">
+                    <textarea name="content" rows="5" required 
+                              class="w-full rounded-[32px] bg-white border border-border/50 p-8 text-base font-medium text-text-primary focus:ring-8 focus:ring-primary/5 focus:border-primary/20 transition-all outline-none resize-none shadow-sm"
+                              placeholder="Fikringizni yoki javobingizni shu yerga yozing..."></textarea>
+                    
+                    <div class="absolute bottom-6 right-6">
+                        <button type="submit" class="inline-flex items-center gap-3 px-10 py-5 rounded-2xl bg-primary text-white font-black text-base shadow-2xl shadow-primary/30 hover:bg-primary/90 transition-all group/btn">
+                             Xabarni yuborish
+                            <i data-lucide="send" size="18" class="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

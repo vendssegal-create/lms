@@ -1,0 +1,5 @@
+# Certificate: DOCX + LibreOffice yoki docx2pdf (faqat Windows/macOS + Microsoft Word).
+docxtpl>=1.2.0
+qrcode[pil]>=7.4
+Pillow>=10.0
+docx2pdf>=0.1.8; (sys_platform == "win32" or sys_platform == "darwin")

@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+{% load lms_filters static %}
+
+{% block title %}{{ test.name }} — Test — Django LMS{% endblock %}
+
+{% block extra_head %}
+<style>
+    .test-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding-bottom: 100px;
+    }
+    .question-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 35px;
+        margin-bottom: 30px;
+        box-shadow: var(--shadow-sm);
+        border: 2px solid transparent;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+    .question-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: rgba(67, 97, 238, 0.1);
+    }
+    .question-card.answered {
+        border-color: rgba(34, 197, 94, 0.2);
+    }
+    .question-number {
+        position: absolute;
+        top: 35px;
+        left: -15px;
+        background: var(--primary);
+        color: #fff;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+    }
+    .question-text {
+        font-size: 19px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 30px;
+        line-height: 1.6;
+        padding-left: 20px;
+    }
+    .option-item {
+        margin-bottom: 12px;
+    }
+    .option-item label {
+        display: block;
+        padding: 16px 20px;
+        border-radius: 16px;
+        background: #f8fafc;
+        border: 2px solid #f1f5f9;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 600;
+        color: #475569;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .option-item input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--primary);
+        cursor: pointer;
+    }
+    .option-item input[type="radio"]:checked + span {
+        color: var(--primary);
+    }
+    .option-item label:has(input:checked) {
+        background: rgba(67, 97, 238, 0.05);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    .option-item label:hover {
+        background: #f1f5f9;
+        border-color: #e2e8f0;
+    }
+
+    .test-sidebar {
+        position: fixed;
+        top: 100px;
+        left: calc(50% + 470px);
+        width: 280px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .timer-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 25px;
+        box-shadow: var(--shadow-md);
+        text-align: center;
+        border-top: 4px solid var(--primary);
+    }
+    .timer-val {
+        font-size: 42px;
+        font-weight: 800;
+        color: var(--primary);
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+    }
+    .timer-label {
+        font-size: 11px;
+        font-weight: 800;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-top: 10px;
+    }
+
+    @media (max-width: 1500px) {
+        .test-sidebar {
+            position: sticky;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            margin-bottom: 30px;
+            flex-direction: row;
+        }
+        .timer-card { flex: 1; display: flex; align-items: center; justify-content: center; gap: 20px; padding: 15px; }
+        .timer-label { margin: 0; }
+    }
+
+    /* Fullscreen Modal */
+    #fullscreen-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(15, 23, 42, 0.98);
+        z-index: 10000;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        color: #fff; text-align: center; padding: 20px;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="fullscreen-overlay">
+    <div style="font-size: 60px; color: var(--primary); margin-bottom: 30px;"><i class="fa fa-arrows-alt"></i></div>
+    <h2 style="font-weight: 800; font-size: 32px; margin-bottom: 15px;">Testni Boshlash</h2>
+    <p style="font-size: 18px; color: #94a3b8; max-width: 500px; margin-bottom: 40px; line-height: 1.6;">
+        Test paytida xavfsizlik va adolatni ta'minlash uchun tizim to'liq ekran rejimida ishlashi zarur.
+    </p>
+    <button id="start-test-btn" class="btn btn-primary" style="border-radius: 20px; padding: 18px 50px; font-weight: 800; font-size: 18px; box-shadow: 0 10px 30px rgba(67, 97, 238, 0.4);">
+        Ekranni tayyorlash va boshlash
+    </button>
+</div>
+
+<div class="test-container animate-fadeIn" id="main-test-area" style="display: none;">
+    <div class="test-sidebar">
+        <div class="timer-card">
+            <div class="timer-val" id="timer-display">--:--</div>
+            <div class="timer-label">Qolgan Vaqt</div>
+        </div>
+        <div class="box" style="border-radius: 24px; padding: 20px; box-shadow: var(--shadow-md); border: none;">
+            <div style="font-weight: 800; font-size: 13px; color: var(--text-primary); margin-bottom: 15px; text-transform: uppercase;">Test Progress</div>
+            <div class="progress" style="height: 8px !important; background: #f1f5f9; border-radius: 10px; margin-bottom: 10px;">
+                <div id="test-progress-bar" class="progress-bar" style="width: 0%; background: var(--success); border-radius: 10px;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--text-muted);">
+                <span id="answered-count">0</span> / {{ questions|length }} javob berildi
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 40px;">
+        <h1 style="font-weight: 900; color: #1e293b; margin: 0 0 10px; font-size: 28px;">{{ test.name }}</h1>
+        <p style="color: #64748b; font-weight: 600;"><i class="fa fa-book text-primary"></i> {{ test.course.title }}</p>
+    </div>
+
+    <form method="post" id="test-form">
+        {% csrf_token %}
+        {% for question in questions %}
+        <div class="question-card" id="q-{{ question.id }}">
+            <div class="question-number">{{ forloop.counter }}</div>
+            <div class="question-text">{{ question.text|safe }}</div>
+            
+            <div class="options-list">
+                {% with saved_val=saved_answers|get_item:question.id|stringformat:"s" %}
+                <div class="option-item">
+                    <label>
+                        <input type="radio" name="question_{{ question.id }}" value="1" {% if saved_val == "1" %}checked{% endif %} onchange="updateProgress()">
+                        <span>{{ question.option1 }}</span>
+                    </label>
+                </div>
+                <div class="option-item">
+                    <label>
+                        <input type="radio" name="question_{{ question.id }}" value="2" {% if saved_val == "2" %}checked{% endif %} onchange="updateProgress()">
+                        <span>{{ question.option2 }}</span>
+                    </label>
+                </div>
+                {% if question.option3 %}
+                <div class="option-item">
+                    <label>
+                        <input type="radio" name="question_{{ question.id }}" value="3" {% if saved_val == "3" %}checked{% endif %} onchange="updateProgress()">
+                        <span>{{ question.option3 }}</span>
+                    </label>
+                </div>
+                {% endif %}
+                {% if question.option4 %}
+                <div class="option-item">
+                    <label>
+                        <input type="radio" name="question_{{ question.id }}" value="4" {% if saved_val == "4" %}checked{% endif %} onchange="updateProgress()">
+                        <span>{{ question.option4 }}</span>
+                    </label>
+                </div>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <div style="text-align: center; margin-top: 50px;">
+            <button type="button" onclick="confirmSubmit()" class="btn btn-success" style="border-radius: 20px; padding: 20px 60px; font-weight: 800; font-size: 20px; background: var(--success); border: none; box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);">
+                <i class="fa fa-check-circle" style="margin-right: 10px;"></i> Testni yakunlash
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="{% static 'js/proctor.js' %}"></script>
+<script>
+    const totalQuestions = {{ questions|length }};
+    let totalSeconds = parseInt("{{ attempt_total_seconds }}", 10) || 1;
+    const timerDisplay = document.getElementById("timer-display");
+    const testForm = document.getElementById("test-form");
+    const overlay = document.getElementById("fullscreen-overlay");
+    const mainArea = document.getElementById("main-test-area");
+    const startBtn = document.getElementById("start-test-btn");
+
+    function formatTime(s) {
+        let m = Math.floor(s / 60);
+        let sec = s % 60;
+        return (m < 10 ? "0" : "") + m + ":" + (sec < 10 ? "0" : "") + sec;
+    }
+
+    function updateProgress() {
+        const answeredItems = document.querySelectorAll('input[type="radio"]:checked');
+        const answeredCount = answeredItems.length;
+        document.getElementById("answered-count").innerText = answeredCount;
+        const progress = (answeredCount / totalQuestions) * 100;
+        document.getElementById("test-progress-bar").style.width = progress + "%";
+
+        // Mark card as answered
+        answeredItems.forEach(input => {
+            input.closest('.question-card').classList.add('answered');
+        });
+    }
+
+    function startTimer() {
+        const timerInterval = setInterval(function() {
+            totalSeconds = Math.max(totalSeconds - 1, 0);
+            timerDisplay.textContent = formatTime(totalSeconds);
+
+            if (totalSeconds <= 60) {
+                timerDisplay.style.color = 'var(--danger)';
+            } else if (totalSeconds <= 300) {
+                timerDisplay.style.color = 'var(--warning)';
+            }
+
+            if (totalSeconds === 0) {
+                clearInterval(timerInterval);
+                testForm.submit();
+            }
+        }, 1000);
+    }
+
+    function confirmSubmit() {
+        if (confirm("Testni yakunlamoqchimisiz? Barcha javoblaringiz saqlanadi.")) {
+            testForm.submit();
+        }
+    }
+
+    startBtn.addEventListener('click', async () => {
+        try {
+            if (document.documentElement.requestFullscreen) {
+                await document.documentElement.requestFullscreen();
+            }
+            overlay.style.display = 'none';
+            mainArea.style.display = 'block';
+            startTimer();
+            updateProgress();
+
+            {% if test.proctoring_enabled or test.face_id_required %}
+            if (window.initProctor) {
+                window.initProctor({
+                    attemptId: "{{ attempt.id }}",
+                    enabled: {% if test.proctoring_enabled %}true{% else %}false{% endif %},
+                    faceIdRequired: {% if test.face_id_required %}true{% else %}false{% endif %},
+                    studentImage: "{{ face_image_url|default:'' }}",
+                    maxViolations: {{ test.max_tab_switches }}
+                });
+            }
+            {% endif %}
+        } catch (err) {
+            alert("To'liq ekran rejimiga o'tishda xatolik! Iltimos browser ruxsatini tekshiring.");
+        }
+    });
+
+    // Detect if user exits fullscreen
+    document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement && mainArea.style.display === 'block') {
+            // Proctor will handle the log, but we can show a warning
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Ruhshodbek/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/815167c1-2f62-4ead-9559-8c60ac3754e7/3af731b5-be97-4814-aeee-f87d62a6569a/skills/docx/**)",
+      "Bash(node -e \"const {Document}=require\\(''docx''\\); console.log\\(''docx ready''\\)\")",
+      "Bash(npm install:*)",
+      "Bash(node lms_doc.js)",
+      "Bash(node -e \"require\\(''docx''\\); console.log\\(''ok''\\)\")",
+      "Bash(npm root:*)",
+      "Bash(where node:*)",
+      "Bash(NODE_PATH=\"C:\\\\Users\\\\Ruhshodbek\\\\AppData\\\\Roaming\\\\npm\\\\node_modules\" node -e \"require\\(''docx''\\); console.log\\(''ok''\\)\")",
+      "Bash(NODE_PATH=\"C:\\\\Users\\\\Ruhshodbek\\\\AppData\\\\Roaming\\\\npm\\\\node_modules\" node \"C:\\\\Users\\\\Ruhshodbek\\\\AppData\\\\Roaming\\\\Claude\\\\local-agent-mode-sessions\\\\skills-plugin\\\\815167c1-2f62-4ead-9559-8c60ac3754e7\\\\3af731b5-be97-4814-aeee-f87d62a6569a\\\\skills\\\\docx\\\\lms_doc.js\")",
+      "Bash(python manage.py check --deploy)",
+      "Bash(python manage.py check)",
+      "Bash(python -c \":*)",
+      "Bash(ls lms/*.py)",
+      "Bash(DJANGO_SETTINGS_MODULE=core.settings python -c \":*)",
+      "Bash(grep -v \"^ERROR\\\\|^WARNING\\\\|^Traceback\\\\|^  File\\\\|^    \\\\|^Not Found\\\\|^ValueError\\\\|^AttributeError\\\\|^FieldError\\\\|^TypeError\\\\|^$\")",
+      "Bash(grep -v \"^ERROR\\\\|^WARNING\\\\|^Traceback\\\\|^  File\\\\|^    \\\\|^ValueError\\\\|^AttributeError\\\\|^FieldError\\\\|^TypeError\\\\|^django.\\\\|Internal\\\\|^$\")",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(xargs ls:*)",
+      "Bash(find '/d/LMS hemis/flask_lms/django_lms/templates' -name *lms* -o -name *course* -o -name *dashboard*)",
+      "Bash(grep -E \"\\\\.py$\")"
+    ]
+  }
+}

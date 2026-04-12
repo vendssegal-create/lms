@@ -1,0 +1,267 @@
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 10:53:17
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 10:54:55
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 10:58:03
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 10:58:10
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 10:58:17
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 10:58:51
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 10:59:44
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 10:59:56
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 11:00:04
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 1 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): lms.
+Run 'python manage.py migrate' to apply them.
+April 10, 2026 - 11:03:56
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 1 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): lms.
+Run 'python manage.py migrate' to apply them.
+April 10, 2026 - 11:03:59
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 11:34:28
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 11:34:55
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 11:35:26
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 11:38:28
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 11:39:04
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 1 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): messaging.
+Run 'python manage.py migrate' to apply them.
+April 10, 2026 - 11:39:20
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 11:39:35
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 12:18:22
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 12:20:27
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 12:20:31
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 12:20:35
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 12:21:13
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 12:21:17
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 13:42:48
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 13:42:52
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 13:46:29
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 14:07:02
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 14:07:13
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 16:37:15
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 17:05:29
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 10, 2026 - 17:07:34
+Django version 4.2, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CTRL-BREAK.
+

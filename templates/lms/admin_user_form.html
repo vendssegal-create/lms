@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}{% if user_type == 'teacher' %}O'qituvchi{% else %}Talaba{% endif %} qo'shish — Django LMS Premium{% endblock %}
+{% block content %}
+<div class="animate-slideUp max-w-4xl mx-auto pb-20 space-y-10">
+    <!-- Header Section -->
+    <div class="flex items-center gap-6">
+        <a href="{% url 'lms:admin_dashboard' %}" class="w-12 h-12 rounded-2xl bg-white border border-border/50 flex items-center justify-center text-text-muted hover:text-primary hover:border-primary/20 transition-all shadow-sm group">
+            <i data-lucide="arrow-left" size="20" class="group-hover:-translate-x-1 transition-transform"></i>
+        </a>
+        <div>
+            <h2 class="text-3xl font-black text-text-primary tracking-tight">
+                Yangi {% if user_type == 'teacher' %}o'qituvchi{% else %}talaba{% endif %} qo'shish
+            </h2>
+            <p class="text-sm font-medium text-text-secondary mt-1">Tizimga yangi foydalanuvchi ma'lumotlarini kiriting</p>
+        </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card-premium p-10 lg:p-14">
+        <form method="post" class="space-y-10">
+            {% csrf_token %}
+            
+            <!-- Account Info Section -->
+            <div class="space-y-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary">
+                        <i data-lucide="shield" size="18"></i>
+                    </div>
+                    <h3 class="text-lg font-black text-text-primary tracking-tight">Akkaunt ma'lumotlari</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Login (Username) <span class="text-danger">*</span></label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-primary transition-colors">
+                                <i data-lucide="user" size="20"></i>
+                            </div>
+                            <input type="text" name="username" required
+                                   class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-base font-bold text-text-primary ring-2 ring-transparent focus:ring-primary/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                                   placeholder="Masalan: 320211100001">
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Parol <span class="text-danger">*</span></label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-primary transition-colors">
+                                <i data-lucide="lock" size="20"></i>
+                            </div>
+                            <input type="password" name="password" required
+                                   class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-base font-bold text-text-primary ring-2 ring-transparent focus:ring-primary/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                                   placeholder="Kamida 8 ta belgi">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-px bg-slate-100"></div>
+
+            <!-- Profile Info Section -->
+            <div class="space-y-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
+                        <i data-lucide="user-cog" size="18"></i>
+                    </div>
+                    <h3 class="text-lg font-black text-text-primary tracking-tight">Profil ma'lumotlari</h3>
+                </div>
+
+                <div class="space-y-4">
+                    <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">To'liq ism (F.I.SH) <span class="text-danger">*</span></label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-indigo-600 transition-colors">
+                            <i data-lucide="id-card" size="20"></i>
+                        </div>
+                        <input type="text" name="full_name" required
+                               class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-base font-bold text-text-primary ring-2 ring-transparent focus:ring-indigo-500/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                               placeholder="Masalan: Eshmatov Toshmat">
+                    </div>
+                </div>
+
+                {% if user_type == 'teacher' %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Email</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-indigo-600 transition-colors">
+                                <i data-lucide="mail" size="20"></i>
+                            </div>
+                            <input type="email" name="email" 
+                                   class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-base font-bold text-text-primary ring-2 ring-transparent focus:ring-indigo-500/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                                   placeholder="example@mail.uz">
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Telefon</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-indigo-600 transition-colors">
+                                <i data-lucide="phone" size="20"></i>
+                            </div>
+                            <input type="text" name="phone" 
+                                   class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-base font-bold text-text-primary ring-2 ring-transparent focus:ring-indigo-500/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                                   placeholder="+998901234567">
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Kafedra / Bo'lim</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-indigo-600 transition-colors">
+                            <i data-lucide="building" size="20"></i>
+                        </div>
+                        <input type="text" name="department" 
+                               class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-base font-bold text-text-primary ring-2 ring-transparent focus:ring-indigo-500/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                               placeholder="Masalan: Axborot texnologiyalari">
+                    </div>
+                </div>
+                {% else %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">ID Raqami (Talaba guvohnomasi) <span class="text-danger">*</span></label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-indigo-600 transition-colors">
+                                <i data-lucide="hash" size="20"></i>
+                            </div>
+                            <input type="text" name="student_id_number" required
+                                   class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-base font-bold text-text-primary ring-2 ring-transparent focus:ring-indigo-500/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                                   placeholder="320211100001">
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">OTM nomi</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-indigo-600 transition-colors">
+                                <i data-lucide="school" size="20"></i>
+                            </div>
+                            <input type="text" name="university" 
+                                   class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-base font-bold text-text-primary ring-2 ring-transparent focus:ring-indigo-500/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                                   placeholder="Buxoro davlat universiteti">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Fakultet</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-indigo-600 transition-colors">
+                                <i data-lucide="map-pin" size="20"></i>
+                            </div>
+                            <input type="text" name="faculty_name" 
+                                   class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-base font-bold text-text-primary ring-2 ring-transparent focus:ring-indigo-500/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                                   placeholder="Masalan: Fizika-matematika">
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Guruh</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-indigo-600 transition-colors">
+                                <i data-lucide="users" size="20"></i>
+                            </div>
+                            <input type="text" name="group_name" 
+                                   class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-base font-bold text-text-primary ring-2 ring-transparent focus:ring-indigo-500/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                                   placeholder="Masalan: 1-1-MAT-21">
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-6 pt-6">
+                <a href="{% url 'lms:admin_dashboard' %}" class="flex-1 inline-flex items-center justify-center px-10 py-5 rounded-2xl bg-white border border-border/50 text-text-primary font-black text-base hover:bg-slate-50 transition-all shadow-sm">
+                    Bekor qilish
+                </a>
+                <button type="submit" class="flex-[2] inline-flex items-center justify-center gap-3 px-10 py-5 rounded-2xl bg-primary text-white font-black text-base shadow-2xl shadow-primary/30 hover:bg-primary/90 transition-all group">
+                    <i data-lucide="check-circle" size="20" class="group-hover:scale-110 transition-transform"></i>
+                    Foydalanuvchini saqlash
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

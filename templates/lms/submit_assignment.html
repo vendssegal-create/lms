@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load lms_filters static %}
+
+{% block title %}Topshiriq: {{ assignment.title }} — Django LMS{% endblock %}
+
+{% block extra_head %}
+<style>
+    .assignment-hero {
+        background: var(--glass-bg);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+    .assignment-title { font-weight: 900; color: #1e293b; margin: 0 0 10px; font-size: 24px; }
+    .assignment-meta { display: flex; gap: 20px; font-weight: 700; color: #64748b; font-size: 14px; }
+
+    .desc-box {
+        background: #fff;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 25px;
+    }
+    .desc-title { font-weight: 800; color: #1e293b; text-transform: uppercase; font-size: 11px; margin-bottom: 15px; letter-spacing: 1px; }
+    .desc-text { color: #475569; line-height: 1.7; font-size: 15px; }
+
+    .upload-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow: var(--shadow-md);
+        border-top: 4px solid var(--primary);
+    }
+    .file-drop-zone {
+        border: 2px dashed #e2e8f0;
+        border-radius: 16px;
+        padding: 40px 20px;
+        text-align: center;
+        background: #f8fafc;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+    .file-drop-zone:hover { border-color: var(--primary); background: rgba(67, 97, 238, 0.05); }
+
+    .submission-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+    .submission-table tr { background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: 0.2s; }
+    .submission-table tr:hover { transform: scale(1.01); box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+    .submission-table td { padding: 15px 20px; vertical-align: middle; }
+    .submission-table td:first-child { border-radius: 12px 0 0 12px; }
+    .submission-table td:last-child { border-radius: 0 12px 12px 0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row animate-fadeIn">
+    <div class="col-md-5">
+        <div class="assignment-hero">
+            <h1 class="assignment-title">{{ assignment.title }}</h1>
+            <div class="assignment-meta">
+                <span><i class="fa fa-calendar text-primary"></i> {{ assignment.deadline|date:"d.m.Y H:i"|default:"Muddatsiz" }}</span>
+                <span><i class="fa fa-star text-warning"></i> Max: {{ assignment.max_score }} Ball</span>
+            </div>
+        </div>
+
+        <div class="desc-box">
+            <div class="desc-title">Topshiriq Ko'rsatmasi</div>
+            <div class="desc-text">{{ assignment.description|linebreaks }}</div>
+        </div>
+
+        <div class="upload-card">
+            <div class="desc-title">Yechimni Yuborish</div>
+            <form method="post" enctype="multipart/form-data" id="submit-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="file-drop-zone" onclick="document.getElementById('submission_file').click()">
+                        <div style="font-size: 30px; color: var(--primary); margin-bottom: 10px;"><i class="fa fa-cloud-upload"></i></div>
+                        <div style="font-weight: 700; color: #1e293b; margin-bottom: 5px;">Faylni tanlang yoki shu yerga tashlang</div>
+                        <div style="font-size: 11px; color: #94a3b8; font-weight: 600;">.pdf, .docx, .zip, .png, .jpg (Max: 10MB)</div>
+                        <input type="file" id="submission_file" name="submission_file" style="display: none;" onchange="this.form.submit()">
+                    </div>
+                </div>
+                <!-- Optional: Add a comment box here if needed -->
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-7 animate-fadeInUp">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 0 5px;">
+            <h4 style="font-weight: 900; color: #1e293b; text-transform: uppercase; font-size: 14px; margin: 0;">Topshirishlar Tarixi</h4>
+            <span class="badge" style="background: #f1f5f9; color: #64748b; padding: 5px 12px; border-radius: 10px;">{{ submissions.count }} marta</span>
+        </div>
+
+        {% if submissions %}
+        <table class="submission-table">
+            {% for sub in submissions %}
+            <tr>
+                <td style="width: 140px;">
+                    <div style="font-weight: 800; color: #1e293b; font-size: 13px;">{{ sub.submitted_at|date:"d.m.Y" }}</div>
+                    <div style="color: #94a3b8; font-size: 11px; font-weight: 600;">{{ sub.submitted_at|date:"H:i" }}</div>
+                </td>
+                <td>
+                    <a href="{{ sub.file.url }}" target="_blank" style="display: flex; align-items: center; gap: 10px; color: var(--primary); font-weight: 700; text-decoration: none;">
+                        <i class="fa fa-file-pdf-o"></i> 
+                        <span style="border-bottom: 1px dashed var(--primary);">Yuklab olish</span>
+                    </a>
+                </td>
+                <td style="text-align: center;">
+                    {% if sub.score is not None %}
+                    <div style="font-weight: 900; color: #22c55e; font-size: 18px;">{{ sub.score }}</div>
+                    <div style="font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase;">Ball</div>
+                    {% else %}
+                    <span class="status-pill status-pill-warning">Baholanmagan</span>
+                    {% endif %}
+                </td>
+                <td style="text-align: right;">
+                    {% if sub.feedback %}
+                    <button class="btn btn-xs btn-default" style="border-radius: 8px;" title="{{ sub.feedback }}"><i class="fa fa-comment-o"></i> Izoh</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <div style="background: #fff; border-radius: 20px; padding: 60px; text-align: center; color: #94a3b8; box-shadow: var(--shadow-sm);">
+            <i class="fa fa-inbox fa-3x" style="opacity: 0.2; margin-bottom: 20px; display: block;"></i>
+            <div style="font-weight: 700; font-size: 16px;">Hali yuborilmagan</div>
+            <p style="font-size: 13px;">Topshiriq yechimini yuklang.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

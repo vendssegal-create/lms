@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mening natijalarim — Django LMS{% endblock %}
+
+{% block content %}
+<div class="row animate-fadeIn">
+    <div class="col-md-12">
+        <!-- LMS Grades -->
+        <div class="box box-solid" style="border-radius: 16px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px;">
+            <div class="box-header with-border" style="padding: 20px 25px;">
+                <h3 class="box-title" style="font-weight: 800; color: #1e293b;"><i class="fa fa-graduation-cap text-primary" style="margin-right: 10px;"></i>Kurslar bo'yicha baholar (LMS)</h3>
+            </div>
+            <div class="box-body" style="padding: 0;">
+                <div class="table-responsive">
+                    <table class="table table-hover" style="margin-bottom: 0;">
+                        <thead>
+                            <tr style="background: #f8fafc; color: #64748b; font-size: 13px;">
+                                <th style="padding: 15px 25px;">Kurs nomi</th>
+                                <th style="text-align: center;">Joriy</th>
+                                <th style="text-align: center;">Oraliq</th>
+                                <th style="text-align: center;">Yakuniy</th>
+                                <th style="text-align: center;">Umumiy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in lms_data %}
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 20px 25px; vertical-align: middle;">
+                                    <div style="font-weight: 700; color: #1e293b; font-size: 15px;">{{ item.enrollment.course.title }}</div>
+                                    <small class="text-muted">{{ item.enrollment.course.teacher.get_full_name }}</small>
+                                </td>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    <span class="badge" style="background: #f1f5f9; color: #475569; font-weight: 700; font-size: 14px; padding: 6px 12px; border-radius: 8px;">
+                                        {{ item.entry.current_score|default:"0.00" }} / {{ item.gradebook.current_max|default:"30" }}
+                                    </span>
+                                </td>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    <span class="badge" style="background: #fef3c7; color: #92400e; font-weight: 700; font-size: 14px; padding: 6px 12px; border-radius: 8px;">
+                                        {{ item.entry.midterm_score|default:"0.00" }} / {{ item.gradebook.midterm_max|default:"30" }}
+                                    </span>
+                                </td>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    <span class="badge" style="background: #fee2e2; color: #b91c1c; font-weight: 700; font-size: 14px; padding: 6px 12px; border-radius: 8px;">
+                                        {{ item.entry.final_score|default:"0.00" }} / {{ item.gradebook.final_max|default:"40" }}
+                                    </span>
+                                </td>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    <div style="font-weight: 900; color: #1e293b; font-size: 18px;">{{ item.entry.total_score|default:"0.00" }}</div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center" style="padding: 100px 0;">
+                                    <div style="opacity: 0.1; margin-bottom: 20px;"><i class="fa fa-bar-chart fa-4x"></i></div>
+                                    <p style="font-weight: 700; color: #94a3b8; font-size: 16px;">Siz hali hech qanday kursga biriktirilmagansiz.</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

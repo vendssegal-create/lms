@@ -1,0 +1,141 @@
+Watching for file changes with StatReloader
+INFO 2026-04-09 18:25:14,733 autoreload 15084 14116 Watching for file changes with StatReloader
+D:\LMS hemis\flask_lms\django_lms\lms\views\tests.py changed, reloading.
+INFO 2026-04-09 18:32:11,772 autoreload 15084 14116 D:\LMS hemis\flask_lms\django_lms\lms\views\tests.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-09 18:32:14,016 autoreload 2668 5884 Watching for file changes with StatReloader
+[09/Apr/2026 18:35:46] "GET / HTTP/1.1" 200 722
+[09/Apr/2026 18:35:46] "GET /api/auth/session/ HTTP/1.1" 200 1651
+[09/Apr/2026 18:35:47] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:35:47] "GET /api/lms/dashboard/ HTTP/1.1" 200 1702
+[09/Apr/2026 18:35:49] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:35:49] "GET /api/auth/profile/ HTTP/1.1" 200 674
+[09/Apr/2026 18:35:50] "GET /api/messages/threads/ HTTP/1.1" 200 32
+[09/Apr/2026 18:35:50] "GET /api/messages/contacts/ HTTP/1.1" 200 13
+[09/Apr/2026 18:35:51] "GET /api/lms/tests/ HTTP/1.1" 200 940
+[09/Apr/2026 18:35:51] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:35:52] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:35:52] "GET /api/lms/teacher/tests/3/ HTTP/1.1" 200 222479
+[09/Apr/2026 18:35:57] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:35:57] "GET /assets/TestQuestionsPage-uq4fm6Ie.js HTTP/1.1" 200 8683
+[09/Apr/2026 18:35:57] "GET /api/lms/teacher/tests/3/questions/list/?page=1&page_size=20 HTTP/1.1" 200 6120
+[09/Apr/2026 18:35:58] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:35:58] "GET /api/lms/teacher/tests/3/ HTTP/1.1" 200 222479
+[09/Apr/2026 18:37:57] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:37:57] "GET /assets/ManageTestsPage-Cy2GJYrL.js HTTP/1.1" 200 3087
+[09/Apr/2026 18:37:57] "GET /api/lms/teacher/courses/ HTTP/1.1" 200 43
+[09/Apr/2026 18:38:00] "GET /api/lms/tests/ HTTP/1.1" 200 940
+[09/Apr/2026 18:38:00] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:38:02] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:38:02] "GET /api/lms/teacher/courses/ HTTP/1.1" 200 43
+[09/Apr/2026 18:38:04] "GET /api/lms/tests/ HTTP/1.1" 200 940
+[09/Apr/2026 18:38:04] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:38:04] "GET /assets/retake-DAYEeVTI.js HTTP/1.1" 200 4842
+[09/Apr/2026 18:38:04] "GET /assets/RetakeSearchStudentPage-mA3ArFgf.js HTTP/1.1" 200 4843
+[09/Apr/2026 18:38:04] "GET /assets/RetakePage-BUxHvMvJ.js HTTP/1.1" 200 16030
+[09/Apr/2026 18:38:04] "GET /assets/RetakeSchedulesPage-D9t_mO7b.js HTTP/1.1" 200 8407
+[09/Apr/2026 18:38:04] "GET /assets/RetakeExamCalendarPage-CfX6Ld_m.js HTTP/1.1" 200 6893
+[09/Apr/2026 18:38:04] "GET /assets/RetakeManageGroupsPage-Cy_1-A7J.js HTTP/1.1" 200 6812
+[09/Apr/2026 18:38:04] "GET /assets/RetakeSyncPage-DUDCG8lA.js HTTP/1.1" 200 8437
+Forbidden: /api/retake/applications/
+WARNING 2026-04-09 18:38:04,688 log 2668 3192 Forbidden: /api/retake/applications/
+[09/Apr/2026 18:38:04] "GET /api/retake/applications/ HTTP/1.1" 403 48
+[09/Apr/2026 18:38:04] "GET /assets/RetakeExamSheetPage-CoSSOKM0.js HTTP/1.1" 200 9998
+[09/Apr/2026 18:38:04] "GET /assets/RetakeTeacherGroupsPage-BqwcZeKk.js HTTP/1.1" 200 7885
+[09/Apr/2026 18:38:04] "GET /assets/RetakeStudentDebtsPage-BRMNq2zH.js HTTP/1.1" 200 9589
+[09/Apr/2026 18:38:04] "GET /assets/RetakeCyclesPage-BHd9QLFm.js HTTP/1.1" 200 7144
+[09/Apr/2026 18:45:48] "GET /tests HTTP/1.1" 200 722
+[09/Apr/2026 18:45:48] "GET /assets/index-blUdFS0Y.js HTTP/1.1" 200 20068
+[09/Apr/2026 18:45:48] "GET /assets/router-MhIJQf52.js HTTP/1.1" 200 38385
+[09/Apr/2026 18:45:48] "GET /assets/icons-B4rPvpz6.js HTTP/1.1" 200 46404
+[09/Apr/2026 18:45:48] "GET /assets/index-YUziqyt3.css HTTP/1.1" 200 110955
+[09/Apr/2026 18:45:48] "GET /api/auth/session/ HTTP/1.1" 200 1651
+[09/Apr/2026 18:45:49] "GET /assets/role-switcher-menu-D9EhA2Sc.js HTTP/1.1" 200 1573
+[09/Apr/2026 18:45:49] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:45:49] "GET /assets/app-sidebar-Dhcc77eU.js HTTP/1.1" 200 4735
+[09/Apr/2026 18:45:49] "GET /assets/route-preload-mmIjOj0d.js HTTP/1.1" 200 5366
+[09/Apr/2026 18:45:49] "GET /assets/lms-Q4cu0Gz5.js HTTP/1.1" 200 7560
+[09/Apr/2026 18:45:49] "GET /assets/TestsPage-Af_-njyP.js HTTP/1.1" 200 4926
+[09/Apr/2026 18:45:49] "GET /assets/quick-chat-fab-CGXfkf9D.js HTTP/1.1" 200 1977
+[09/Apr/2026 18:45:49] "GET /api/lms/tests/ HTTP/1.1" 200 940
+[09/Apr/2026 18:45:50] "GET /assets/EditTestPage-5n46oFou.js HTTP/1.1" 200 12335
+[09/Apr/2026 18:45:50] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:45:51] "GET /api/lms/teacher/tests/3/ HTTP/1.1" 200 222479
+[09/Apr/2026 18:45:53] "GET /assets/TestQuestionsPage-DMxCA-8Z.js HTTP/1.1" 200 16765
+[09/Apr/2026 18:45:53] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:45:53] "GET /api/lms/teacher/tests/3/questions/list/?page=1&page_size=20 HTTP/1.1" 200 6120
+[09/Apr/2026 18:46:10] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:46:10] "GET /api/lms/teacher/tests/3/ HTTP/1.1" 200 222479
+[09/Apr/2026 18:46:21] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:46:21] "GET /api/lms/teacher/tests/3/questions/list/?page=1&page_size=20 HTTP/1.1" 200 6120
+[09/Apr/2026 18:46:27] "GET /assets/messages-TNJTqwYX.js HTTP/1.1" 200 1996
+[09/Apr/2026 18:46:27] "GET /assets/MessagesPage-C-AGdRs1.js HTTP/1.1" 200 7787
+[09/Apr/2026 18:46:27] "GET /assets/MessageThreadPage-GFcDwAS4.js HTTP/1.1" 200 7510
+[09/Apr/2026 18:46:27] "GET /api/messages/threads/ HTTP/1.1" 200 32
+[09/Apr/2026 18:46:27] "GET /api/messages/contacts/ HTTP/1.1" 200 13
+D:\LMS hemis\flask_lms\django_lms\users\models.py changed, reloading.
+INFO 2026-04-09 18:49:14,268 autoreload 2668 5884 D:\LMS hemis\flask_lms\django_lms\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-09 18:49:16,222 autoreload 1988 504 Watching for file changes with StatReloader
+D:\LMS hemis\flask_lms\django_lms\users\api_views.py changed, reloading.
+INFO 2026-04-09 18:49:25,542 autoreload 1988 504 D:\LMS hemis\flask_lms\django_lms\users\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-09 18:49:27,392 autoreload 2260 9872 Watching for file changes with StatReloader
+D:\LMS hemis\flask_lms\django_lms\users\api_views.py changed, reloading.
+INFO 2026-04-09 18:49:35,229 autoreload 2260 9872 D:\LMS hemis\flask_lms\django_lms\users\api_views.py changed, reloading.
+Watching for file changes with StatReloader
+INFO 2026-04-09 18:49:37,074 autoreload 13316 8624 Watching for file changes with StatReloader
+[09/Apr/2026 18:53:24] "GET /tests/3/questions?mode=manual HTTP/1.1" 200 722
+[09/Apr/2026 18:53:24] "GET /assets/index-e_AZBHdm.js HTTP/1.1" 200 20166
+[09/Apr/2026 18:53:25] "GET /assets/icons-hB1NP7Cr.js HTTP/1.1" 200 46404
+[09/Apr/2026 18:53:25] "GET /assets/vendor-DzEgQs0U.js HTTP/1.1" 200 154704
+[09/Apr/2026 18:53:25] "GET /assets/react-vendor-ChrB2XOk.js HTTP/1.1" 200 189699
+[09/Apr/2026 18:53:25] "GET /assets/router-CdoGkNxL.js HTTP/1.1" 200 38385
+[09/Apr/2026 18:53:25] "GET /assets/index-C9Ebcn_-.css HTTP/1.1" 200 111628
+[09/Apr/2026 18:53:25] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:53:28] "GET /tests/3/questions?mode=manual HTTP/1.1" 200 722
+[09/Apr/2026 18:53:29] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:53:32] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:53:33] "GET /tests/3/edit HTTP/1.1" 200 722
+[09/Apr/2026 18:53:33] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:54:07] "GET /tests/3/edit HTTP/1.1" 200 722
+[09/Apr/2026 18:54:07] "GET /assets/index-e_AZBHdm.js HTTP/1.1" 304 0
+[09/Apr/2026 18:54:07] "GET /assets/vendor-DzEgQs0U.js HTTP/1.1" 304 0
+[09/Apr/2026 18:54:07] "GET /assets/react-vendor-ChrB2XOk.js HTTP/1.1" 304 0
+[09/Apr/2026 18:54:07] "GET /assets/icons-hB1NP7Cr.js HTTP/1.1" 304 0
+[09/Apr/2026 18:54:07] "GET /assets/router-CdoGkNxL.js HTTP/1.1" 304 0
+[09/Apr/2026 18:54:07] "GET /assets/index-C9Ebcn_-.css HTTP/1.1" 304 0
+[09/Apr/2026 18:54:07] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:54:08] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:54:08] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:54:09] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:54:09] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:54:09] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:54:12] "GET / HTTP/1.1" 200 722
+[09/Apr/2026 18:54:12] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 18:54:17] "GET / HTTP/1.1" 200 722
+[09/Apr/2026 18:54:17] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 19:00:18] "GET / HTTP/1.1" 200 722
+[09/Apr/2026 19:00:18] "GET /assets/index-TrdB0a1d.js HTTP/1.1" 200 20166
+[09/Apr/2026 19:00:18] "GET /assets/vendor-crtlFWqt.js HTTP/1.1" 200 157777
+[09/Apr/2026 19:00:18] "GET /assets/react-vendor-CeI1qEyY.js HTTP/1.1" 200 651029
+[09/Apr/2026 19:00:18] "GET /assets/router-C7c2BrM5.js HTTP/1.1" 200 38385
+[09/Apr/2026 19:00:18] "GET /assets/index-CuC8ymt_.css HTTP/1.1" 200 113983
+[09/Apr/2026 19:00:19] "GET /assets/icons-YJ69EcnT.js HTTP/1.1" 200 47601
+[09/Apr/2026 19:00:19] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 19:00:48] "GET / HTTP/1.1" 200 722
+[09/Apr/2026 19:00:52,066] - Broken pipe from ('127.0.0.1', 51967)
+[09/Apr/2026 19:01:13] "GET / HTTP/1.1" 200 722
+[09/Apr/2026 19:01:13] "GET /assets/index-TrdB0a1d.js HTTP/1.1" 304 0
+[09/Apr/2026 19:01:13] "GET /assets/vendor-crtlFWqt.js HTTP/1.1" 304 0
+[09/Apr/2026 19:01:13] "GET /assets/react-vendor-CeI1qEyY.js HTTP/1.1" 304 0
+[09/Apr/2026 19:01:13] "GET /assets/router-C7c2BrM5.js HTTP/1.1" 304 0
+[09/Apr/2026 19:01:13] "GET /assets/icons-YJ69EcnT.js HTTP/1.1" 304 0
+[09/Apr/2026 19:01:13] "GET /assets/index-CuC8ymt_.css HTTP/1.1" 304 0
+[09/Apr/2026 19:01:14] "GET /favicon.ico HTTP/1.1" 200 722
+[09/Apr/2026 19:01:14] "GET /tests/3/edit HTTP/1.1" 200 722
+[09/Apr/2026 19:01:14] "GET / HTTP/1.1" 200 722
+[09/Apr/2026 19:01:16,019] - Broken pipe from ('127.0.0.1', 51975)
+[09/Apr/2026 19:01:16,034] - Broken pipe from ('127.0.0.1', 51974)
+[09/Apr/2026 19:01:16] "GET / HTTP/1.1" 200 722
+[09/Apr/2026 19:01:17] "GET /favicon.ico HTTP/1.1" 200 722

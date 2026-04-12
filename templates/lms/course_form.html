@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if action == 'create' %}Yangi kurs yaratish{% else %}Kursni tahrirlash{% endif %} — Django LMS{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="box box-primary" style="border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: none;">
+            <div class="box-header with-border" style="padding: 20px; border-bottom: 1px solid #f1f5f9;">
+                <h3 class="box-title" style="font-weight: 800; font-size: 18px; color: #1e293b;">
+                    <i class="fa {% if action == 'create' %}fa-plus-circle{% else %}fa-edit{% endif %} text-primary"></i> 
+                    {% if action == 'create' %}Yangi kurs yaratish{% else %}Kurs ma'lumotlarini o'zgartirish{% endif %}
+                </h3>
+            </div>
+            
+            <form method="post" class="form-horizontal" style="padding: 20px;">
+                {% csrf_token %}
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="title" class="col-sm-3 control-label" style="text-align: left; color: #64748b;">Kurs nomi</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="title" class="form-control" id="title" placeholder="Masalan: Ma'lumotlar bazasi" value="{{ course.title|default:'' }}" required style="border-radius: 8px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description" class="col-sm-3 control-label" style="text-align: left; color: #64748b;">Tavsif</label>
+                        <div class="col-sm-9">
+                            <textarea name="description" class="form-control" id="description" rows="5" placeholder="Kurs haqida qisqacha ma'lumot..." style="border-radius: 8px; resize: none;">{{ course.description|default:'' }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deadline" class="col-sm-3 control-label" style="text-align: left; color: #64748b;">Muddati (Deadline)</label>
+                        <div class="col-sm-9">
+                            <div class="input-group date">
+                                <div class="input-group-addon" style="border-radius: 8px 0 0 8px; border-right: none;">
+                                    <i class="fa fa-calendar text-muted"></i>
+                                </div>
+                                <input type="text" name="deadline" class="form-control pull-right" id="datepicker" value="{{ course.deadline|date:'Y-m-d'|default:'' }}" style="border-radius: 0 8px 8px 0;">
+                            </div>
+                            <p class="help-block" style="font-size: 11px;">Talabalar kursni yakunlashi kerak bo'lgan oxirgi sana.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <div class="checkbox">
+                                <label style="font-weight: 600; color: #1e293b;">
+                                    <input type="checkbox" name="is_active" {% if course.is_active or action == 'create' %}checked{% endif %}> Faol (Talabalar uchun ko'rinadi)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="box-footer" style="background: #fff; border-top: 1px solid #f1f5f9; padding-top: 20px;">
+                    <a href="{% url 'lms:manage_courses' %}" class="btn btn-default" style="border-radius: 8px; font-weight: 700; padding: 10px 25px;">Bekor qilish</a>
+                    <button type="submit" class="btn btn-primary pull-right" style="border-radius: 8px; font-weight: 800; padding: 10px 40px; background: #4361ee; border: none; box-shadow: 0 4px 14px rgba(67, 97, 238, 0.39);">
+                        {% if action == 'create' %}Kursni yaratish{% else %}Saqlash{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    $(function () {
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'yyyy-mm-dd',
+            todayHighlight: true
+        });
+    });
+</script>
+{% endblock %}

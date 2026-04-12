@@ -1,0 +1,827 @@
+{% extends "base.html" %}
+{% load lms_filters static %}
+
+{% block title %}{{ course.title }} — Boshqaruv{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+{% endblock %}
+
+{% block content_inner_class %}lms-content-inner--wide{% endblock %}
+
+{% block content %}
+<!-- ════ COURSE HEADER ════ -->
+<div class="animate-slideUp space-y-8">
+  <div class="card-premium">
+    <div class="p-10 lg:p-12">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+        <div class="flex-1 space-y-6">
+          <div>
+            <h2 class="text-4xl lg:text-5xl font-extrabold text-text-primary tracking-tighter leading-tight">{{ course.title }}</h2>
+            {% if course.description %}
+            <p class="text-text-secondary text-lg font-medium mt-4 max-w-4xl">{{ course.description|truncatechars:250 }}</p>
+            {% endif %}
+          </div>
+          
+          <div class="flex flex-wrap gap-4">
+            <span class="status-pill {% if course.is_active %}status-pill-success{% else %}status-pill-muted{% endif %}">
+              <i data-lucide="{% if course.is_active %}check-circle{% else %}pause-circle{% endif %}" size="14"></i>
+              {% if course.is_active %}Faol Kurs{% else %}Nofaol{% endif %}
+            </span>
+            {% if course.deadline %}
+            <span class="status-pill status-pill-primary">
+              <i data-lucide="clock" size="14"></i> 
+              Muddat: {{ course.deadline|date:"d.m.Y" }}
+              {% if course.deadline < today %}<span class="ml-2 opacity-50">(Yakunlangan)</span>{% endif %}
+            </span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="shrink-0">
+          <a href="{% url 'lms:edit_course' course.id %}" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-slate-100 text-text-primary text-sm font-black hover:bg-slate-200 transition-all group">
+            <i data-lucide="settings" size="20" class="group-hover:rotate-90 transition-transform duration-500"></i>
+            Kurs Sozlamalari
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 pt-12 border-t border-border/50">
+        {% for icon, label, value, color in stats %}
+          <div class="space-y-2">
+            <p class="label-micro opacity-60">{{ label }}</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-{{ color }}/10 flex items-center justify-center text-{{ color }}">
+                  <i data-lucide="{{ icon|default:'activity' }}" size="20"></i>
+              </div>
+              <p class="text-2xl font-black text-text-primary tracking-tight">{{ value }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="px-10 lg:px-12 border-t border-border/50 bg-slate-50/50 flex overflow-x-auto no-scrollbar gap-2 py-2">
+        <a href="#" class="px-6 py-4 rounded-2xl text-sm font-bold transition-all bg-white text-primary shadow-sm border border-border/50 whitespace-nowrap">Kurs tarkibi</a>
+        <a href="{% url 'lms:edit_course' course.id %}" class="px-6 py-4 rounded-2xl text-sm font-bold text-text-secondary hover:bg-white hover:text-primary transition-all whitespace-nowrap">Sozlamalar</a>
+        <a href="{% url 'lms:view_students' course.id %}" class="px-6 py-4 rounded-2xl text-sm font-bold text-text-secondary hover:bg-white hover:text-primary transition-all whitespace-nowrap">Ishtirokchilar</a>
+        <a href="{% url 'lms:course_gradebook' course.id %}" class="px-6 py-4 rounded-2xl text-sm font-bold text-text-secondary hover:bg-white hover:text-primary transition-all whitespace-nowrap">Baholar</a>
+        <a href="{% url 'lms:course_forum' course.id %}" class="px-6 py-4 rounded-2xl text-sm font-bold text-text-secondary hover:bg-white hover:text-primary transition-all whitespace-nowrap">Forumlar</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MAIN CONTENT ════ -->
+<div class="row lms-row-mt">
+  <div class="col-md-10 col-md-offset-1">
+
+    <div class="lms-toolbar">
+      <div class="lms-flex lms-gap-2">
+        <button type="button" onclick="expandAll()" class="btn btn-default btn-sm btn-lms-sm">
+          <i class="fa fa-expand"></i> Barchasini ochish
+        </button>
+        <button type="button" onclick="collapseAll()" class="btn btn-default btn-sm btn-lms-sm">
+          <i class="fa fa-compress"></i> Barchasini yopish
+        </button>
+      </div>
+      <div class="lms-flex-center-y lms-gap-2">
+        <span class="lms-toolbar-label">Tahrirlash</span>
+        <label class="premium-switch">
+          <input type="checkbox" id="editModeToggle" onchange="toggleEditMode(this.checked)">
+          <span class="premium-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section list -->
+    <div id="sortable-sections-container" class="space-y-6">
+      {% for section in sections %}
+      <div class="card-premium !rounded-[32px] overflow-visible" id="section-{{ section.id }}" data-section-id="{{ section.id }}">
+        <!-- Section Head -->
+        <div class="p-6 lg:p-8 flex items-center gap-5 group/head">
+          <div class="section-drag-handle cursor-grab active:cursor-grabbing edit-mode-only text-text-muted hover:text-primary transition-colors">
+            <i data-lucide="grip-vertical" size="20"></i>
+          </div>
+          
+          <div class="flex-1 flex items-center justify-between cursor-pointer" onclick="toggleSection('{{ section.id }}')">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-text-muted group-hover/head:text-primary group-hover/head:bg-primary/5 transition-all duration-300 lms-section-toggle-icon">
+                <i data-lucide="chevron-down" size="20" class="transition-transform duration-300"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-extrabold text-text-primary tracking-tight">{{ section.name }}</h3>
+                <div class="flex items-center gap-3 mt-1">
+                  <span class="status-pill {% if section.is_published %}status-pill-success{% else %}status-pill-muted{% endif %} !text-[9px] !py-0.5">
+                    <i data-lucide="{% if section.is_published %}eye{% else %}eye-off{% endif %}" size="10"></i>
+                    {% if section.is_published %}Faol{% else %}Yashirin{% endif %}
+                  </span>
+                  {% if section.unlock_mode == 'sequential' %}
+                  <span class="status-pill status-pill-primary !text-[9px] !py-0.5">
+                    <i data-lucide="lock" size="10"></i> Ketma-ket
+                  </span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="edit-mode-only flex items-center gap-2" onclick="event.stopPropagation();">
+              <button type="button" onclick="openEditSectionModal({{ section.id }}, '{{ section.name|escapejs }}', '{{ section.description|escapejs }}', {{ section.is_published|yesno:'true,false' }}, '{{ section.unlock_mode }}', {{ section.prerequisite_section_id|default:'null' }})"
+                      class="w-9 h-9 rounded-xl bg-slate-50 text-text-muted hover:bg-primary/10 hover:text-primary transition-all flex items-center justify-center">
+                <i data-lucide="edit-3" size="16"></i>
+              </button>
+              <form method="post" action="" class="inline" onsubmit="return confirm('Bo\'limni o\'chirishni tasdiqlaysizmi?')">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete_section">
+                <input type="hidden" name="section_id" value="{{ section.id }}">
+                <button type="submit" class="w-9 h-9 rounded-xl bg-slate-50 text-text-muted hover:bg-danger/10 hover:text-danger transition-all flex items-center justify-center">
+                  <i data-lucide="trash-2" size="16"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Body -->
+        <div class="section-body-new px-6 lg:px-8 pb-8 space-y-6" id="content-{{ section.id }}">
+          {% if section.description %}
+          <div class="p-4 rounded-2xl bg-slate-50 text-sm font-medium text-text-secondary border-l-4 border-primary/20">
+            {{ section.description }}
+          </div>
+          {% endif %}
+
+          <div class="space-y-3 sortable-resources" data-section-id="{{ section.id }}">
+            <!-- Resources -->
+            {% for res in section.resources.all %}
+            <div class="flex items-center gap-4 p-4 rounded-2x border border-border/50 hover:border-primary/30 hover:bg-primary/5 transition-all group/item overflow-hidden relative" data-resource-id="{{ res.id }}">
+              <div class="drag-handle edit-mode-only text-text-muted/30 hover:text-primary cursor-grab active:cursor-grabbing">
+                <i data-lucide="grip-vertical" size="18"></i>
+              </div>
+              
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 
+                {% if res.resource_type == 'file' %}bg-blue-100 text-blue-600{% elif res.resource_type == 'link' %}bg-cyan-100 text-cyan-600{% elif res.resource_type == 'video' %}bg-rose-100 text-rose-600{% else %}bg-slate-100 text-slate-600{% endif %}">
+                <i data-lucide="{% if res.resource_type == 'file' %}file-text{% elif res.resource_type == 'link' %}link{% elif res.resource_type == 'video' %}play{% else %}info{% endif %}" size="20"></i>
+              </div>
+
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-bold text-text-primary truncate group-hover/item:text-primary transition-colors">{{ res.title }}</p>
+                <p class="text-[10px] font-black text-text-muted uppercase tracking-widest mt-0.5">
+                  {% if res.resource_type == 'file' %}Fayl Material{% elif res.resource_type == 'link' %}Tashqi Havola{% elif res.resource_type == 'video' %}Video Dars{% else %}Matnli Ma'lumot{% endif %}
+                </p>
+              </div>
+
+              <div class="edit-mode-only flex items-center gap-2">
+                <button type="button" onclick="renameResource('{{ res.id }}', '{{ res.title|escapejs }}')" class="w-8 h-8 rounded-lg bg-white shadow-sm border border-border/50 text-text-muted hover:text-primary flex items-center justify-center transition-all">
+                  <i data-lucide="edit-2" size="14"></i>
+                </button>
+                <form method="post" action="{% url 'lms:delete_resource' res.id %}" class="inline" onsubmit="return confirm('Resursni o\'chirishni tasdiqlaysizmi?')">
+                  {% csrf_token %}
+                  <button type="submit" class="w-8 h-8 rounded-lg bg-white shadow-sm border border-border/50 text-text-muted hover:text-danger flex items-center justify-center transition-all">
+                    <i data-lucide="trash" size="14"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+            {% endfor %}
+
+            <!-- Meetings -->
+            {% for meeting in section.meetings.all %}
+            <div class="flex items-center gap-4 p-4 rounded-2xl border border-border/50 bg-indigo-50/30 hover:border-indigo-200 transition-all group/item">
+              <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                <i data-lucide="video" size="20"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-bold text-text-primary truncate">{{ meeting.title }}</p>
+                <p class="text-[10px] font-black text-indigo-600 uppercase tracking-widest mt-0.5">
+                  Online Konferensiya • {{ meeting.start_time|date:"d.m.Y H:i" }}
+                </p>
+              </div>
+              <div class="edit-mode-only flex items-center gap-2">
+                <form method="post" action="{% url 'lms:delete_meeting' meeting.id %}" class="inline" onsubmit="return confirm('Online darsni o\'chirishni tasdiqlaysizmi?')">
+                  {% csrf_token %}
+                  <button type="submit" class="w-8 h-8 rounded-lg bg-white shadow-sm border border-border/50 text-text-muted hover:text-danger flex items-center justify-center transition-all">
+                    <i data-lucide="trash" size="14"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+            {% endfor %}
+
+            <!-- Tests -->
+            {% for test in section.tests.all %}
+            <div class="flex items-center gap-4 p-4 rounded-2xl border border-border/50 bg-amber-50/30 hover:border-amber-200 transition-all group/item cursor-pointer" onclick="window.location.href='{% url 'lms:edit_test' test.id %}'">
+              <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                <i data-lucide="clipboard-check" size="20"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-bold text-text-primary truncate">{{ test.name }}</p>
+                <div class="flex items-center gap-3 mt-0.5">
+                    <p class="text-[10px] font-black text-amber-600 uppercase tracking-widest">Bilimni Tekshirish</p>
+                    {% if test.duration_minutes %}<span class="text-[10px] font-medium text-text-muted">• {{ test.duration_minutes }} daqiqa</span>{% endif %}
+                </div>
+              </div>
+              <div class="edit-mode-only" onclick="event.stopPropagation();">
+                <a href="{% url 'lms:edit_test' test.id %}" class="w-8 h-8 rounded-lg bg-white shadow-sm border border-border/50 text-text-muted hover:text-primary flex items-center justify-center transition-all">
+                  <i data-lucide="edit-3" size="14"></i>
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+
+            <!-- Assignments -->
+            {% for assignment in section.assignments.all %}
+            <div class="flex items-center gap-4 p-4 rounded-2xl border border-border/50 bg-emerald-50/30 hover:border-emerald-200 transition-all group/item cursor-pointer" onclick="window.location.href='{% url 'lms:assignment_detail' assignment.id %}'">
+              <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                <i data-lucide="layout-list" size="20"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-bold text-text-primary truncate">{{ assignment.title }}</p>
+                <div class="flex items-center gap-3 mt-0.5">
+                    <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Vazifa Topshirish</p>
+                    <span class="text-[10px] font-medium text-text-muted">• Max {{ assignment.max_score }} ball</span>
+                </div>
+              </div>
+              <div class="edit-mode-only flex items-center gap-2" onclick="event.stopPropagation();">
+                <a href="{% url 'lms:edit_assignment' assignment.id %}" class="w-8 h-8 rounded-lg bg-white shadow-sm border border-border/50 text-text-muted hover:text-primary flex items-center justify-center transition-all">
+                  <i data-lucide="edit-3" size="14"></i>
+                </a>
+                <form method="post" action="{% url 'lms:delete_assignment' assignment.id %}" class="inline" onsubmit="return confirm('Topshiriqni o\'chirishni tasdiqlaysizmi?')">
+                  {% csrf_token %}
+                  <button type="submit" class="w-8 h-8 rounded-lg bg-white shadow-sm border border-border/50 text-text-muted hover:text-danger flex items-center justify-center transition-all">
+                    <i data-lucide="trash" size="14"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+            {% endfor %}
+
+            <!-- Empty Step Hint -->
+            {% if not section.resources.all and not section.meetings.all and not section.tests.all and not section.assignments.all %}
+            <div class="non-edit-mode-only py-8 flex flex-col items-center justify-center gap-3 text-text-muted opacity-40">
+              <i data-lucide="folder-open" size="32"></i>
+              <p class="text-xs font-bold uppercase tracking-widest">Materiallar mavjud emas</p>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- Add Content Bar -->
+          <div class="pt-4 border-t border-dashed border-border">
+            <button type="button" class="open-activity-chooser w-full py-4 rounded-2xl border-2 border-dashed border-slate-100 text-text-muted hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-3 font-bold text-sm"
+               data-section-id="{{ section.id }}"
+               data-section-name="{{ section.name|escape }}">
+              <i data-lucide="plus-circle" size="18"></i>
+              Yangi material qo'shish
+            </button>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="card-premium p-16 text-center space-y-6">
+        <div class="w-20 h-20 bg-slate-50 rounded-[32px] flex items-center justify-center text-text-muted mx-auto opacity-30">
+          <i data-lucide="layers" size="40"></i>
+        </div>
+        <div class="max-w-xs mx-auto">
+          <h4 class="text-xl font-extrabold text-text-primary tracking-tight">Hali bo'limlar yo'q</h4>
+          <p class="text-sm font-medium text-text-muted mt-2">Kurs tarkibini yaratish uchun birinchi bo'limni qo'shing</p>
+        </div>
+        <button type="button" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-primary text-white text-sm font-black hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all" onclick="$('#addSectionModal').modal('show');">
+          <i data-lucide="plus" size="18"></i>
+          Bo'lim qo'shish
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if orphan_assignments %}
+    <div class="card-premium !bg-danger/5 border-danger/20 p-8 space-y-6 mt-8">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-danger/10 text-danger flex items-center justify-center">
+          <i data-lucide="alert-triangle" size="24"></i>
+        </div>
+        <div>
+          <h4 class="text-xl font-black text-danger tracking-tight">Bo'limsiz topshiriqlar</h4>
+          <p class="text-sm font-medium text-danger/60">Ular hech qaysi mavzu ostida ko'rinmaydi. Bo'lim tanlang.</p>
+        </div>
+      </div>
+      
+      <div class="space-y-3">
+        {% for assignment in orphan_assignments %}
+        <div class="flex items-center gap-4 p-4 rounded-2xl bg-white border border-danger/20 hover:border-danger transition-all cursor-pointer" onclick="window.location.href='{% url 'lms:assignment_detail' assignment.id %}'">
+          <div class="w-10 h-10 rounded-xl bg-danger/5 text-danger flex items-center justify-center">
+            <i data-lucide="layout-list" size="18"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-bold text-text-primary truncate">{{ assignment.title }}</p>
+            <p class="text-[10px] font-black text-danger/60 uppercase tracking-widest mt-0.5">Max {{ assignment.max_score }} ball</p>
+          </div>
+          <div class="edit-mode-only flex items-center gap-2" onclick="event.stopPropagation();">
+            <a href="{% url 'lms:edit_assignment' assignment.id %}" class="w-8 h-8 rounded-lg bg-slate-50 text-text-muted hover:text-primary flex items-center justify-center transition-all">
+              <i data-lucide="edit-3" size="14"></i>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Add Section (edit mode) inline button -->
+    <div class="edit-mode-only text-center mt-12">
+      <button type="button" class="group inline-flex items-center gap-4 px-10 py-6 rounded-[32px] border-2 border-dashed border-slate-200 text-text-muted hover:border-primary hover:text-primary hover:bg-primary/5 transition-all outline-none" onclick="$('#addSectionModal').modal('show');">
+        <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+            <i data-lucide="plus" size="20"></i>
+        </div>
+        <span class="text-base font-black">Yangi bo'lim qo'shish</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- FAB: Add section -->
+<a href="#" id="fab-add-section" onclick="event.preventDefault(); $('#addSectionModal').modal('show');" title="Bo'lim qo'shish">
+  <i class="fa fa-plus"></i>
+</a>
+
+
+<!-- ══════════════════════════════════════
+     MODALS
+══════════════════════════════════════ -->
+
+  <!-- Activity Chooser Modal -->
+  <div class="modal fade" id="activityChooserModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content !rounded-[40px] border-none shadow-2xl overflow-hidden">
+        <div class="p-10 border-b border-border/50 bg-slate-50/50 flex items-center justify-between">
+          <div>
+            <h4 class="text-2xl font-black text-text-primary tracking-tight">Material qo'shish</h4>
+            <p class="text-xs font-bold text-text-muted mt-1 uppercase tracking-widest"><span id="chooserSectionHintText" class="text-primary tracking-tight font-black"></span> bo'limiga</p>
+          </div>
+          <button type="button" class="w-10 h-10 rounded-xl hover:bg-slate-200 transition-all flex items-center justify-center text-text-muted" data-dismiss="modal">
+            <i data-lucide="x" size="20"></i>
+          </button>
+        </div>
+        <div class="p-10">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- Resource: File -->
+            <button onclick="openAddResource('file')" class="flex flex-col items-center text-center p-6 rounded-[32px] border border-border/50 hover:border-blue-500 hover:bg-blue-50/50 transition-all group">
+              <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <i data-lucide="file-up" size="32"></i>
+              </div>
+              <span class="text-sm font-black text-text-primary tracking-tight">Fayl Yuklash</span>
+            </button>
+            
+            <!-- Resource: Link -->
+            <button onclick="openAddResource('link')" class="flex flex-col items-center text-center p-6 rounded-[32px] border border-border/50 hover:border-cyan-500 hover:bg-cyan-50/50 transition-all group">
+              <div class="w-16 h-16 rounded-2xl bg-cyan-100 text-cyan-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <i data-lucide="link" size="32"></i>
+              </div>
+              <span class="text-sm font-black text-text-primary tracking-tight">Havola</span>
+            </button>
+
+            <!-- Resource: Video -->
+            <button onclick="openAddResource('video')" class="flex flex-col items-center text-center p-6 rounded-[32px] border border-border/50 hover:border-rose-500 hover:bg-rose-50/50 transition-all group">
+              <div class="w-16 h-16 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <i data-lucide="play" size="32"></i>
+              </div>
+              <span class="text-sm font-black text-text-primary tracking-tight">Video</span>
+            </button>
+
+            <!-- Meeting -->
+            <button onclick="openAddResource('meeting')" class="flex flex-col items-center text-center p-6 rounded-[32px] border border-border/50 hover:border-indigo-500 hover:bg-indigo-50/50 transition-all group">
+              <div class="w-16 h-16 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <i data-lucide="video" size="32"></i>
+              </div>
+              <span class="text-sm font-black text-text-primary tracking-tight">Online Dars</span>
+            </button>
+
+            <!-- Test -->
+            <button onclick="openAddResource('test')" class="flex flex-col items-center text-center p-6 rounded-[32px] border border-border/50 hover:border-amber-500 hover:bg-amber-50/50 transition-all group">
+              <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <i data-lucide="clipboard-check" size="32"></i>
+              </div>
+              <span class="text-sm font-black text-text-primary tracking-tight">Test</span>
+            </button>
+
+            <!-- Assignment -->
+            <button onclick="openAddResource('assignment')" class="flex flex-col items-center text-center p-6 rounded-[32px] border border-border/50 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all group">
+              <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <i data-lucide="layout-list" size="32"></i>
+              </div>
+              <span class="text-sm font-black text-text-primary tracking-tight">Topshiriq</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Add Resource Modal -->
+<div class="modal fade" id="addResourceModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form class="modal-content !rounded-[40px] border-none shadow-2xl overflow-hidden" method="post" action="" enctype="multipart/form-data" id="addResourceForm">
+      {% csrf_token %}
+      <input type="hidden" name="resource_type" id="res_type_input">
+      <input type="hidden" name="section_id" id="res_section_id">
+      <div class="p-10 border-b border-border/50 bg-slate-50/50 flex items-center justify-between">
+        <div>
+          <h4 class="text-2xl font-black text-text-primary tracking-tight" id="addResModalTitle">Material qo'shish</h4>
+          <p class="text-[10px] font-black text-text-muted mt-1 uppercase tracking-widest leading-none">
+            <span id="addResSectionHintText" class="text-primary font-black"></span> bo'limiga
+          </p>
+        </div>
+        <button type="button" class="w-10 h-10 rounded-xl hover:bg-slate-200 transition-all flex items-center justify-center text-text-muted" data-dismiss="modal">
+          <i data-lucide="x" size="20"></i>
+        </button>
+      </div>
+      <div class="p-10 space-y-6">
+        <div class="space-y-3">
+          <label class="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Sarlavha <span class="text-danger">*</span></label>
+          <input type="text" name="title" class="w-full rounded-2xl border border-border bg-slate-50/50 px-6 py-4 text-sm font-bold focus:bg-white focus:border-primary transition-all outline-none" required placeholder="Sarlavhani kiriting">
+        </div>
+        <!-- File -->
+        <div id="file_field" class="hidden">
+          <div class="space-y-3">
+            <label class="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Faylni tanlang</label>
+            <input type="file" name="resource_file" class="w-full rounded-2xl border border-border bg-slate-50/50 px-6 py-4 text-sm font-bold focus:bg-white focus:border-primary transition-all outline-none">
+          </div>
+        </div>
+
+        <!-- URL / Video -->
+        <div id="url_field" class="hidden">
+          <div class="space-y-3">
+            <label class="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Havola (URL) <span class="text-danger">*</span></label>
+            <input type="url" name="url" id="res_url_input" class="w-full rounded-2xl border border-border bg-slate-50/50 px-6 py-4 text-sm font-bold focus:bg-white focus:border-primary transition-all outline-none" placeholder="https://...">
+          </div>
+        </div>
+        <!-- Text / HTML -->
+        <div id="text_field" class="lms-d-none">
+          <div class="form-group">
+            <label>Matn / HTML</label>
+            <textarea name="content" class="form-control" rows="5" placeholder="Matn yoki HTML kontent..."></textarea>
+          </div>
+        </div>
+        <!-- Meeting fields -->
+        <div id="meeting_fields" class="lms-d-none">
+          <div class="form-group">
+            <label>Boshlanish vaqti</label>
+            <input type="datetime-local" name="start_time" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Davomiyligi (minut)</label>
+            <input type="number" name="duration_minutes" class="form-control" value="60" min="1">
+          </div>
+          <div class="form-group">
+            <label>Platforma</label>
+            <select name="meeting_type" class="form-control">
+              <option value="zoom">Zoom</option>
+              <option value="google_meet">Google Meet</option>
+              <option value="other">Boshqa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Dars havolasi</label>
+            <input type="url" name="meeting_url" class="form-control" placeholder="https://zoom.us/...">
+          </div>
+        </div>
+        <!-- Assignment fields -->
+        <div id="assignment_fields" class="lms-d-none">
+          <div class="form-group">
+            <label>Topshiriq matni</label>
+            <textarea name="description" class="form-control" rows="4" placeholder="Topshiriq tavsifi..."></textarea>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Muddat</label>
+                <input type="date" name="deadline" class="form-control">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Maksimal ball</label>
+                <input type="number" name="max_score" class="form-control" value="100" min="1">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Test fields -->
+        <div id="test_fields" class="lms-d-none">
+          <div class="form-group">
+            <label>Test tavsifi</label>
+            <textarea name="description" class="form-control" rows="3" placeholder="Test haqida ma'lumot..."></textarea>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Boshlanish vaqti</label>
+                <input type="datetime-local" name="start_datetime" class="form-control">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Davomiyligi (minut)</label>
+                <input type="number" name="duration_minutes" class="form-control" value="30" min="1">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Bekor qilish</button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Saqlash</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Section Modal -->
+<div class="modal fade" id="addSectionModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <form class="modal-content" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="add_section">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title modal-title-lms">Yangi bo'lim qo'shish</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Bo'lim nomi <span class="text-danger">*</span></label>
+          <input type="text" name="section_name" class="form-control" required placeholder="Masalan: 1-modul — Kirish">
+        </div>
+        <div class="form-group">
+          <label>Tavsif (ixtiyoriy)</label>
+          <textarea name="section_desc" class="form-control" rows="3" placeholder="Bo'lim haqida qisqacha ma'lumot..."></textarea>
+        </div>
+        <div class="form-group">
+          <div class="checkbox lms-modal-checkbox">
+            <label>
+              <input type="checkbox" name="is_published" value="1" checked> Darhol faollashtirish
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Bekor qilish</button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Qo'shish</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Section Modal -->
+<div class="modal fade" id="editSectionModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <form class="modal-content" method="post" id="editSectionForm">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="edit_section">
+      <input type="hidden" name="section_id" id="edit_section_id">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title modal-title-lms">Bo'limni tahrirlash</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Bo'lim nomi <span class="text-danger">*</span></label>
+          <input type="text" name="section_name" id="edit_section_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Tavsif</label>
+          <textarea name="section_desc" id="edit_section_desc" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Holat</label>
+          <div class="lms-radio-row">
+            <label>
+              <input type="radio" name="is_published" value="1" id="edit_pub_yes"> Faol (talabalar ko'radi)
+            </label>
+            <label>
+              <input type="radio" name="is_published" value="0" id="edit_pub_no"> Yashirin (qoralama)
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Kirish tartibi</label>
+          <select name="unlock_mode" id="edit_unlock_mode" class="form-control" onchange="togglePrerequisite(this.value)">
+            <option value="open">Erkin (istalgan vaqtda ochiq)</option>
+            <option value="sequential">Ketma-ket (oldingi bo'limni tugatgandan keyin)</option>
+            <option value="date">Sana bo'yicha</option>
+          </select>
+        </div>
+        <div class="form-group lms-d-none" id="prerequisite_group">
+          <label>Oldingi shart bo'limi</label>
+          <select name="prerequisite_section_id" id="edit_prerequisite_section" class="form-control">
+            <option value="">— Tanlang —</option>
+            {% for s in sections %}
+            <option value="{{ s.id }}">{{ s.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Bekor qilish</button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Saqlash</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- SCRIPTS: placed in extra_scripts so jQuery exists -->
+<script>
+/* Bo'lim konteksti: .data('section-id') jQuery da ba'zan noto'g'ri — faqat .attr('data-section-id') */
+var currentSectionId = null;
+var currentSectionName = '';
+
+// ─── Section toggle ───────────────────
+function toggleSection(id) {
+    var body = document.getElementById('content-' + id);
+    var icon = document.querySelector('#section-' + id + ' .section-toggle-icon');
+    if (body.style.display === 'none') {
+        $(body).slideDown(200);
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    } else {
+        $(body).slideUp(200);
+        if (icon) icon.style.transform = 'rotate(-90deg)';
+    }
+}
+
+function expandAll() {
+    document.querySelectorAll('.section-body-new').forEach(function(el) {
+        $(el).slideDown(150);
+    });
+    document.querySelectorAll('.section-toggle-icon').forEach(function(i) {
+        i.style.transform = 'rotate(0deg)';
+    });
+}
+
+function collapseAll() {
+    document.querySelectorAll('.section-body-new').forEach(function(el) {
+        $(el).slideUp(150);
+    });
+    document.querySelectorAll('.section-toggle-icon').forEach(function(i) {
+        i.style.transform = 'rotate(-90deg)';
+    });
+}
+
+// ─── Edit mode ────────────────────────
+function toggleEditMode(isActive) {
+    localStorage.setItem('lms_edit_mode', String(isActive));
+    if (isActive) {
+        // "block" works universally: inside flex containers it becomes a flex-item automatically
+        $('.edit-mode-only').css('display', 'block');
+        $('.non-edit-mode-only').css('display', 'none');
+        document.getElementById('fab-add-section').style.display = 'flex';
+        initSortables();
+    } else {
+        $('.edit-mode-only').css('display', 'none');
+        $('.non-edit-mode-only').css('display', '');
+        document.getElementById('fab-add-section').style.display = 'none';
+        destroySortables();
+    }
+}
+
+// ─── Sortable ─────────────────────────
+var sortables = [];
+function initSortables() {
+    destroySortables();
+    var sectionEl = document.getElementById('sortable-sections-container');
+    if (sectionEl) {
+        sortables.push(new Sortable(sectionEl, {
+            handle: '.section-drag-handle',
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            onEnd: function() {
+                var order = Array.from(sectionEl.children).map(c => c.getAttribute('data-section-id'));
+                saveOrder('{% url "lms:reorder_sections" course.id %}', order);
+            }
+        }));
+    }
+    document.querySelectorAll('.sortable-resources').forEach(function(el) {
+        var sid = el.getAttribute('data-section-id');
+        sortables.push(new Sortable(el, {
+            handle: '.drag-handle',
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            onEnd: function() {
+                var order = Array.from(el.querySelectorAll('[data-resource-id]')).map(c => c.getAttribute('data-resource-id')).filter(Boolean);
+                saveOrder('/lms/teacher/section/' + sid + '/reorder_resources/', order);
+            }
+        }));
+    });
+}
+
+function destroySortables() { sortables.forEach(s => s.destroy()); sortables = []; }
+
+function saveOrder(url, order) {
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+        body: JSON.stringify({ order: order })
+    }).then(r => r.json()).then(d => { if (!d.success) console.warn('Tartib saqlanmadi'); });
+}
+
+// ─── Activity Chooser ─────────────────
+$(document).on('click', '.open-activity-chooser', function(e) {
+    e.preventDefault();
+    var sid = $(this).attr('data-section-id');
+    var sname = $(this).attr('data-section-name') || '';
+    currentSectionId = sid ? String(sid).trim() : '';
+    currentSectionName = sname.trim() || (currentSectionId ? ('#' + currentSectionId) : '');
+    var hint = currentSectionId
+        ? ('Quyidagi barcha elementlar «' + currentSectionName + '» bo\'limiga qo\'shiladi (ID: ' + currentSectionId + ').')
+        : 'Bo\'lim tanlanmadi — sahifani yangilab qayta urinib ko\'ring.';
+    $('#chooserSectionHintText').text(hint);
+    $('#activityChooserModal').modal('show');
+});
+
+function openAddResource(type) {
+    if (!currentSectionId) {
+        alert('Bo\'lim aniqlanmadi. «Element yoki resurs qo\'shish» tugmasini bo\'lim ichidan qayta bosing.');
+        return;
+    }
+    $('#activityChooserModal').modal('hide');
+    $('#res_type_input').val(type);
+    $('#res_section_id').val(currentSectionId);
+    $('#addResSectionHintText').text('Qo\'shilmoqda: «' + currentSectionName + '» (bo\'lim ID ' + currentSectionId + ')');
+
+    // Hide all optional fields
+    $('#file_field,#url_field,#text_field,#meeting_fields,#assignment_fields,#test_fields').hide();
+
+    var titles = {
+        file: 'Fayl qo\'shish', link: 'Havola qo\'shish', video: 'Video qo\'shish',
+        text: 'Matn qo\'shish', meeting: 'Online dars rejalashtirish',
+        assignment: 'Topshiriq qo\'shish', test: 'Test qo\'shish'
+    };
+    $('#addResModalTitle').text(titles[type] || 'Element qo\'shish');
+
+    if (type === 'meeting') {
+        $('#addResourceForm').attr('action', '{% url "lms:manage_meetings" course.id %}');
+        $('#url_field').show(); $('#meeting_fields').show();
+        $('#res_url_input').attr('name', 'meeting_url').attr('placeholder', 'https://zoom.us/...');
+    } else if (type === 'assignment') {
+        window.location.href = '{% url "lms:create_assignment" course.id %}?section_id=' + encodeURIComponent(currentSectionId);
+        return;
+    } else if (type === 'test') {
+        window.location.href = '{% url "lms:create_test" %}?section_id=' + encodeURIComponent(currentSectionId) + '&course_id={{ course.id }}';
+        return;
+    } else {
+        $('#addResourceForm').attr('action', '{% url "lms:add_section_resource" 888888888 %}'.replace('888888888', currentSectionId));
+        $('#res_url_input').attr('name', 'url').attr('placeholder', 'https://...');
+        if (type === 'file') $('#file_field').show();
+        if (type === 'link') $('#url_field').show();
+        if (type === 'video') $('#url_field').show();
+        if (type === 'text') $('#text_field').show();
+    }
+
+    setTimeout(function() { $('#addResourceModal').modal('show'); }, 300);
+}
+
+// ─── Edit Section Modal ───────────────
+function openEditSectionModal(id, name, desc, isPublished, unlockMode, prereqId) {
+    $('#edit_section_id').val(id);
+    $('#edit_section_name').val(name);
+    $('#edit_section_desc').val(desc);
+    $('#edit_pub_yes').prop('checked', isPublished);
+    $('#edit_pub_no').prop('checked', !isPublished);
+    $('#edit_unlock_mode').val(unlockMode || 'open');
+    togglePrerequisite(unlockMode || 'open');
+    if (prereqId) $('#edit_prerequisite_section').val(prereqId);
+    $('#editSectionModal').modal('show');
+}
+
+function togglePrerequisite(mode) {
+    $('#prerequisite_group').toggle(mode === 'sequential');
+}
+
+// ─── Rename Resource (prompt) ─────────
+function renameResource(id, oldName) {
+    var newName = prompt("Resurs yangi nomi:", oldName);
+    if (newName && newName.trim() && newName !== oldName) {
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/lms/teacher/resource/' + id + '/rename/';
+        var csrf = document.createElement('input');
+        csrf.type = 'hidden'; csrf.name = 'csrfmiddlewaretoken'; csrf.value = '{{ csrf_token }}';
+        var inp = document.createElement('input');
+        inp.type = 'hidden'; inp.name = 'title'; inp.value = newName.trim();
+        form.appendChild(csrf); form.appendChild(inp);
+        document.body.appendChild(form); form.submit();
+    }
+}
+
+// ─── Init ─────────────────────────────
+$(document).ready(function() {
+    if (localStorage.getItem('lms_edit_mode') === 'true') {
+        $('#editModeToggle').prop('checked', true);
+        toggleEditMode(true);
+    }
+});
+</script>
+{% endblock %}

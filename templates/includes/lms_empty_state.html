@@ -1,0 +1,11 @@
+{% comment %}
+  icon_class: full FA class e.g. "fa-folder-open-o"
+{% endcomment %}
+<div class="lms-empty-state">
+  <i class="fa {{ icon_class|default:'fa-folder-open-o' }} lms-empty-state__icon"></i>
+  {% if title %}<h4 class="lms-empty-state__title">{{ title }}</h4>{% endif %}
+  {% if message %}<p class="lms-empty-state__msg">{{ message }}</p>{% endif %}
+  {% if cta_url %}
+  <a href="{{ cta_url }}" class="btn btn-primary btn-lms">{% if cta_label %}{{ cta_label }}{% else %}Davom etish{% endif %}</a>
+  {% endif %}
+</div>

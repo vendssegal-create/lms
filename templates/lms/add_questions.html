@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Savollar — {{ test.name }} — Django LMS{% endblock %}
+
+{% block content %}
+<div class="row animate-fadeInUp">
+    <div class="col-md-5">
+        <!-- Add Question Form -->
+        <div id="manual-question" class="box box-primary" style="border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px;">
+            <div class="box-header" style="padding: 15px 20px; border-bottom: 1px solid #f1f5f9;">
+                <h3 class="box-title" style="font-weight: 700; font-size: 16px;"><i class="fa fa-plus-circle text-primary" style="margin-right:8px;"></i>Yangi savol qo'shish</h3>
+            </div>
+            <form method="post" class="box-body" style="padding: 20px;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label style="font-weight: 600; color: #475569;">Savol matni</label>
+                    <textarea class="form-control" name="text" rows="3" placeholder="Savolni shu yerga yozing..." style="border-radius: 8px; border-color: #e2e8f0;"></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6"><div class="form-group"><input class="form-control" name="option1" placeholder="A) Variant 1" style="border-radius: 8px;"></div></div>
+                    <div class="col-xs-6"><div class="form-group"><input class="form-control" name="option2" placeholder="B) Variant 2" style="border-radius: 8px;"></div></div>
+                    <div class="col-xs-6"><div class="form-group"><input class="form-control" name="option3" placeholder="C) Variant 3" style="border-radius: 8px;"></div></div>
+                    <div class="col-xs-6"><div class="form-group"><input class="form-control" name="option4" placeholder="D) Variant 4" style="border-radius: 8px;"></div></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label style="font-weight: 600; color: #475569;">To'g'ri javob</label>
+                            <select class="form-control" name="correct_answer" style="border-radius: 8px;">
+                                <option value="1">A — Variant 1</option>
+                                <option value="2">B — Variant 2</option>
+                                <option value="3">C — Variant 3</option>
+                                <option value="4">D — Variant 4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label style="font-weight: 600; color: #475569;">Ball</label>
+                            <input class="form-control" type="number" name="score" value="1" min="1" style="border-radius: 8px;">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="border-radius: 8px; font-weight: 700; padding: 10px; background: #4361ee; border: none; box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);">
+                    <i class="fa fa-plus"></i> Qo'shish
+                </button>
+            </form>
+        </div>
+
+        <!-- Memo Import -->
+        <div id="bulk-import" class="box box-info" style="border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <div class="box-header" style="padding: 15px 20px; border-bottom: 1px solid #f1f5f9;">
+                <h3 class="box-title" style="font-weight: 700; font-size: 16px;"><i class="fa fa-file-text-o text-info" style="margin-right:8px;"></i>Matnli import (Bulk)</h3>
+            </div>
+            <form method="post" class="box-body" style="padding: 20px;">
+                {% csrf_token %}
+                <p style="font-size:12px; color:#64748b; margin-bottom:12px; line-height: 1.5; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px dashed #cbd5e1;">
+                    Savollarni <code>+++++</code> bilan ajrating. Variantlarni <code>====</code> bilan ajrating. To'g'ri javob oldiga <code>#</code> qo'ying.
+                </p>
+                <textarea class="form-control" rows="8" name="memo_text" placeholder="Savol matni&#10;====&#10;Variant 1&#10;====&#10;#To'g'ri variant&#10;====&#10;Variant 3&#10;====&#10;Variant 4&#10;+++++&#10;Keyingi savol..." style="border-radius: 8px; font-family: monospace; font-size: 13px;"></textarea>
+                <button type="submit" class="btn btn-info btn-block" style="margin-top:15px; border-radius: 8px; font-weight: 700; padding: 10px; background: #0ea5e9; border: none;">
+                    <i class="fa fa-upload"></i> Import qilish
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <!-- Questions List -->
+        <div class="box" style="border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <div class="box-header" style="display:flex; align-items:center; justify-content:space-between; padding: 20px 25px; border-bottom: 1px solid #f1f5f9;">
+                <h3 class="box-title" style="font-weight: 800; font-size: 18px; color: #1e293b;"><i class="fa fa-list-ol text-primary" style="margin-right:10px;"></i>{{ test.name }} — Savollar</h3>
+                <span style="font-weight: 700; color: #4361ee; background: #e0e7ff; padding: 4px 12px; border-radius: 20px; font-size: 12px;">{{ test.questions.count }} ta</span>
+            </div>
+            <div class="box-body table-responsive" style="padding: 0;">
+                <table class="table table-hover" style="margin-bottom: 0;">
+                    <thead style="background: #f8fafc;">
+                        <tr>
+                            <th style="width:50px; padding: 15px 25px;">#</th>
+                            <th style="padding: 15px 10px;">Savol matni</th>
+                            <th style="width:80px; padding: 15px 10px;">Javob</th>
+                            <th style="width:120px; padding: 15px 25px; text-align: right;">Amal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for question in questions %}
+                        <tr>
+                            <td style="padding: 15px 25px;"><span style="font-weight:700; color:#4361ee;">{{ forloop.counter }}</span></td>
+                            <td style="padding: 15px 10px; color: #334155; font-weight: 500;">{{ question.text|safe }}</td>
+                            <td style="padding: 15px 10px;"><span style="font-weight: 800; color: #22c55e; background: #dcfce7; padding: 2px 8px; border-radius: 6px;">{{ question.correct_answer }}</span></td>
+                            <td style="padding: 15px 25px; text-align: right;">
+                                <a href="#" class="btn btn-default btn-xs" style="border-radius: 6px; color: #64748b;" title="Tahrirlash"><i class="fa fa-pencil"></i></a>
+                                <a href="#" class="btn btn-danger btn-xs" style="border-radius: 6px; margin-left: 5px;" title="O'chirish" onclick="return confirm('Savolni o\'chirmoqchimisiz?')"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4" style="padding: 50px 20px; text-align: center; color: #94a3b8;">
+                            <div style="font-size: 40px; margin-bottom: 15px; opacity: 0.5;"><i class="fa fa-folder-open-o"></i></div>
+                            <p style="font-weight: 600;">Savollar hali qo'shilmagan.</p>
+                        </td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

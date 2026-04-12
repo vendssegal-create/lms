@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Tizimga kirish — Django LMS Premium{% endblock %}
+
+{% block login_content %}
+<div class="min-h-screen bg-slate-950 flex items-center justify-center p-6 relative overflow-hidden selection:bg-primary/20 selection:text-white">
+    <!-- Immersive Background Elements (Reference Login.tsx) -->
+    <div class="absolute inset-0 z-0 overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary/20 rounded-full blur-[120px] transition-opacity duration-1000 animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-secondary/10 rounded-full blur-[150px] transition-opacity duration-1000 animate-pulse delay-700"></div>
+    </div>
+
+    <!-- Main View Content -->
+    <div class="w-full max-w-[480px] relative z-10 animate-slideUp">
+        <!-- Brand / Logo Section -->
+        <div class="text-center mb-12">
+            <div class="w-20 h-20 bg-primary rounded-[28px] flex items-center justify-center text-white shadow-[0_20px_50px_rgba(67,97,238,0.3)] mx-auto mb-8 relative group">
+                <div class="absolute inset-0 bg-white/20 rounded-[28px] scale-110 blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <i data-lucide="graduation-cap" size="40" class="relative z-10"></i>
+            </div>
+            <h1 class="text-4xl font-extrabold text-white mb-3 tracking-tighter">
+                Django <span class="text-primary">LMS</span>
+            </h1>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 backdrop-blur-md rounded-full border border-white/10">
+                <i data-lucide="sparkles" size="14" class="text-primary"></i>
+                <span class="text-[10px] font-extrabold text-white/60 uppercase tracking-[0.2em]">Premium Edition v2.0</span>
+            </div>
+        </div>
+
+        <!-- Glass Login Card -->
+        <div class="glass p-10 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.4)] border border-white/10">
+            {% if hemis_enabled %}
+            <div class="mb-10">
+                <a href="{% url 'users:hemis_login_start' %}" class="w-full flex items-center justify-center gap-3 py-4 rounded-2xl bg-success text-white text-sm font-bold hover:bg-success/90 transition-all shadow-2xl shadow-success/20 group">
+                    <i data-lucide="university" size="20" class="group-hover:scale-110 transition-transform"></i>
+                    HEMIS ID orqali kirish
+                </a>
+                
+                <div class="relative my-10">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-white/10"></div>
+                    </div>
+                    <div class="relative flex justify-center text-[10px] uppercase tracking-[0.2em] font-extrabold text-white/30">
+                        <span class="bg-[#0f172a] px-4 rounded-full">yoki login orqali</span>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="p-4 rounded-2xl bg-warning/10 border border-warning/20 mb-8">
+                <div class="flex gap-3 text-warning">
+                    <i data-lucide="alert-circle" size="20" class="shrink-0"></i>
+                    <p class="text-xs font-bold leading-relaxed">HEMIS tizimi ulanmagan. Faqat lokal profillar orqali kirish mumkin.</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Main Login Form -->
+            <form method="post" class="space-y-8">
+                {% csrf_token %}
+                
+                <!-- Username Field -->
+                <div class="space-y-3">
+                    <label class="text-[10px] font-extrabold text-white/40 uppercase tracking-[0.15em] ml-1">Foydalanuvchi nomi</label>
+                    <div class="relative group">
+                        <div class="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-primary transition-colors">
+                            <i data-lucide="user" size="20"></i>
+                        </div>
+                        <input 
+                            type="text" name="username" 
+                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 pl-14 text-white placeholder:text-white/20 outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all font-medium"
+                            placeholder="Login yoki Talaba ID" required>
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="space-y-3">
+                    <label class="text-[10px] font-extrabold text-white/40 uppercase tracking-[0.15em] ml-1">Parol</label>
+                    <div class="relative group">
+                        <div class="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-primary transition-colors">
+                            <i data-lucide="lock" size="20"></i>
+                        </div>
+                        <input 
+                            type="password" name="password" 
+                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 pl-14 text-white placeholder:text-white/20 outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all font-medium"
+                            placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full flex items-center justify-center gap-3 py-5 rounded-2xl bg-primary text-white text-base font-extrabold hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 group">
+                    Tizimga kirish
+                    <i data-lucide="arrow-right" size="20" class="group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </form>
+
+            <!-- Forgot Password Placeholder -->
+            <div class="mt-10 text-center">
+                <a href="#" class="text-sm font-bold text-white/40 hover:text-primary transition-colors">Parolni unutdingizmi?</a>
+            </div>
+        </div>
+
+        <!-- Footer Note -->
+        <p class="mt-12 text-center text-[10px] text-white/20 font-extrabold uppercase tracking-[0.3em]">
+            &copy; 2026 Django LMS Premium &bull; Excellence in Education
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    {% if error %}
+    toastr.error("{{ error }}");
+    {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            toastr.info("{{ message }}");
+        {% endfor %}
+    {% endif %}
+</script>
+{% endblock %}

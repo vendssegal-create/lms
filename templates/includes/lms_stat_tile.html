@@ -1,0 +1,9 @@
+{% comment %}
+  Stat pill for course admin header: icon (fa class without "fa " prefix optional), label, value, color (hex).
+{% endcomment %}
+<div class="lms-stat-cell">
+  <div class="lms-stat-cell__value" style="color: {{ color }};">{{ value }}</div>
+  <div class="lms-stat-cell__label">
+    <i class="fa {{ icon }}"></i>{{ label }}
+  </div>
+</div>

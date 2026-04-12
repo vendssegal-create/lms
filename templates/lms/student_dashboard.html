@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Boshqaruv paneli — Django LMS Premium{% endblock %}
+
+{% block content %}
+<div class="space-y-12 animate-slideUp">
+    <!-- Hero Section (Reference Dashboard.tsx) -->
+    <div class="relative overflow-hidden bg-slate-900 rounded-[48px] p-10 lg:p-16 text-white shadow-2xl">
+        <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-extrabold uppercase tracking-[0.2em] mb-8 border border-white/10">
+                <i data-lucide="sparkles" size="14" class="text-primary"></i>
+                Tizim yangilandi v2.0
+            </div>
+            <h2 class="text-4xl lg:text-6xl font-extrabold mb-6 tracking-tighter leading-[1.1]">
+                Xush kelibsiz, <span class="text-primary">{{ request.user.first_name|default:request.user.username }}</span>! 👋
+            </h2>
+            <p class="text-white/60 text-xl font-medium leading-relaxed mb-10 max-w-2xl">
+                Bugun yangi bilimlarni egallash va o'quv jarayonini davom ettirish uchun ajoyib kun. Barcha kurslaringiz va natijalaringiz shu yerda.
+            </p>
+            <div class="flex flex-wrap gap-5">
+                <a href="#my-courses" class="btn btn-primary px-10 py-4 rounded-2xl text-base shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all font-bold">
+                    O'qishni davom ettirish
+                </a>
+                <a href="{% url 'lms:student_tests' %}" class="btn bg-white/5 hover:bg-white/10 backdrop-blur-md text-white px-10 py-4 rounded-2xl border border-white/10 text-base font-bold transition-all">
+                    Testlarni topshirish
+                </a>
+            </div>
+        </div>
+        
+        <!-- Abstract animated shapes (Mocking motion/react with CSS) -->
+        <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute -bottom-48 -left-24 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[150px] animate-pulse delay-700"></div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Enrolled Courses Stat -->
+        <div class="card-premium p-8 group relative">
+            <div class="w-16 h-16 rounded-[24px] bg-primary flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-transform duration-500 mb-6">
+                <i data-lucide="book-open" size="32"></i>
+            </div>
+            <div class="space-y-1">
+                <p class="label-micro text-text-muted transition-colors group-hover:text-primary">Mening kurslarim</p>
+                <div class="flex items-end justify-between">
+                    <p class="text-3xl font-extrabold text-text-primary tracking-tighter">{{ enrollments.count }} ta</p>
+                    <span class="text-xs font-bold px-2 py-1 rounded-lg text-success bg-success/10">Faol</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assignments Stat -->
+        <div class="card-premium p-8 group relative">
+            <div class="w-16 h-16 rounded-[24px] bg-success flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-transform duration-500 mb-6">
+                <i data-lucide="file-check" size="32"></i>
+            </div>
+            <div class="space-y-1">
+                <p class="label-micro text-text-muted transition-colors group-hover:text-success">Topshiriqlar</p>
+                <div class="flex items-end justify-between">
+                    <p class="text-3xl font-extrabold text-text-primary tracking-tighter">12 ta</p>
+                    <span class="text-xs font-bold px-2 py-1 rounded-lg text-primary bg-primary/10">+2 yangi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tests Stat -->
+        <div class="card-premium p-8 group relative">
+            <div class="w-16 h-16 rounded-[24px] bg-warning flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-transform duration-500 mb-6">
+                <i data-lucide="edit-3" size="32"></i>
+            </div>
+            <div class="space-y-1">
+                <p class="label-micro text-text-muted transition-colors group-hover:text-warning">Mavjud testlar</p>
+                <div class="flex items-end justify-between">
+                    <p class="text-3xl font-extrabold text-text-primary tracking-tighter">5 ta</p>
+                    <span class="text-xs font-bold px-2 py-1 rounded-lg text-danger bg-danger/10">Muddatli</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Average Score Stat -->
+        <div class="card-premium p-8 group relative">
+            <div class="w-16 h-16 rounded-[24px] bg-secondary flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-transform duration-500 mb-6">
+                <i data-lucide="award" size="32"></i>
+            </div>
+            <div class="space-y-1">
+                <p class="label-micro text-text-muted transition-colors group-hover:text-secondary">O'rtacha ball</p>
+                <div class="flex items-end justify-between">
+                    <p class="text-3xl font-extrabold text-text-primary tracking-tighter">85.4</p>
+                    <span class="text-xs font-bold px-2 py-1 rounded-lg text-success bg-success/10">+3.2</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Row -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <a href="{% url 'lms:student_dashboard' %}" class="p-6 rounded-[32px] border border-border/50 bg-primary/5 flex flex-col items-center gap-4 transition-all hover:border-primary/20 hover:shadow-premium group">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 text-primary">
+                <i data-lucide="layout" size="24"></i>
+            </div>
+            <span class="text-sm font-black text-text-primary tracking-tight">Umumiy ko'rinish</span>
+        </a>
+        <a href="{% url 'lms:student_tests' %}" class="p-6 rounded-[32px] border border-border/50 bg-success/5 flex flex-col items-center gap-4 transition-all hover:border-success/20 hover:shadow-premium group">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 text-success">
+                <i data-lucide="pencil" size="24"></i>
+            </div>
+            <span class="text-sm font-black text-text-primary tracking-tight">Testlarim</span>
+        </a>
+        <a href="{% url 'lms:student_grades' %}" class="p-6 rounded-[32px] border border-border/50 bg-secondary/5 flex flex-col items-center gap-4 transition-all hover:border-secondary/20 hover:shadow-premium group">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 text-secondary">
+                <i data-lucide="trending-up" size="24"></i>
+            </div>
+            <span class="text-sm font-black text-text-primary tracking-tight">Natijalarim</span>
+        </a>
+        <a href="{% url 'lms:notifications' %}" class="p-6 rounded-[32px] border border-border/50 bg-warning/5 flex flex-col items-center gap-4 transition-all hover:border-warning/20 hover:shadow-premium group">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 text-warning">
+                <i data-lucide="bell" size="24"></i>
+            </div>
+            <span class="text-sm font-black text-text-primary tracking-tight">Xabarlar</span>
+        </a>
+    </div>
+
+    <!-- Main Content Section: Courses & Sidebar -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <!-- Left: Course List -->
+        <div id="my-courses" class="lg:col-span-2 space-y-10">
+            <div class="card-premium">
+                <div class="p-10 border-b border-border/50 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-text-primary tracking-tight">Mening kurslarim</h3>
+                        <p class="text-sm text-text-secondary font-medium mt-1">Siz biriktirilgan barcha o'quv materiallari</p>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-slate-50/30 text-[10px] font-extrabold text-text-muted uppercase tracking-[0.2em]">
+                                <th class="px-10 py-5">Kurs nomi</th>
+                                <th class="px-10 py-5">O'qituvchi</th>
+                                <th class="px-10 py-5">O'zlashtirish</th>
+                                <th class="px-10 py-5 text-right">Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            {% for enrollment in enrollments %}
+                            <tr class="hover:bg-slate-50/50 transition-colors group">
+                                <td class="px-10 py-6">
+                                    <p class="font-bold text-text-primary group-hover:text-primary transition-colors text-base">{{ enrollment.course.title }}</p>
+                                    <p class="text-xs text-text-muted font-medium">Boshlangan: {{ enrollment.enrolled_at|date:"d.m.Y" }}</p>
+                                </td>
+                                <td class="px-10 py-6">
+                                    <div class="flex items-center gap-3">
+                                        <img src="https://ui-avatars.com/api/?name={{ enrollment.course.teacher.get_full_name }}&background=random&color=fff" class="w-8 h-8 rounded-xl border border-border shadow-sm">
+                                        <span class="text-sm text-text-secondary font-bold">{{ enrollment.course.teacher.get_full_name }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-10 py-6">
+                                    <div class="w-32 space-y-2">
+                                        <div class="flex justify-between label-micro">
+                                            <span>Progress</span>
+                                            <span class="text-primary">65%</span>
+                                        </div>
+                                        <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                            <div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: 65%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-10 py-6 text-right">
+                                    <a href="{% url 'lms:student_course_detail' enrollment.course.id %}" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 text-text-muted hover:bg-primary hover:text-white transition-all shadow-sm group/btn">
+                                        <i data-lucide="chevron-right" size="18" class="transition-transform group-hover/btn:translate-x-0.5"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="px-10 py-16 text-center">
+                                    <div class="flex flex-col items-center gap-4 text-text-muted">
+                                        <i data-lucide="inbox" size="48" class="opacity-20"></i>
+                                        <p class="font-bold text-lg">Hozircha kurslar mavjud emas</p>
+                                        <p class="text-sm font-medium">Siz birorta kursga biriktirilmagansiz.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Activity & Progress Sidebar -->
+        <div class="space-y-10">
+            <!-- Progress Circle Widget (Reference Dashboard.tsx inspired) -->
+            <div class="card-premium p-10 bg-slate-900 text-white border-none shadow-2xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors"></div>
+                
+                <h3 class="text-xl font-extrabold tracking-tight mb-8 relative z-10 flex items-center gap-3">
+                    <i data-lucide="activity" class="text-primary"></i> Umumiy Progress
+                </h3>
+
+                <div class="flex items-center justify-center py-6 relative z-10">
+                    <div class="relative w-40 h-40">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <circle class="text-slate-800" stroke-width="8" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50"></circle>
+                            <circle class="text-primary" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-4xl font-extrabold tracking-tighter">75%</span>
+                            <span class="text-[10px] font-bold text-white/40 uppercase tracking-widest">O'rganildi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mt-8 relative z-10">
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <p class="label-micro text-white/40">Darslar</p>
+                        <p class="text-lg font-bold uppercase truncate">45 / 60</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <p class="label-micro text-white/40">Soat</p>
+                        <p class="text-lg font-bold uppercase truncate">12.5 h</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications Widget -->
+            <div class="card-premium">
+                <div class="p-8 border-b border-border/50 flex items-center justify-between">
+                    <h3 class="text-lg font-extrabold text-text-primary tracking-tight">Bildirishnomalar</h3>
+                    <a href="{% url 'lms:notifications' %}" class="text-xs font-bold text-primary hover:underline transition-all uppercase tracking-wider">Barchasi</a>
+                </div>
+                <div class="p-4 space-y-2">
+                    {% for notif in recent_notifications|slice:":3" %}
+                    <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-all group cursor-pointer border border-transparent hover:border-slate-100">
+                        <div class="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform shrink-0">
+                            <i data-lucide="bell" size="18"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-bold text-text-primary truncate group-hover:text-primary transition-colors">{{ notif.title }}</p>
+                            <p class="text-[10px] font-bold text-text-muted uppercase tracking-widest mt-1">{{ notif.created_at|timesince }} oldin</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="py-12 text-center text-text-muted">
+                        <i data-lucide="bell-off" size="32" class="mx-auto mb-4 opacity-20"></i>
+                        <p class="text-sm font-bold">Xabarlar yo'q</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Bildirishnomalar — Django LMS Premium{% endblock %}
+
+{% block content %}
+<div class="animate-slideUp max-w-4xl mx-auto pb-20 space-y-10">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between">
+        <div class="space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
+                <i data-lucide="bell" size="14" class="text-primary"></i>
+                <span class="text-[10px] font-extrabold text-primary uppercase tracking-[0.2em]">Xabarnoma markazi</span>
+            </div>
+            <h2 class="text-4xl lg:text-5xl font-extrabold text-text-primary tracking-tighter leading-none">Bildirishnomalar</h2>
+            <p class="text-text-secondary text-lg font-medium max-w-xl">Barcha tizim va kurs xabarlarini bitta joyda kuzatib boring.</p>
+        </div>
+        <div class="hidden sm:flex w-20 h-20 bg-white rounded-[32px] border border-border/50 items-center justify-center text-text-muted shadow-sm">
+            <i data-lucide="bell-ring" size="32"></i>
+        </div>
+    </div>
+
+    <!-- Mark all as read button (Optional if you have the view) -->
+    <!-- <div class="flex justify-end">
+        <button class="text-xs font-black text-primary hover:underline uppercase tracking-widest">Hammasini o'qilgan deb belgilash</button>
+    </div> -->
+
+    <!-- List Card -->
+    <div class="card-premium overflow-hidden">
+        {% if notifications %}
+        <div class="divide-y divide-slate-100">
+            {% for notif in notifications %}
+            <div class="relative p-8 hover:bg-slate-50/50 transition-all group cursor-pointer border-l-4 {% if not notif.is_read %}border-primary bg-primary/[0.02]{% else %}border-transparent{% endif %}">
+                <div class="flex items-start gap-6">
+                    <!-- Icon based on type or just a bell -->
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm shrink-0 transition-transform group-hover:scale-110 {% if not notif.is_read %}bg-primary text-white shadow-primary/20{% else %}bg-slate-100 text-text-muted{% endif %}">
+                        <i data-lucide="{% if notif.type == 'achievement' %}award{% elif notif.type == 'survey' %}clipboard-list{% else %}message-square{% endif %}" size="20"></i>
+                    </div>
+
+                    <div class="flex-1 min-w-0 space-y-2">
+                        <div class="flex items-center justify-between gap-4">
+                            <h4 class="text-base font-black text-text-primary group-hover:text-primary transition-colors">
+                                {% if notif.link %}
+                                <a href="{{ notif.link }}" class="after:absolute after:inset-0">{{ notif.title }}</a>
+                                {% else %}
+                                {{ notif.title }}
+                                {% endif %}
+                            </h4>
+                            <span class="shrink-0 text-[10px] font-black text-text-muted uppercase tracking-widest flex items-center gap-2">
+                                <i data-lucide="clock" size="12"></i>
+                                {{ notif.created_at|timesince }} oldin
+                            </span>
+                        </div>
+                        <p class="text-sm font-medium text-text-secondary leading-relaxed line-clamp-2">{{ notif.message }}</p>
+                    </div>
+
+                    {% if not notif.is_read %}
+                    <div class="w-2 h-2 rounded-full bg-primary animate-pulse shrink-0 mt-2"></div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="p-24 text-center">
+            <div class="w-20 h-20 mx-auto rounded-[32px] bg-slate-50 text-text-muted flex items-center justify-center mb-8 opacity-20">
+                <i data-lucide="bell-off" size="48"></i>
+            </div>
+            <h4 class="text-xl font-extrabold text-text-primary tracking-tight">Xabarlar topilmadi</h4>
+            <p class="text-text-secondary font-medium mt-2">Sizda hozircha hech qanday bildirishnoma mavjud emas.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Pagination Placeholder (Keep existing if you have it) -->
+    {% if page_obj.has_other_pages %}
+    <div class="flex justify-center pt-10">
+        <!-- Add pagination logic here if needed -->
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

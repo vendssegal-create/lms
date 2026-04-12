@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load lms_filters %}
+{% load static %}
+
+{% block title %}Yangi Muhokama — Kurs Forumi{% endblock %}
+
+{% block content %}
+<div class="animate-slideUp max-w-4xl mx-auto pb-20 space-y-10">
+    <!-- Header Section -->
+    <div class="flex items-center gap-6">
+        <a href="{% url 'lms:course_forum' course.id %}" class="w-12 h-12 rounded-2xl bg-white border border-border/50 flex items-center justify-center text-text-muted hover:text-primary hover:border-primary/20 transition-all shadow-sm group">
+            <i data-lucide="arrow-left" size="20" class="group-hover:-translate-x-1 transition-transform"></i>
+        </a>
+        <div>
+            <h2 class="text-3xl font-black text-text-primary tracking-tight">Yangi Muhokama</h2>
+            <p class="text-sm font-medium text-text-secondary mt-1">Kurs forumi uchun yangi mavzu yarating</p>
+        </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card-premium p-10 lg:p-14">
+        <form method="post" class="space-y-10">
+            {% csrf_token %}
+            
+            <!-- Title Input -->
+            <div class="space-y-4">
+                <label class="flex items-center justify-between">
+                    <span class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Mavzu sarlavhasi</span>
+                    <span class="text-[10px] font-bold text-primary bg-primary/5 px-3 py-1 rounded-lg uppercase">Majburiy</span>
+                </label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-primary transition-colors">
+                        <i data-lucide="type" size="20"></i>
+                    </div>
+                    <input type="text" name="title" required
+                           class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-8 py-5 text-lg font-bold text-text-primary ring-2 ring-transparent focus:ring-primary/20 focus:bg-white transition-all shadow-inner outline-none placeholder:text-text-muted/40" 
+                           placeholder="Mavzuni qisqa va tushunarli qilib yozing">
+                </div>
+            </div>
+
+            <!-- Section Select -->
+            <div class="space-y-4">
+                <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Bo'lim (ixtiyoriy)</label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-text-muted group-focus-within:text-primary transition-colors">
+                        <i data-lucide="layers" size="20"></i>
+                    </div>
+                    <select name="section_id" class="w-full rounded-2xl bg-slate-50 border-none pl-16 pr-12 py-5 text-base font-bold text-text-primary appearance-none ring-2 ring-transparent focus:ring-primary/20 focus:bg-white transition-all shadow-inner outline-none cursor-pointer">
+                        <option value="">Umumiy muhokama</option>
+                        {% for section in course.sections.all %}
+                        <option value="{{ section.id }}">{{ section.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="absolute inset-y-0 right-0 pr-6 flex items-center pointer-events-none text-text-muted">
+                        <i data-lucide="chevron-down" size="20"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="space-y-4">
+                <label class="text-[11px] font-black text-text-muted uppercase tracking-[0.2em]">Xabar matni</label>
+                <div class="relative group">
+                    <textarea name="content" rows="8" required 
+                              class="w-full rounded-[32px] bg-slate-50 border-none p-10 text-base font-medium text-text-primary ring-2 ring-transparent focus:ring-primary/20 focus:bg-white transition-all outline-none resize-none shadow-inner placeholder:text-text-muted/40"
+                              placeholder="Savol yoki fikringizni batafsil bayon eting..."></textarea>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-6 pt-6">
+                <a href="{% url 'lms:course_forum' course.id %}" class="flex-1 inline-flex items-center justify-center px-10 py-5 rounded-2xl bg-white border border-border/50 text-text-primary font-black text-base hover:bg-slate-50 transition-all shadow-sm">
+                    Bekor qilish
+                </a>
+                <button type="submit" class="flex-[2] inline-flex items-center justify-center gap-3 px-10 py-5 rounded-2xl bg-primary text-white font-black text-base shadow-2xl shadow-primary/30 hover:bg-primary/90 transition-all group">
+                    <i data-lucide="check-circle" size="20" class="group-hover:scale-110 transition-transform"></i>
+                    Mavzuni yaratish
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tips Card -->
+    <div class="card-premium p-8 bg-blue-50/50 border-none">
+        <div class="flex gap-6">
+            <div class="w-12 h-12 shrink-0 rounded-2xl bg-white flex items-center justify-center text-blue-500 shadow-sm">
+                <i data-lucide="lightbulb" size="24"></i>
+            </div>
+            <div class="space-y-2">
+                <h4 class="text-base font-black text-blue-900 tracking-tight">Yaxshi mavzu ochish uchun tavsiyalar:</h4>
+                <ul class="space-y-1 text-sm font-medium text-blue-800/80">
+                    <li class="flex items-center gap-2"><i data-lucide="check" size="14"></i> Aniq va tushunarli sarlavha tanlang</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" size="14"></i> Muammoni batafsil tushuntiring</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" size="14"></i> Mavzuga mos bo'limni tanlashni unutmang</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

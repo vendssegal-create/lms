@@ -1,0 +1,370 @@
+{% extends "base.html" %}
+{% load lms_filters %}
+{% load static %}
+
+{% block title %}Qaydnoma #{{ sheet.sheet_no }} — Django LMS{% endblock %}
+
+{% block extra_head %}
+<!-- Custom Template CSS if exists -->
+{% if custom_template_css %}
+<style>
+    {{ custom_template_css|safe }}
+</style>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<style>
+    body { background-color: #f4f7f6; }
+    .content-wrapper { background: #f4f7f6; }
+    
+    .q-card { background: #fff; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    
+    .table-q { width: 100%; border-collapse: collapse; }
+    .table-q th { background: #fff; border: 1px solid #dee2e6; padding: 10px 5px; font-weight: 700; color: #333; font-size: 13px; text-align: center; vertical-align: middle; }
+    .table-q td { border: 1px solid #dee2e6; padding: 12px 10px; font-size: 13px; color: #333; vertical-align: middle; }
+    
+    .info-table { width: 100%; border-collapse: collapse; background: #fff; }
+    .info-table td { padding: 12px 15px; border-bottom: 1px solid #f2f2f2; font-size: 13px; vertical-align: top; }
+    .info-table tr:last-child td { border-bottom: none; }
+    .info-label { font-weight: 800; color: #000; width: 40%; }
+    .info-value { color: #555; width: 60%; }
+    
+    .btn-print-green { background: #00a65a; color: #fff; border: none; padding: 10px 25px; border-radius: 4px; font-weight: 700; float: right; margin: 20px; transition: all 0.2s; }
+    .btn-print-green:hover { background: #008d4c; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    
+    .score-input-q { width: 100%; border: none; background: transparent; text-align: center; font-weight: 700; font-size: 14px; padding: 5px; border-bottom: 2px solid transparent; transition: border 0.3s; }
+    .score-input-q:focus { outline: none; border-bottom-color: #3c8dbc; background: #fff7ed; }
+    
+    .label-max { display: block; font-size: 10px; color: #aaa; margin-top: 2px; }
+
+    /* Default Official 1-Form PDF Styling (Fallback) */
+    .default-f-form { display: none; }
+
+    @media print {
+        @page { size: A4; margin: 15mm; }
+        .no-print, .main-header, .sidebar, .main-footer, .breadcrumb, .q-card { display: none !important; }
+        .printable-area { display: block !important; width: 100%; font-family: 'Times New Roman', serif; color: #000; }
+        .content-wrapper { margin: 0 !important; padding: 0 !important; background: #fff !important; }
+        
+        /* Fallback 1-form styles */
+        .default-f-form { display: block !important; }
+        .h-1-shakl { text-align: right; font-weight: bold; font-size: 14px; margin-bottom: 10px; }
+        .f-univ-name { text-align: center; font-weight: bold; font-size: 16px; text-transform: uppercase; margin-bottom: 2px; }
+        .f-doc-title { text-align: center; font-weight: bold; font-size: 15px; text-decoration: underline; margin-bottom: 20px; }
+        .f-meta-row { font-size: 13px; line-height: 1.6; margin-bottom: 2px; }
+        .f-table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; }
+        .f-table th, .f-table td { border: 1px solid #000; padding: 6px 4px; font-size: 11px; text-align: center; vertical-align: middle; }
+        .f-table .text-left { text-align: left; padding-left: 5px; }
+        .f-footer-stats { font-size: 12px; margin-top: 10px; margin-bottom: 20px; border-bottom: 1px solid #000; padding-bottom: 5px; }
+        .f-sign-row { display: flex; justify-content: space-between; margin-top: 25px; font-size: 13px; }
+        .f-sign-box { border-top: 1px solid #000; width: 250px; text-align: center; padding-top: 5px; }
+        .f-qr-container { position: absolute; right: 20px; top: 120px; }
+    }
+</style>
+
+<div class="row">
+    <!-- Main GUI Column -->
+    <div class="col-md-9 no-print">
+        {% if request.user.is_superuser %}
+        <div class="alert alert-info no-print" style="margin-bottom: 15px; border: none; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+            <i class="fa fa-cogs"></i> <strong>Admin Panel:</strong> Bashorat parametrlarini sozlash va qaydnoma holatini boshqarish uchun admin boshqaruvidan foydalanishingiz mumkin.
+            <a href="{% url 'retake:retake_admin_assessment_control' %}" class="btn btn-xs btn-primary pull-right">Sozlamalar</a>
+        </div>
+        {% endif %}
+
+        <div class="q-card">
+            <div class="box-body no-padding">
+                <form method="post" id="gradingForm">
+                    {% csrf_token %}
+                    <table class="table-q">
+                        {% if schedule.control_type == 'final' %}
+                        <!-- COMPLEX FINAL EXAM HEADER -->
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="width: 45px;">№</th>
+                                <th rowspan="2" style="text-align: left; padding-left: 20px;">Talabaning F.I.Sh.</th>
+                                <th rowspan="2" style="width: 100px;">LMS Holati</th>
+                                <th style="width: 65px;">JN</th>
+                                <th style="width: 65px;">ON</th>
+                                <th rowspan="2" style="width: 80px;">JN+ON</th>
+                                <th style="width: 65px;">YN</th>
+                                <th rowspan="2" style="width: 90px;">Umumiy</th>
+                            </tr>
+                            <tr>
+                                <th style="font-size: 11px; font-weight: normal; color: #666; border-top: none;">As.</th>
+                                <th style="font-size: 11px; font-weight: normal; color: #666; border-top: none;">As.</th>
+                                <th style="font-size: 11px; font-weight: normal; color: #666; border-top: none;">As.</th>
+                            </tr>
+                        </thead>
+                        {% else %}
+                        <!-- SIMPLE JN/ON HEADER -->
+                        <thead>
+                            <tr>
+                                <th style="width: 45px;">№</th>
+                                <th style="text-align: left; padding-left: 20px;">Talabaning F.I.Sh.</th>
+                                <th style="width: 120px;">LMS Holati</th>
+                                <th style="width: 200px;">Sinfda topshirilgan ball</th>
+                            </tr>
+                        </thead>
+                        {% endif %}
+                        
+                        <tbody>
+                            {% for entry in entries %}
+                            {% with completion=completion_map|get_item:entry.student_snapshot_id %}
+                            {% if schedule.control_type == 'final' %}
+                            {% with cross=cross_scores|get_item:entry.group_membership_id %}
+                            <tr>
+                                <td style="text-align: center; color: #777;">{{ forloop.counter }}</td>
+                                <td style="font-weight: 500; font-size: 13px;">{{ entry.student_snapshot.full_name|upper }}</td>
+                                <td style="text-align: center;">
+                                    {% if completion %}
+                                        {% if completion.is_finished %}
+                                            <span class="label label-success" style="border-radius: 8px;"><i class="fa fa-check"></i> Tugallangan</span>
+                                        {% else %}
+                                            <div class="progress progress-xxs" style="margin-bottom: 5px; background: #e2e8f0;">
+                                                <div class="progress-bar progress-bar-warning" style="width: {% widthratio completion.completed completion.total 100 %}%"></div>
+                                            </div>
+                                            <span style="font-size: 10px; font-weight: 700; color: #f59e0b;">{{ completion.completed }}/{{ completion.total }} mavzu</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-muted" style="font-size: 10px;">Kurs yo'q</span>
+                                    {% endif %}
+                                </td>
+                                <td style="text-align: center; background: #fff;">{{ cross.jn|default:"0.0"|floatformat:1 }}</td>
+                                <td style="text-align: center; background: #fff;">{{ cross.on|default:"0.0"|floatformat:1 }}</td>
+                                <td style="text-align: center; font-weight: 800; background: #f9fafb;">{{ cross.jn|add_float:cross.on|default:"0.0"|floatformat:1 }}</td>
+                                <td style="text-align: center; padding: 0;">
+                                    {% if sheet.status == 'open' %}
+                                    <input type="number" 
+                                           name="score_{{ entry.id }}" 
+                                           class="score-input-q" 
+                                           value="{{ entry.score|floatformat:0|default:"" }}"
+                                           max="{{ max_score|floatformat:0 }}"
+                                           data-entry-idx="{{ forloop.counter }}"
+                                           data-jn-on-sum="{{ cross.jn|add_float:cross.on|default:0 }}"
+                                           data-student-name="{{ entry.student_snapshot.full_name }}"
+                                           data-is-finished="{% if completion %}{{ completion.is_finished|yesno:'true,false' }}{% else %}true{% endif %}"
+                                           {% if entry.is_absent %}readonly style="background: #fdf2f2;"{% endif %}>
+                                    <span class="label-max">Max: {{ max_score|floatformat:0 }}</span>
+                                    {% else %}
+                                    <div style="font-weight: 700;">{{ entry.score|floatformat:0|default:"0" }}</div>
+                                    {% endif %}
+                                </td>
+                                <td style="text-align: center; font-weight: 800; background: #fff;">
+                                    <span class="total-score-val-{{ forloop.counter }}">{{ entry.score|add_float:cross.jn|add_float:cross.on|floatformat:0|default:"0" }}</span>
+                                </td>
+                            </tr>
+                            {% endwith %}
+                            {% else %}
+                            <!-- SIMPLE ROW FOR JN/ON -->
+                            <tr>
+                                <td style="text-align: center; color: #777;">{{ forloop.counter }}</td>
+                                <td style="font-weight: 500; font-size: 13px;">{{ entry.student_snapshot.full_name|upper }}</td>
+                                <td style="text-align: center;">
+                                    {% if completion %}
+                                        {% if completion.is_finished %}
+                                            <span class="label label-success" style="border-radius: 8px;"><i class="fa fa-check"></i> Tugallangan</span>
+                                        {% else %}
+                                            <div class="progress progress-xxs" style="margin-bottom: 5px; background: #e2e8f0;">
+                                                <div class="progress-bar progress-bar-warning" style="width: {% widthratio completion.completed completion.total 100 %}%"></div>
+                                            </div>
+                                            <span style="font-size: 10px; font-weight: 700; color: #f59e0b;">{{ completion.completed }}/{{ completion.total }} mavzu</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-muted" style="font-size: 10px;">Kurs yo'q</span>
+                                    {% endif %}
+                                </td>
+                                <td style="text-align: center; padding: 5px;">
+                                    {% if sheet.status == 'open' %}
+                                    <input type="number" 
+                                           name="score_{{ entry.id }}" 
+                                           class="score-input-q" 
+                                           value="{{ entry.score|floatformat:0|default:"" }}"
+                                           max="{{ max_score|floatformat:0 }}"
+                                           placeholder="Ball kiriting"
+                                           data-student-name="{{ entry.student_snapshot.full_name }}"
+                                           data-is-finished="{% if completion %}{{ completion.is_finished|yesno:'true,false' }}{% else %}true{% endif %}"
+                                           {% if entry.is_absent %}readonly style="background: #fdf2f2;"{% endif %}>
+                                    <span class="label-max">Eng yuqori ball: {{ max_score|floatformat:0 }}</span>
+                                    {% else %}
+                                    <div style="font-weight: 700; font-size: 15px;">{{ entry.score|floatformat:0|default:"0" }}</div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endwith %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                    <div class="no-print" style="overflow: hidden; background: #fafafa; border-top: 1px solid #f2f2f2;">
+                        {% if schedule.control_type == 'final' %}
+                        <button type="button" onclick="window.print()" class="btn-print-green">
+                            <i class="fa fa-print"></i> 1-Shakl / Chop etish
+                        </button>
+                        {% else %}
+                        <button type="button" onclick="window.print()" class="btn-print-green" style="background: #3c8dbc;">
+                            <i class="fa fa-print"></i> Qaydnoma chop etish
+                        </button>
+                        {% endif %}
+                        
+                        {% if sheet.status == 'open' %}
+                        <button type="submit" name="lock_sheet" value="1" class="btn btn-primary no-print" style="float: right; margin: 20px 0; border-radius: 4px; font-weight: 700; height: 38px;">
+                            <i class="fa fa-lock"></i> Saqlash va Yakunlash
+                        </button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Info Column -->
+    <div class="col-md-3 no-print">
+        <div class="q-card">
+            <table class="info-table">
+                <tr>
+                    <td class="info-label">Fanlar</td>
+                    <td class="info-value">{{ group.subject_snapshot.subject_name }}</td>
+                </tr>
+                <tr>
+                    <td class="info-label">Nazorat turi</td>
+                    <td class="info-value">
+                        {{ schedule.control_type_label|upper }}<br>
+                        <span style="font-weight: 800; color: #333;">[{{ max_score|floatformat:0 }}]</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="info-label">Nazorat sanasi</td>
+                    <td class="info-value">{{ schedule.scheduled_at|date:"d.m.Y" }}</td>
+                </tr>
+                <tr>
+                    <td class="info-label">Fan guruhlari</td>
+                    <td class="info-value">{{ group.code }}</td>
+                </tr>
+                <tr>
+                    <td class="info-label">Baholash tizimi</td>
+                    <td class="info-value">Kredit baholash tizimi</td>
+                </tr>
+            </table>
+        </div>
+        
+        {% if request.user.is_superuser %}
+        <div class="no-print" style="text-align: center; padding: 10px;">
+            <form method="post">
+                {% csrf_token %}
+                {% if sheet.status == 'locked' %}
+                <button type="submit" name="unlock_sheet" value="1" class="btn btn-xs btn-danger"><i class="fa fa-unlock"></i> Blokdan chiqarish</button>
+                {% endif %}
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- ========================================================================================= -->
+<!-- OFFICIAL 1-FORM PDF PRINT TEMPLATE -->
+<!-- ========================================================================================= -->
+<div class="printable-area" style="display: none;">
+    {% if custom_template_html %}
+        <!-- DYNAMIC CUSTOM TEMPLATE RENDERED ON SERVER -->
+        {{ custom_template_html|safe }}
+    {% else %}
+        {% if schedule.control_type == 'final' %}
+        <!-- DEFAULT 1-FORM FALLBACK -->
+        <div class="default-f-form">
+            <div class="h-1-shakl">1-shakl</div>
+            <div class="f-univ-name">BUXORO DAVLAT TEXNIKA UNIVERSITETI</div>
+            <div class="f-doc-title">QAYTA TOPSHIRISHNI BAHOLASH QAYDNOMASI № {{ sheet.sheet_no }}</div>
+            
+            <div class="f-meta-row"><strong>Fakultet:</strong> {{ group.cycle.name|default:"Fan fakulteti" }}, <strong>Guruh:</strong> {{ group.code }}</div>
+            <div class="f-meta-row"><strong>Fan:</strong> {{ group.subject_snapshot.subject_name }}</div>
+            <div class="f-meta-row"><strong>Yakuniy nazorat mas'uli:</strong> {{ schedule.teacher_profile.full_name|upper }}</div>
+            <div class="f-meta-row"><strong>Sana:</strong> {{ schedule.scheduled_at|date:"d.m.Y" }}</div>
+            
+            <div class="f-qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://lms.bdtu.uz/retake/verify/{{ sheet.sheet_no }}" alt="QR Verification">
+            </div>
+            
+            {% include "retake/partials/exam_sheet_student_table.html" %}
+            
+            <div class="f-footer-stats">
+                <strong>Jami:</strong> {{ stats.total }}, "5": {{ stats.count_5 }}, "4": {{ stats.count_4 }}, "3": {{ stats.count_3 }}, "2": {{ stats.count_2 }}, <strong>Kelmadi:</strong> {{ stats.absent }}
+            </div>
+            
+            <div class="f-sign-row">
+                <div class="f-sign-box">M.O'. </div>
+                <div class="f-sign-box">DEKAN: ____________________________</div>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+    </div>
+</div>
+
+<!-- GRADING WARNING MODAL -->
+<div class="modal fade" id="gradingWarningModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="margin-top: 150px;">
+        <div class="modal-content" style="border-radius: 16px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div class="modal-body text-center" style="padding: 30px;">
+                <div style="font-size: 50px; color: #f59e0b; margin-bottom: 20px;">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <h4 style="font-weight: 800; color: #1e293b; margin-bottom: 10px;">Baho qo'yib bo'lmaydi!</h4>
+                <p id="warningModalText" style="color: #64748b; font-size: 14px; line-height: 1.6;">
+                    Ushbu talaba kursni tugatmagan. Baho qo'ya olmaysiz.
+                </p>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" style="margin-top: 20px; border-radius: 10px; padding: 10px 30px; font-weight: 700; background: #4361ee; border: none;">Tushunarli</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Validation for course completion
+    document.querySelectorAll('.score-input-q').forEach(input => {
+        input.addEventListener('focus', function() {
+            const isFinished = this.dataset.isFinished === 'true';
+            if (!isFinished) {
+                const studentName = this.dataset.studentName;
+                document.getElementById('warningModalText').innerHTML = `<strong>${studentName}</strong> hali LMS kursini to'liq tugatmagan.<br>Baho qo'yish uchun barcha mavzular o'zlashtirilishi shart.`;
+                $('#gradingWarningModal').modal('show');
+                this.blur();
+            }
+        });
+
+        input.addEventListener('input', function() {
+            const idx = this.dataset.entryIdx;
+            const val = parseFloat(this.value) || 0;
+            const prevSum = parseFloat(this.dataset.jnOnSum) || 0;
+            
+            const max = parseFloat(this.getAttribute('max')) || 100;
+            if (val > max) {
+                this.value = max;
+                return;
+            }
+            
+            // Update GUI if final
+            const totalCell = document.querySelector('.total-score-val-' + idx);
+            if (totalCell) totalCell.textContent = Math.round(prevSum + (parseFloat(this.value) || 0));
+            
+            // Update Print-Form values (Only for DEFAULT template, custom template may vary)
+            const f_yn = document.querySelector('.f-yn-val-' + idx);
+            const f_tot = document.querySelector('.f-tot-val-' + idx);
+            const f_gr = document.querySelector('.f-gr-val-' + idx);
+            
+            if (f_yn) f_yn.textContent = Math.round(parseFloat(this.value) || 0);
+            if (f_tot) f_tot.textContent = Math.round(prevSum + (parseFloat(this.value) || 0));
+            
+            if (f_gr) {
+                const tot = prevSum + (parseFloat(this.value) || 0);
+                if (tot >= 86) f_gr.textContent = "5";
+                else if (tot >= 71) f_gr.textContent = "4";
+                else if (tot >= 60) f_gr.textContent = "3";
+                else f_gr.textContent = "2";
+            }
+        });
+    });
+</script>
+{% endblock %}

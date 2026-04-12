@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+{% load lms_filters %}
+{% load static %}
+
+{% block title %}Qayta topshirish paneli — Django LMS{% endblock %}
+
+{% block content %}
+<div class="space-y-8 animate-in fade-in duration-500">
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h2 class="font-display text-3xl font-extrabold tracking-tight text-text-primary">Qayta topshirish paneli</h2>
+            <p class="text-sm font-medium text-text-muted mt-1">Arizalar oqimi va kanban monitoringi</p>
+        </div>
+        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <i data-lucide="refresh-cw" class="h-6 w-6"></i>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Total applications -->
+        <a href="{% url 'retake:search_student' %}" class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-500 to-sky-600 p-6 text-white shadow-lg shadow-sky-500/20 hover:shadow-xl hover:scale-[1.02] transition-all">
+            <div class="relative z-10">
+                <p class="text-xs font-bold uppercase tracking-widest opacity-90">Jami arizalar</p>
+                <p class="font-display text-4xl font-extrabold mt-2">{{ total_applications }}</p>
+                <p class="text-xs font-semibold mt-3 flex items-center gap-1 opacity-90">
+                    <i data-lucide="plus-circle" class="h-3 w-3"></i>
+                    Yangi ariza qo'shish
+                </p>
+            </div>
+            <i data-lucide="file-text" class="absolute -right-4 -top-4 h-24 w-24 opacity-10"></i>
+        </a>
+
+        <!-- Pending Payments -->
+        <a href="{% url 'retake:retake_accounting_list' %}" class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 to-orange-600 p-6 text-white shadow-lg shadow-amber-500/20 hover:shadow-xl hover:scale-[1.02] transition-all">
+            <div class="relative z-10">
+                <p class="text-xs font-bold uppercase tracking-widest opacity-90">To'lov kutilmoqda</p>
+                <p class="font-display text-4xl font-extrabold mt-2">{{ pending_payments }}</p>
+                <p class="text-xs font-semibold mt-3 flex items-center gap-1 opacity-90">
+                    <i data-lucide="arrow-right" class="h-3 w-3"></i>
+                    Ko'rib chiqish
+                </p>
+            </div>
+            <i data-lucide="wallet" class="absolute -right-4 -top-4 h-24 w-24 opacity-10"></i>
+        </a>
+
+        <!-- Supervisor Approval -->
+        <a href="{% url 'retake:retake_supervisor_list' %}" class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-500 to-purple-600 p-6 text-white shadow-lg shadow-violet-500/20 hover:shadow-xl hover:scale-[1.02] transition-all">
+            <div class="relative z-10">
+                <p class="text-xs font-bold uppercase tracking-widest opacity-90">Boshliq tasdig'ida</p>
+                <p class="font-display text-4xl font-extrabold mt-2">{{ pending_supervisor }}</p>
+                <p class="text-xs font-semibold mt-3 flex items-center gap-1 opacity-90">
+                    <i data-lucide="arrow-right" class="h-3 w-3"></i>
+                    Tasdiqlash
+                </p>
+            </div>
+            <i data-lucide="check-circle-2" class="absolute -right-4 -top-4 h-24 w-24 opacity-10"></i>
+        </a>
+
+        <!-- Grouped -->
+        <a href="{% url 'retake:retake_manage_groups' %}" class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500 to-green-600 p-6 text-white shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:scale-[1.02] transition-all">
+            <div class="relative z-10">
+                <p class="text-xs font-bold uppercase tracking-widest opacity-90">Guruhlangan</p>
+                <p class="font-display text-4xl font-extrabold mt-2">{{ grouped_students }}</p>
+                <p class="text-xs font-semibold mt-3 flex items-center gap-1 opacity-90">
+                    <i data-lucide="arrow-right" class="h-3 w-3"></i>
+                    MB menejeri
+                </p>
+            </div>
+            <i data-lucide="users" class="absolute -right-4 -top-4 h-24 w-24 opacity-10"></i>
+        </a>
+    </div>
+
+    <!-- Process Stepper -->
+    <div class="rounded-3xl border border-border bg-white p-8 shadow-sm">
+        <h3 class="font-display text-lg font-extrabold text-text-primary mb-6 flex items-center gap-2">
+            <i data-lucide="git-branch" class="h-5 w-5 text-primary"></i>
+            Ariza oqimi bosqichlari (VMQ 824)
+        </h3>
+        <div class="flex items-center justify-between gap-2 overflow-x-auto pb-2">
+            <!-- Step 1 -->
+            <div class="flex flex-col items-center gap-2 shrink-0 min-w-[90px]">
+                <div class="w-14 h-14 rounded-2xl bg-slate-400 text-white flex items-center justify-center shadow-md">
+                    <i data-lucide="pencil" class="h-6 w-6"></i>
+                </div>
+                <div class="text-xs font-bold text-text-primary text-center leading-tight">Ariza<br>yuborish</div>
+            </div>
+            <i data-lucide="chevron-right" class="h-5 w-5 text-slate-300 shrink-0"></i>
+            <!-- Step 2 -->
+            <div class="flex flex-col items-center gap-2 shrink-0 min-w-[90px]">
+                <div class="w-14 h-14 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-md">
+                    <i data-lucide="wallet" class="h-6 w-6"></i>
+                </div>
+                <div class="text-xs font-bold text-text-primary text-center leading-tight">
+                    Buxgalteriya<br>
+                    <span class="inline-block mt-1 px-2 py-0.5 rounded-md bg-amber-100 text-amber-700 text-[10px]">{{ pending_payments }}</span>
+                </div>
+            </div>
+            <i data-lucide="chevron-right" class="h-5 w-5 text-slate-300 shrink-0"></i>
+            <!-- Step 3 -->
+            <div class="flex flex-col items-center gap-2 shrink-0 min-w-[90px]">
+                <div class="w-14 h-14 rounded-2xl bg-violet-500 text-white flex items-center justify-center shadow-md">
+                    <i data-lucide="user-check" class="h-6 w-6"></i>
+                </div>
+                <div class="text-xs font-bold text-text-primary text-center leading-tight">
+                    Boshliq<br>
+                    <span class="inline-block mt-1 px-2 py-0.5 rounded-md bg-violet-100 text-violet-700 text-[10px]">{{ pending_supervisor }}</span>
+                </div>
+            </div>
+            <i data-lucide="chevron-right" class="h-5 w-5 text-slate-300 shrink-0"></i>
+            <!-- Step 4 -->
+            <div class="flex flex-col items-center gap-2 shrink-0 min-w-[90px]">
+                <div class="w-14 h-14 rounded-2xl bg-blue-500 text-white flex items-center justify-center shadow-md">
+                    <i data-lucide="users" class="h-6 w-6"></i>
+                </div>
+                <div class="text-xs font-bold text-text-primary text-center leading-tight">Guruhlash</div>
+            </div>
+            <i data-lucide="chevron-right" class="h-5 w-5 text-slate-300 shrink-0"></i>
+            <!-- Step 5 -->
+            <div class="flex flex-col items-center gap-2 shrink-0 min-w-[90px]">
+                <div class="w-14 h-14 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-md">
+                    <i data-lucide="calendar-check" class="h-6 w-6"></i>
+                </div>
+                <div class="text-xs font-bold text-text-primary text-center leading-tight">Imtihon</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kanban Board -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <!-- New / Returned -->
+        <div class="rounded-3xl bg-slate-100/60 p-5 min-h-[500px]">
+            <div class="flex items-center justify-between mb-4 px-2">
+                <h4 class="font-bold text-sm text-text-primary flex items-center gap-2">
+                    <i data-lucide="clock" class="h-4 w-4"></i>
+                    YANGI / QAYTGAN
+                </h4>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-400 text-white text-xs font-bold">{{ new_apps.count }}</span>
+            </div>
+            <div class="space-y-3">
+                {% for app in new_apps %}
+                <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-slate-400">
+                    <div class="flex items-start justify-between gap-2 mb-2">
+                        <strong class="text-sm text-text-primary truncate">{{ app.student_snapshot.full_name }}</strong>
+                        <span class="status-pill {{ app.status|status_badge_class }} text-[9px] shrink-0">{{ app.status|status_label }}</span>
+                    </div>
+                    <p class="text-[11px] text-text-muted flex items-center gap-1 mb-1">
+                        <i data-lucide="book" class="h-3 w-3"></i>
+                        {{ app.items.count }} ta fan • {{ app.student_snapshot.group_name }}
+                    </p>
+                    <p class="text-[10px] text-text-muted flex items-center gap-1">
+                        <i data-lucide="clock" class="h-3 w-3"></i>
+                        {{ app.created_at|uz_date }}
+                    </p>
+                    <a href="{% url 'retake:application_detail' app.id %}" class="mt-3 block text-center py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-text-primary transition-colors">Ko'rish</a>
+                </div>
+                {% empty %}
+                <div class="text-center pt-16 text-text-muted">
+                    <i data-lucide="inbox" class="h-10 w-10 mx-auto opacity-30 mb-2"></i>
+                    <p class="text-xs font-bold">Yozuvlar topilmadi</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- In Progress -->
+        <div class="rounded-3xl bg-orange-50/60 p-5 min-h-[500px]">
+            <div class="flex items-center justify-between mb-4 px-2">
+                <h4 class="font-bold text-sm text-orange-800 flex items-center gap-2">
+                    <i data-lucide="loader" class="h-4 w-4"></i>
+                    JARAYONDA
+                </h4>
+                <span class="px-2.5 py-1 rounded-lg bg-orange-500 text-white text-xs font-bold">{{ in_progress_apps.count }}</span>
+            </div>
+            <div class="space-y-3">
+                {% for app in in_progress_apps %}
+                <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-orange-500">
+                    <div class="flex items-start justify-between gap-2 mb-2">
+                        <strong class="text-sm text-text-primary truncate">{{ app.student_snapshot.full_name }}</strong>
+                        <span class="status-pill {{ app.status|status_badge_class }} text-[9px] shrink-0">{{ app.status|status_label }}</span>
+                    </div>
+                    <p class="text-[11px] text-text-muted flex items-center gap-1 mb-1">
+                        <i data-lucide="credit-card" class="h-3 w-3"></i>
+                        Summa: {{ app.declared_amount }}
+                    </p>
+                    <p class="text-[10px] text-text-muted flex items-center gap-1">
+                        <i data-lucide="refresh-cw" class="h-3 w-3"></i>
+                        {{ app.updated_at|uz_date }}
+                    </p>
+                    <a href="{% url 'retake:application_detail' app.id %}" class="mt-3 block text-center py-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-xs font-bold text-white transition-colors">Ko'rish</a>
+                </div>
+                {% empty %}
+                <div class="text-center pt-16 text-text-muted">
+                    <i data-lucide="inbox" class="h-10 w-10 mx-auto opacity-30"></i>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Completed -->
+        <div class="rounded-3xl bg-green-50/60 p-5 min-h-[500px]">
+            <div class="flex items-center justify-between mb-4 px-2">
+                <h4 class="font-bold text-sm text-green-800 flex items-center gap-2">
+                    <i data-lucide="check-circle" class="h-4 w-4"></i>
+                    YAKUNLANDI
+                </h4>
+                <span class="px-2.5 py-1 rounded-lg bg-green-500 text-white text-xs font-bold">{{ done_apps.count }}</span>
+            </div>
+            <div class="space-y-3">
+                {% for app in done_apps %}
+                <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-green-500">
+                    <div class="mb-2">
+                        <strong class="text-sm text-text-primary truncate block">{{ app.student_snapshot.full_name }}</strong>
+                    </div>
+                    <p class="text-[11px] text-text-muted flex items-center gap-1 mb-1">
+                        <i data-lucide="user" class="h-3 w-3"></i>
+                        {{ app.student_snapshot.student_id_number }}
+                    </p>
+                    <p class="text-[10px] text-text-muted flex items-center gap-1">
+                        <i data-lucide="calendar-check" class="h-3 w-3"></i>
+                        {{ app.updated_at|uz_date }}
+                    </p>
+                    <a href="{% url 'retake:application_detail' app.id %}" class="mt-3 block text-center py-1.5 rounded-lg bg-green-500 hover:bg-green-600 text-xs font-bold text-white transition-colors">Ko'rish</a>
+                </div>
+                {% empty %}
+                <div class="text-center pt-16 text-text-muted">
+                    <i data-lucide="inbox" class="h-10 w-10 mx-auto opacity-30"></i>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% if subjects_needing_groups %}
+    <!-- Subjects needing groups -->
+    <div class="rounded-3xl border border-amber-200 bg-white shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-amber-100 bg-amber-50">
+            <h3 class="font-display text-lg font-extrabold text-text-primary flex items-center gap-2">
+                <i data-lucide="users" class="h-5 w-5 text-amber-600"></i>
+                Guruhlash kutilayotgan fanlar (DB Manager)
+            </h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bg-slate-50 text-text-muted text-xs uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left font-bold">Fan nomi</th>
+                        <th class="px-6 py-3 text-left font-bold">Tasdiqlangan talabalar</th>
+                        <th class="px-6 py-3 text-right font-bold">Amallar</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border">
+                    {% for item in subjects_needing_groups %}
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4 font-bold text-text-primary">{{ item.subject_snapshot__subject_name }}</td>
+                        <td class="px-6 py-4">
+                            <span class="status-pill status-pill-warning">{{ item.student_count }} ta talaba</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="{% url 'retake:retake_create_group' %}?subject_id={{ item.subject_snapshot__id }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-colors">
+                                <i data-lucide="plus" class="h-3.5 w-3.5"></i>
+                                Guruh yaratish
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

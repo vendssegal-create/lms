@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+{% load static %}
+{% load lms_filters %}
+
+{% block title %}{{ student.full_name }} — Qarzdorliklar — Django LMS{% endblock %}
+
+{% block extra_head %}
+<style>
+    .student-hero {
+        background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+        border-radius: 30px;
+        padding: 40px;
+        color: #fff;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(67, 97, 238, 0.2);
+    }
+    .student-hero::after {
+        content: '';
+        position: absolute;
+        top: -20%;
+        right: -10%;
+        width: 300px;
+        height: 300px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+    }
+    .student-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 4px solid rgba(255,255,255,0.2);
+        object-fit: cover;
+        z-index: 1;
+    }
+    .student-info { z-index: 1; }
+    .student-name { font-size: 28px; font-weight: 900; margin: 0 0 5px; letter-spacing: -0.5px; }
+    .student-meta { font-weight: 600; opacity: 0.9; font-size: 14px; }
+
+    .debt-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow: var(--shadow-md);
+        border: 1px solid #f1f5f9;
+    }
+    .debt-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+    .debt-table th { color: #94a3b8; font-size: 11px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; padding: 10px 20px; }
+    .debt-table tr.debt-row { background: #f8fafc; transition: 0.2s; cursor: pointer; }
+    .debt-table tr.debt-row:hover { background: #fff; transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .debt-table td { padding: 18px 20px; vertical-align: middle; border: 1px solid transparent; }
+    .debt-table tr.debt-row td:first-child { border-radius: 16px 0 0 16px; border-left: 1px solid #f1f5f9; }
+    .debt-table tr.debt-row td:last-child { border-radius: 0 16px 16px 0; border-right: 1px solid #f1f5f9; }
+    .debt-table tr.debt-row.selected { background: rgba(67, 97, 238, 0.05); border-color: var(--primary); }
+
+    .custom-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="student-hero animate-fadeIn">
+    <img class="student-avatar" src="{% if student.image %}{{ student.image.url }}{% else %}{% static 'img/user-placeholder.png' %}{% endif %}" alt="Avatar">
+    <div class="student-info">
+        <h1 class="student-name">{{ student.full_name }}</h1>
+        <div class="student-meta">
+            {{ student.group_name }} &bull; {{ student.faculty_name }} &bull; ID: {{ student.student_id_number }}
+        </div>
+        <div style="margin-top: 20px;">
+            <a href="?sync=1" class="btn btn-sm" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 10px; font-weight: 700;">
+                <i class="fa fa-refresh" style="margin-right: 5px;"></i> HEMIS bilan yangilash
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="debt-card animate-fadeInUp">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h3 style="font-weight: 900; color: #1e293b; margin: 0; font-size: 20px;">Qarzdorliklar</h3>
+        <span class="badge" style="background: #fee2e2; color: #ef4444; padding: 6px 14px; border-radius: 10px; font-weight: 800;">{{ debts.count }} ta fan</span>
+    </div>
+
+    <form method="post" action="{% url 'retake:create_application' student.id %}">
+        {% csrf_token %}
+        
+        <div class="row" style="margin-bottom: 40px;">
+            <div class="col-md-12">
+                <div style="background: #f8fafc; border: 2px dashed #e2e8f0; border-radius: 20px; padding: 25px; display: flex; align-items: center; gap: 20px;">
+                    <div style="width: 60px; height: 60px; background: #fff; border-radius: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                        <i class="fa fa-calendar-check-o text-primary" style="font-size: 24px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-weight: 800; color: #475569; font-size: 13px; margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">Qayta topshirish davrini tanlang</label>
+                        {% if open_cycles %}
+                        <select name="cycle_id" id="cycle-select" class="form-control" required style="border-radius: 12px; height: 50px; border-color: #cbd5e1; font-weight: 700; color: #1e293b; font-size: 16px; background: #fff;">
+                            <option value="" disabled>O'quv davrini tanlang...</option>
+                            {% for c in open_cycles %}
+                            <option value="{{ c.id }}" 
+                                    data-max="{{ c.max_allowed_credits|default:15.0|stringformat:'.1f' }}"
+                                    {% if c.id == cycle.id %}selected{% endif %}>
+                                {{ c.name }} ({{ c.max_allowed_credits|floatformat:1 }} kr)
+                            </option>
+                            {% endfor %}
+                        </select>
+                        {% else %}
+                        <div class="text-danger" style="font-weight: 800; font-size: 16px;">
+                            <i class="fa fa-exclamation-triangle"></i> Hozirda faol davr (Cycle) mavjud emas.
+                        </div>
+                        <p style="font-size: 12px; color: #64748b; margin-top: 5px;">Iltimos, avval "Qayta o'qish davrlari" menyusi orqali yangi davr yarating va holatini <b>'OCHIQ'</b> qilib belgilang.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="debt-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40px; text-align: center;"></th>
+                        <th>Fan nomi</th>
+                        <th>Semestr</th>
+                        <th style="text-align: center;">Kredit</th>
+                        <th>Nazorat turi</th>
+                        <th style="text-align: center;">Ball</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for debt in debts %}
+                    <tr class="debt-row {% if debt.id in applied_debt_ids %}disabled-row{% endif %}" {% if debt.id not in applied_debt_ids %}onclick="toggleRow(this)"{% endif %}>
+                        <td style="text-align: center;">
+                            {% if debt.id in applied_debt_ids %}
+                            <i class="fa fa-lock" style="color: #cbd5e1;"></i>
+                            {% else %}
+                            <input type="checkbox" name="debt_ids" value="{{ debt.id }}" class="custom-checkbox" onclick="event.stopPropagation()">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div style="font-weight: 800; color: #1e293b;">
+                                {{ debt.subject_snapshot.subject_name }}
+                                {% if debt.debt_status == "inferred_from_performance" %}
+                                <span class="badge" style="background: #fef3c7; color: #92400e; font-size: 9px; vertical-align: middle; margin-left: 5px;">BAHO ASOSIDA</span>
+                                {% endif %}
+                                {% if debt.id in applied_debt_ids %}
+                                <span class="badge" style="background: #f8fafc; color: #94a3b8; font-size: 9px; vertical-align: middle; margin-left: 5px; border: 1px solid #e2e8f0;">ARIZADA <i class="fa fa-check"></i></span>
+                                {% endif %}
+                            </div>
+                            <small style="color: #94a3b8; font-weight: 600;">{{ debt.subject_snapshot.subject_code }}</small>
+                        </td>
+                        <td style="font-weight: 700; color: #64748b;">{{ debt.semester_label|default:debt.subject_snapshot.semester_name }}</td>
+                        <td style="text-align: center;"><span class="badge credit-amount-badge" style="background: #f1f5f9; color: #4361ee; font-weight: 800;">{{ debt.subject_snapshot.credit }}</span></td>
+                        <td><span class="label label-default" style="background: #e2e8f0; color: #475569; border-radius: 6px; padding: 4px 10px;">{{ debt.exam_type_label }}</span></td>
+                        <td style="text-align: center; font-weight: 900; color: #ef4444;">{{ debt.total_point|default:debt.grade|default:"0" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" style="padding: 60px; text-align: center;">
+                            <div style="opacity: 0.1; margin-bottom: 20px;"><i class="fa fa-smile-o fa-4x"></i></div>
+                            <div style="font-weight: 800; color: #94a3b8; font-size: 16px;">Sizda qarzdorliklar mavjud emas!</div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="credit-limit-warning" class="alert alert-danger" style="display: none; margin-top: 20px; border-radius: 12px; font-weight: 700;">
+            <i class="fa fa-warning"></i> Kreditlar yig'indisi ushbu davr uchun belgilangan limitdan (<span id="cycle-limit-val">{{ cycle.max_allowed_credits|floatformat:1 }}</span>) oshib ketdi!
+        </div>
+
+        <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 20px 30px; border-radius: 20px; border: 1px solid #e2e8f0;">
+            <div>
+                <span style="color: #64748b; font-weight: 700; font-size: 14px; text-transform: uppercase;">Jami tanlangan:</span>
+                <span id="total-selected-credits" style="font-size: 24px; font-weight: 900; color: #1e293b; margin-left: 10px;">0.0</span>
+                <span style="color: #94a3b8; font-weight: 700;"> / <span id="max-credits-display">{{ cycle.max_allowed_credits|floatformat:1 }}</span> kr</span>
+            </div>
+            <button type="submit" id="submit-btn" class="btn btn-primary" style="padding: 15px 40px; border-radius: 16px; font-weight: 800; background: var(--primary); border: none; box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2); transition: 0.3s;">
+                <i class="fa fa-file-text-o" style="margin-right: 10px;"></i> Ariza yaratish
+            </button>
+        </div>
+    </form>
+</div>
+
+{% if student_applications %}
+<div class="debt-card animate-fadeInUp" style="animation-delay: 0.1s; margin-top: 30px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h3 style="font-weight: 900; color: #1e293b; margin: 0; font-size: 20px;">Mavjud Arizalar</h3>
+        <span class="badge" style="background: #e0e7ff; color: #4361ee; padding: 6px 14px; border-radius: 10px; font-weight: 800;">{{ student_applications|length }} ta ariza</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="debt-table">
+            <thead>
+                <tr>
+                    <th style="width: 60px;">ID</th>
+                    <th>Davr</th>
+                    <th>Kredit & Summa</th>
+                    <th>Holat</th>
+                    <th>Sana</th>
+                    <th style="text-align: right;">Amallar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in student_applications %}
+                <tr class="debt-row">
+                    <td style="font-weight: 800; color: #1e293b;">#{{ app.id }}</td>
+                    <td style="font-weight: 700; color: #64748b;">{{ app.cycle.name }}</td>
+                    <td>
+                        <div style="font-weight: 800; color: var(--primary);">{{ app.total_credit|floatformat:1 }} kr</div>
+                        <div style="font-size: 11px; color: #94a3b8;">{{ app.declared_amount|default:"0" }} UZS</div>
+                    </td>
+                    <td>
+                        <span class="status-pill {{ app.status|status_badge_class }}">{{ app.status|status_label }}</span>
+                    </td>
+                    <td style="color: #94a3b8; font-weight: 600; font-size: 13px;">{{ app.created_at|uz_date }}</td>
+                    <td style="text-align: right;">
+                        <a href="{% url 'retake:application_detail' app.id %}" class="btn btn-sm btn-default" style="border-radius: 8px; font-weight: 700;">
+                            <i class="fa fa-eye"></i> Ochiq
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<style>
+    .disabled-row { opacity: 0.6; background: #fafafa !important; cursor: not-allowed !important; transform: none !important; box-shadow: none !important; }
+</style>
+
+<script>
+let MAX_CREDITS = parseFloat("{{ cycle.max_allowed_credits|default:15.0 }}");
+const checkBoxes = document.querySelectorAll('.custom-checkbox');
+const totalDisplay = document.getElementById('total-selected-credits');
+const maxDisplay = document.getElementById('max-credits-display');
+const warningDiv = document.getElementById('credit-limit-warning');
+const submitBtn = document.getElementById('submit-btn');
+const cycleSelect = document.getElementById('cycle-select');
+
+function updateCredits() {
+    let total = 0;
+    document.querySelectorAll('.debt-row.selected').forEach(row => {
+        // Specifically pick the credit amount badge
+        const creditText = row.querySelector('.credit-amount-badge').innerText;
+        total += parseFloat(creditText) || 0;
+    });
+    
+    totalDisplay.innerText = total.toFixed(1);
+    
+    const isCycleSelected = cycleSelect && cycleSelect.value !== "";
+    
+    if (total > MAX_CREDITS) {
+        totalDisplay.style.color = '#ef4444';
+        warningDiv.style.display = 'block';
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.5';
+        submitBtn.style.cursor = 'not-allowed';
+    } else {
+        totalDisplay.style.color = '#1e293b';
+        warningDiv.style.display = 'none';
+        const canSubmit = total > 0 && isCycleSelected;
+        submitBtn.disabled = !canSubmit;
+        submitBtn.style.opacity = canSubmit ? '1' : '0.5';
+        submitBtn.style.cursor = canSubmit ? 'pointer' : 'not-allowed';
+    }
+}
+
+if (cycleSelect) {
+    cycleSelect.addEventListener('change', () => {
+        const option = cycleSelect.options[cycleSelect.selectedIndex];
+        if (option && option.dataset.max) {
+            MAX_CREDITS = parseFloat(option.dataset.max);
+            if (maxDisplay) maxDisplay.innerText = MAX_CREDITS.toFixed(1);
+            const limitValDisplay = document.getElementById('cycle-limit-val');
+            if (limitValDisplay) limitValDisplay.innerText = MAX_CREDITS.toFixed(1);
+        }
+        updateCredits();
+    });
+}
+
+function toggleRow(row) {
+    const cb = row.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    row.classList.toggle('selected', cb.checked);
+    updateCredits();
+}
+
+checkBoxes.forEach(cb => {
+    cb.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cb.closest('.debt-row').classList.toggle('selected', cb.checked);
+        updateCredits();
+    });
+});
+
+// Initial call
+updateCredits();
+</script>
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Kurslar galereyasi — Django LMS Premium{% endblock %}
+
+{% block content %}
+<div class="space-y-12 animate-slideUp">
+    <!-- Page Header & Glass Search Bar (Reference Courses.tsx) -->
+    <div class="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+        <div class="space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
+                <i data-lucide="book-open" size="14" class="text-primary"></i>
+                <span class="text-[10px] font-extrabold text-primary uppercase tracking-[0.2em]">O'quv materiallari</span>
+            </div>
+            <h2 class="text-4xl lg:text-5xl font-extrabold text-text-primary tracking-tighter leading-none">Kurslar <span class="text-primary italic">galereyasi</span></h2>
+            <p class="text-text-secondary text-lg font-medium max-w-xl">Barcha faol va arxivlangan o'quv kurslarini boshqarish hamda yangi materiallar qo'shish paneli.</p>
+        </div>
+
+        <!-- Glass Filter Bar -->
+        <div class="glass p-3 rounded-[32px] flex flex-wrap items-center gap-3 border border-white/40 shadow-premium">
+            <div class="relative group flex-1 min-w-[240px]">
+                <div class="absolute left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary transition-colors">
+                    <i data-lucide="search" size="18"></i>
+                </div>
+                <form method="get" action="">
+                    <input type="text" name="q" value="{{ request.GET.q|default:'' }}" 
+                           placeholder="Kurs nomini qidirish..." 
+                           class="w-full bg-white/50 border-transparent focus:bg-white focus:border-primary/20 rounded-2xl pl-12 pr-6 py-3 text-sm outline-none transition-all font-bold placeholder:text-text-muted">
+                </form>
+            </div>
+            {% if can_create_course %}
+            <a href="{% url 'lms:create_course' %}" class="flex items-center justify-center gap-2 px-8 py-3 rounded-2xl bg-primary text-white text-sm font-black shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                <i data-lucide="plus" size="18"></i>
+                Yangi kurs
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Courses Grid (Reference Courses.tsx) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {% for course in courses %}
+        <div class="card-premium group">
+            <!-- Course Image/Header Area -->
+            <div class="relative h-56 overflow-hidden">
+                {% if course.image %}
+                    <img src="{{ course.image.url }}" alt="{{ course.title }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                {% else %}
+                    <div class="w-full h-full bg-slate-900 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/10"></div>
+                        <i data-lucide="book" size="64" class="text-white/10 group-hover:text-primary/30 transition-colors duration-500"></i>
+                    </div>
+                {% endif %}
+                
+                <!-- Status Badge -->
+                <div class="absolute top-6 left-6">
+                    <span class="status-pill {% if course.is_active %}status-pill-success{% else %}status-pill-danger{% endif %} shadow-lg backdrop-blur-md">
+                        {% if course.is_active %}Faol{% else %}Nofaol{% endif %}
+                    </span>
+                </div>
+
+                <!-- Teacher Mini Card (Overlay) -->
+                <div class="absolute bottom-6 left-6 right-6">
+                    <div class="glass p-3 rounded-2xl flex items-center gap-3 border border-white/20 shadow-xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                        <img src="https://ui-avatars.com/api/?name={{ course.teacher.get_full_name }}&background=4361ee&color=fff" class="w-10 h-10 rounded-xl border border-white shadow-sm">
+                        <div class="min-w-0">
+                            <p class="text-[10px] font-black text-primary uppercase tracking-widest leading-none mb-1">O'qituvchi</p>
+                            <p class="text-xs font-bold text-text-primary truncate">{{ course.teacher.get_full_name }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-8 space-y-8">
+                <div class="space-y-4 h-24 overflow-hidden">
+                    <h3 class="text-xl font-extrabold text-text-primary tracking-tight leading-snug group-hover:text-primary transition-colors line-clamp-2">{{ course.title }}</h3>
+                    <p class="text-sm text-text-secondary font-medium line-clamp-2 opacity-60 italic">
+                        {{ course.description|default:"Ushbu kurs uchun qo'shimcha ma'lumot berilmagan." }}
+                    </p>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="grid grid-cols-3 gap-4 p-5 bg-slate-50 rounded-[24px] border border-slate-100">
+                    <div class="text-center space-y-1">
+                        <p class="label-micro text-text-muted">Talaba</p>
+                        <p class="text-sm font-black text-text-primary">{{ course.enrollments.count }}</p>
+                    </div>
+                    <div class="text-center space-y-1 border-x border-slate-200">
+                        <p class="label-micro text-text-muted">Test</p>
+                        <p class="text-sm font-black text-text-primary">{{ course.tests.count }}</p>
+                    </div>
+                    <div class="text-center space-y-1">
+                        <p class="label-micro text-text-muted">Bo'lim</p>
+                        <p class="text-sm font-black text-text-primary">{{ course.sections.count }}</p>
+                    </div>
+                </div>
+
+                <!-- Actions Grid -->
+                <div class="grid grid-cols-4 gap-3">
+                    <a href="{% url 'lms:course_detail' course.id %}" class="col-span-3 flex items-center justify-center gap-3 py-4 rounded-2xl bg-primary text-white text-sm font-black shadow-xl shadow-primary/10 hover:shadow-primary/30 transition-all active:scale-95">
+                        <i data-lucide="external-link" size="18"></i>
+                        Boshqarish
+                    </a>
+                    
+                    <div class="relative group/actions">
+                        <button class="w-full h-full flex items-center justify-center rounded-2xl bg-slate-100 text-text-muted hover:bg-white hover:shadow-premium transition-all">
+                            <i data-lucide="more-horizontal" size="20"></i>
+                        </button>
+                        
+                        <!-- Mini Dropdown Overlay -->
+                        <div class="absolute bottom-full right-0 mb-4 w-48 glass rounded-2xl border border-white/40 shadow-2xl p-2 opacity-0 scale-90 pointer-events-none group-focus-within/actions:opacity-100 group-focus-within/actions:scale-100 group-focus-within/actions:pointer-events-auto transition-all z-20">
+                            {% if can_edit_courses %}
+                            <a href="{% url 'lms:edit_course' course.id %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white transition-all text-xs font-bold text-text-secondary hover:text-primary">
+                                <i data-lucide="edit-3" size="16"></i> Tahrirlash
+                            </a>
+                            {% endif %}
+                            {% if can_manage_enrollments %}
+                            <a href="{% url 'lms:assign_student' course.id %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white transition-all text-xs font-bold text-text-secondary hover:text-success">
+                                <i data-lucide="user-plus" size="16"></i> Talaba qo'shish
+                            </a>
+                            {% endif %}
+                            {% if can_edit_courses %}
+                            <div class="h-px bg-white/20 my-1"></div>
+                            <form action="{% url 'lms:delete_course' course.id %}" method="post" onsubmit="return confirm('Kursni o\'chirmoqchimisiz?')">
+                                {% csrf_token %}
+                                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-danger/10 transition-all text-xs font-bold text-danger">
+                                    <i data-lucide="trash-2" size="16"></i> O'chirish
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full py-32 text-center flex flex-col items-center gap-6">
+            <div class="w-24 h-24 rounded-[32px] bg-slate-50 flex items-center justify-center text-slate-200">
+                <i data-lucide="search-slash" size="48"></i>
+            </div>
+            <div>
+                <h3 class="text-2xl font-extrabold text-text-primary tracking-tight">Kurslar topilmadi</h3>
+                <p class="text-text-secondary font-medium mt-2">Sizning qidiruvingiz bo'yicha hech qanday natija mavjud emas.</p>
+            </div>
+            {% if can_create_course %}
+            <a href="{% url 'lms:create_course' %}" class="btn btn-primary px-10 py-4 rounded-2xl font-bold shadow-xl shadow-primary/20">
+                Birinchi kursni qo'shish
+            </a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination (Polished) -->
+    {% if page_obj.has_other_pages %}
+    <div class="flex justify-center pt-10">
+        <nav class="flex items-center gap-4">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                   class="w-14 h-14 rounded-2xl bg-white border border-border flex items-center justify-center text-text-muted hover:bg-primary hover:text-white hover:shadow-xl hover:shadow-primary/20 transition-all shadow-premium">
+                    <i data-lucide="arrow-left" size="20"></i>
+                </a>
+            {% endif %}
+            
+            <div class="flex items-center gap-2 glass p-2 rounded-[24px] border border-white/40">
+                {% for i in paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <span class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center text-sm font-black shadow-lg shadow-primary/20">{{ i }}</span>
+                    {% else %}
+                        <a href="?page={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                           class="w-10 h-10 rounded-xl hover:bg-white text-text-muted hover:text-primary transition-all flex items-center justify-center text-sm font-bold">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                   class="w-14 h-14 rounded-2xl bg-white border border-border flex items-center justify-center text-text-muted hover:bg-primary hover:text-white hover:shadow-xl hover:shadow-primary/20 transition-all shadow-premium">
+                    <i data-lucide="arrow-right" size="20"></i>
+                </a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

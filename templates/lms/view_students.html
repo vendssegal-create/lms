@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ishtirokchilar — {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="animate-slideUp space-y-8">
+    <!-- Header Card -->
+    <div class="card-premium p-8 lg:p-10">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="space-y-2">
+                <div class="flex items-center gap-3 text-primary">
+                    <i data-lucide="users" size="24"></i>
+                    <h2 class="text-3xl font-black text-text-primary tracking-tight">Kurs Ishtirokchilari</h2>
+                </div>
+                <p class="text-sm font-medium text-text-secondary leading-relaxed max-w-2xl">
+                    <span class="font-bold text-primary">{{ course.title }}</span> kursiga biriktirilgan barcha talabalar ro'yxati va ularni boshqarish.
+                </p>
+            </div>
+            <div class="shrink-0 flex items-center gap-4">
+                <div class="px-6 py-4 rounded-2xl bg-slate-50 border border-border/50 text-center">
+                    <p class="label-micro opacity-60">Jami Talabalar</p>
+                    <p class="text-2xl font-black text-text-primary mt-1">{{ paginator.count }}</p>
+                </div>
+                <a href="{% url 'lms:course_detail' course.id %}" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white border border-border/50 text-text-primary text-sm font-black hover:bg-slate-50 transition-all group shadow-sm">
+                    <i data-lucide="arrow-left" size="18" class="group-hover:-translate-x-1 transition-transform"></i>
+                    Orqaga
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Participants Table Card -->
+    <div class="card-premium overflow-hidden">
+        <div class="overflow-x-auto no-scrollbar">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/50 border-b border-border/50">
+                        <th class="px-8 py-5 text-[10px] font-black text-text-muted uppercase tracking-widest">#</th>
+                        <th class="px-8 py-5 text-[10px] font-black text-text-muted uppercase tracking-widest">Talaba va Profil</th>
+                        <th class="px-8 py-5 text-[10px] font-black text-text-muted uppercase tracking-widest">Login / ID</th>
+                        <th class="px-8 py-5 text-[10px] font-black text-text-muted uppercase tracking-widest">Guruh</th>
+                        <th class="px-8 py-5 text-[10px] font-black text-text-muted uppercase tracking-widest text-center">Amal</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border/30">
+                    {% for enrollment in enrollments %}
+                    <tr class="hover:bg-slate-50/30 transition-colors group">
+                        <td class="px-8 py-6 text-sm font-bold text-text-muted opacity-50">
+                            {{ page_obj.start_index|add:forloop.counter0 }}
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="relative">
+                                    {% if enrollment.student.student_profile.image %}
+                                        <img class="w-12 h-12 rounded-xl object-cover ring-2 ring-white shadow-md shadow-slate-200" src="{{ enrollment.student.student_profile.image.url }}" alt="">
+                                    {% else %}
+                                        <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-black text-lg ring-2 ring-white shadow-md shadow-slate-200">
+                                            {{ enrollment.student.username|slice:":1"|upper }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white"></div>
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-black text-text-primary truncate">
+                                        {{ enrollment.student.student_profile.full_name|default:enrollment.student.get_full_name|default:enrollment.student.username }}
+                                    </p>
+                                    <p class="text-[10px] font-medium text-text-muted mt-0.5">
+                                        A'zo bo'ldi: {{ enrollment.enrolled_at|date:"d.m.Y" }}
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="space-y-1.5">
+                                <code class="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-600 text-[11px] font-black border border-indigo-100/50 block w-fit">
+                                    {{ enrollment.student.username }}
+                                </code>
+                                <p class="text-[10px] font-bold text-text-muted tracking-tight ml-0.5">
+                                    ID: {{ enrollment.student.student_profile.student_id_number|default:"Mavjud emas" }}
+                                </p>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <span class="status-pill status-pill-primary !text-[10px]">
+                                <i data-lucide="layers" size="10"></i>
+                                {{ enrollment.student.student_profile.group_name|default:"Guruhsiz" }}
+                            </span>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
+                                <form action="{% url 'lms:delete_enrollment' enrollment.id %}" method="post" onsubmit="return confirm('Talabani kursdan chiqarmoqchimisiz?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="w-10 h-10 rounded-xl bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center shadow-sm" title="Kursdan chiqarish">
+                                        <i data-lucide="user-minus" size="18"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-8 py-24 text-center">
+                            <div class="flex flex-col items-center gap-4 opacity-40">
+                                <div class="w-20 h-20 rounded-[32px] bg-slate-50 flex items-center justify-center text-text-muted mb-4">
+                                    <i data-lucide="users" size="40"></i>
+                                </div>
+                                <h4 class="text-xl font-extrabold text-text-primary tracking-tight">Talabalar topilmadi</h4>
+                                <p class="text-sm font-medium text-text-muted max-w-xs">Hozircha ushbu kursga birorta ham talaba biriktirilmagan.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if page_obj.has_other_pages %}
+        <div class="p-8 bg-slate-50/50 border-t border-border/50 flex items-center justify-between">
+            <p class="text-xs font-bold text-text-muted">Sahifa <span class="text-primary">{{ page_obj.number }}</span> / {{ paginator.num_pages }}</p>
+            <div class="flex gap-2">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="w-10 h-10 rounded-xl bg-white border border-border/50 flex items-center justify-center text-text-muted hover:text-primary hover:border-primary transition-all">
+                        <i data-lucide="chevron-left" size="18"></i>
+                    </a>
+                {% endif %}
+                
+                {% for i in paginator.page_range %}
+                    {% if i >= page_obj.number|add:"-2" and i <= page_obj.number|add:"2" %}
+                    <a href="?page={{ i }}" class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black transition-all {% if page_obj.number == i %}bg-primary text-white shadow-lg shadow-primary/20{% else %}bg-white border border-border/50 text-text-muted hover:text-primary{% endif %}">
+                        {{ i }}
+                    </a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="w-10 h-10 rounded-xl bg-white border border-border/50 flex items-center justify-center text-text-muted hover:text-primary hover:border-primary transition-all">
+                        <i data-lucide="chevron-right" size="18"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
