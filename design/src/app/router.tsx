@@ -49,7 +49,7 @@ const DocumentEditorPage = lazy(() => import('@/src/pages/DocumentEditorPage'));
 
 function RouteFallback() {
   return (
-    <div className="flex min-h-[320px] items-center justify-center gap-3 rounded-3xl border border-border bg-white p-8 shadow-premium">
+    <div className="flex min-h-[320px] items-center justify-center gap-3 rounded-3xl border border-border bg-card p-8 shadow-premium">
       <LoaderCircle className="animate-spin text-primary" size={20} />
       <span className="text-sm font-bold text-text-secondary">Sahifa yuklanmoqda...</span>
     </div>

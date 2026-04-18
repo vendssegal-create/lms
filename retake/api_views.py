@@ -120,7 +120,9 @@ def _parse_cycle_payload(payload, instance=None):
     cycle.academic_year = (payload.get("academic_year") or "").strip()
     cycle.starts_at = (payload.get("starts_at") or "").strip() or None
     cycle.ends_at = (payload.get("ends_at") or "").strip() or None
-    cycle.status = (payload.get("status") or cycle.status or RetakeCycleStatus.DRAFT).strip()
+    # status faqat dedicated endpoint orqali o'zgartiriladi — payload dan o'qilmaydi
+    if instance is None:
+        cycle.status = RetakeCycleStatus.DRAFT
     cycle.max_allowed_credits = Decimal(str(payload.get("max_allowed_credits") or "15.00").replace(",", "."))
     cycle.full_clean()
     cycle.save()
@@ -679,6 +681,21 @@ def exam_sheet_detail(request, sheet_id):
     ).prefetch_related("entries", "entries__student_snapshot")
 
     sheet = get_object_or_404(queryset, id=sheet_id)
+
+    # RET_DB_MANAGER faqat o'z fakultetining varaqasini ko'ra oladi
+    if role == Role.RET_DB_MANAGER:
+        from retake.models import DBManagerFacultyAssignment
+        user_faculties = set(DBManagerFacultyAssignment.objects.filter(
+            db_manager_user=request.user
+        ).values_list('faculty_name', flat=True))
+        sheet_faculties = set(
+            sheet.assessment_schedule.group.memberships.values_list(
+                'student_snapshot__faculty_name', flat=True
+            )
+        )
+        if not user_faculties.intersection(sheet_faculties):
+            return JsonResponse({"error": "Bu imtihon varaqa sizning fakultetingizga tegishli emas."}, status=403)
+
     teacher_profile = getattr(request.user, "teacher_profile", None)
     if role == Role.TEACHER and teacher_profile:
         schedule = sheet.assessment_schedule
@@ -712,6 +729,18 @@ def exam_sheet_save(request, sheet_id):
     schedule = sheet.assessment_schedule
     group = schedule.group
 
+    # RET_DB_MANAGER faqat o'z fakultetining varaqasini o'zgartira oladi
+    if role == Role.RET_DB_MANAGER:
+        from retake.models import DBManagerFacultyAssignment
+        user_faculties = set(DBManagerFacultyAssignment.objects.filter(
+            db_manager_user=request.user
+        ).values_list('faculty_name', flat=True))
+        sheet_faculties = set(
+            group.memberships.values_list('student_snapshot__faculty_name', flat=True)
+        )
+        if not user_faculties.intersection(sheet_faculties):
+            return JsonResponse({"error": "Bu imtihon varaqa sizning fakultetingizga tegishli emas."}, status=403)
+
     teacher_profile = getattr(request.user, "teacher_profile", None)
     if role == Role.TEACHER:
         if not teacher_profile:
@@ -725,6 +754,13 @@ def exam_sheet_save(request, sheet_id):
 
     if sheet.status == ExamSheetStatus.LOCKED and role not in [Role.SUPER_ADMIN, Role.RET_DB_MANAGER]:
         return JsonResponse({"error": "Ushbu qaydnoma yopilgan."}, status=400)
+
+    # Resolve max_score for this sheet's control_type once, outside the entry loop.
+    _config = RetakeAssessmentConfig.objects.filter(
+        control_type=sheet.assessment_schedule.control_type,
+        is_active=True,
+    ).first()
+    max_score = float(_config.max_score) if _config else None
 
     warnings = []
     with transaction.atomic():
@@ -772,6 +808,14 @@ def exam_sheet_save(request, sheet_id):
                     score = float(score_raw) if score_raw not in (None, "") and not is_absent else 0 if is_absent else None
                 except (TypeError, ValueError):
                     score = None
+
+                if max_score is not None and score is not None and score > max_score:
+                    return JsonResponse(
+                        {
+                            "error": f"Ball {max_score} dan oshmasligi kerak ({sheet.assessment_schedule.control_type})."
+                        },
+                        status=400,
+                    )
 
                 entry.score = score
                 entry.is_absent = is_absent
@@ -1084,8 +1128,8 @@ def groups_update(request, group_id):
 
     group.teacher_profile_id = payload.get("teacher_id") or None
     group.capacity = int(payload.get("capacity") or group.capacity or 0)
-    group.status = (payload.get("status") or group.status).strip()
-    group.save()
+    # group.status faqat GroupingService.activate()/complete_group() orqali o'zgartiriladi
+    group.save(update_fields=["teacher_profile_id", "capacity", "updated_at"])
     return JsonResponse({"success": True, "group": _serialize_retake_group(group)})
 
 
@@ -1097,10 +1141,29 @@ def groups_delete(request, group_id):
         return JsonResponse({"error": "Group o'chirish huquqi yo'q."}, status=403)
 
     group = get_object_or_404(RetakeSubjectGroup, id=group_id)
-    for member in group.memberships.select_related("application_item").all():
-        member.application_item.status = RetakeItemStatus.APPROVED_FOR_GROUPING
-        member.application_item.save(update_fields=["status"])
-    group.delete()
+    with transaction.atomic():
+        memberships = list(group.memberships.select_related("application_item").all())
+
+        # Jadvalga kiritilgan yoki yakunlangan itemlar bo'lsa — o'chirib bo'lmaydi
+        blocked_statuses = {
+            RetakeItemStatus.SCHEDULED,
+            RetakeItemStatus.GRADE_ENTRY_OPEN,
+            RetakeItemStatus.COMPLETED,
+        }
+        for member in memberships:
+            if member.application_item.status in blocked_statuses:
+                return JsonResponse({
+                    "error": "Jadvalga kiritilgan yoki yakunlangan talabalar mavjud — "
+                             "guruhni o'chirib bo'lmaydi. Avval jadvalni bekor qiling."
+                }, status=400)
+
+        # GROUPED itemlarni APPROVED_FOR_GROUPING ga qaytarish (GroupingService orqali)
+        from retake.services.grouping_service import GroupingService
+        for member in memberships:
+            if member.application_item.status == RetakeItemStatus.GROUPED:
+                GroupingService.remove_member(member, actor=request.user)
+
+        group.delete()
     return JsonResponse({"success": True})
 
 
@@ -1482,6 +1545,14 @@ def application_update(request, app_id):
         application.receipt_original_name = request.FILES["receipt_file"].name
 
     if action == "submit_to_accounting":
+        # Re-check cycle is still open at write time to prevent a race condition
+        # where the cycle closes between when the user opened the form and submits.
+        if application.cycle.status != RetakeCycleStatus.OPEN:
+            return JsonResponse(
+                {"error": "Qayta topshirish sikli yopilgan. Ariza yuborib bo'lmaydi."},
+                status=400,
+            )
+
         if not application.contract_file:
             return JsonResponse({"error": "Shartnoma fayli yuklanishi shart."}, status=400)
         if not application.receipt_file:
@@ -1864,26 +1935,8 @@ def sync_run(request):
     service = HemisAdminSyncService()
     user = request.user
 
-    def sync_worker():
-        try:
-            if scope == "all":
-                service.sync_all(initiated_by=user)
-            elif scope == "students":
-                service.sync_students(initiated_by=user)
-            elif scope == "teachers":
-                service.sync_teachers(initiated_by=user)
-            elif scope == "curriculums":
-                service.sync_curriculums(initiated_by=user)
-            elif scope == "rooms":
-                service.sync_rooms(initiated_by=user)
-        except Exception:
-            pass
-        finally:
-            close_old_connections()
-
-    thread = threading.Thread(target=sync_worker)
-    thread.daemon = True
-    thread.start()
+    from retake.tasks import sync_hemis_data_task
+    task = sync_hemis_data_task.delay(scope=scope, actor_id=request.user.id)
 
     scope_labels = {
         "all": "Barcha ma'lumotlar",
@@ -1895,7 +1948,23 @@ def sync_run(request):
 
     return JsonResponse({
         "success": True,
-        "message": f"'{scope_labels.get(scope, scope)}' sinxronlash jarayoni fonda boshlandi.",
+        "message": f"'{scope_labels.get(scope, scope)}' sinxronlash navbatga qo'shildi.",
+        "task_id": task.id,
+    })
+
+
+@login_required
+@require_GET
+def sync_task_status(request, task_id):
+    """Celery sync task holati."""
+    from celery.result import AsyncResult
+    result = AsyncResult(task_id)
+    return JsonResponse({
+        "success": True,
+        "task_id": task_id,
+        "status": result.status,
+        "ready": result.ready(),
+        "result": str(result.result) if result.ready() and result.result else None,
     })
 
 

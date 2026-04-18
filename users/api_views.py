@@ -310,7 +310,6 @@ def logout_view(request):
     return JsonResponse({"success": True})
 
 
-@csrf_exempt
 @require_POST
 def switch_role_view(request, role_name):
     if not request.user.is_authenticated:
@@ -331,7 +330,6 @@ def profile_view(request):
     return JsonResponse(_serialize_profile(request))
 
 
-@csrf_exempt
 @require_POST
 def update_profile_view(request):
     if not request.user.is_authenticated:
@@ -355,7 +353,6 @@ def update_profile_view(request):
     })
 
 
-@csrf_exempt
 @require_POST
 def change_password_api_view(request):
     if not request.user.is_authenticated:

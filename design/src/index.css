@@ -24,6 +24,10 @@
   --color-dark-text-primary: #F1F5F9;
   --color-dark-text-secondary: #94A3B8;
   --color-dark-surface: #1A2235;
+  --color-info: #3B82F6;
+  --color-info-hover: #2563EB;
+  --color-accent: #7209B7;
+  --color-accent-hover: #560BAD;
 
   --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
   --shadow-hover: 0 20px 40px -15px rgba(67, 97, 238, 0.15);
@@ -33,9 +37,19 @@
   body {
     @apply bg-background text-text-primary font-sans antialiased selection:bg-primary/10 selection:text-primary transition-colors duration-200;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
+  }
+
+  /* Global focus-visible ring — accessible keyboard navigation */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-background;
+  }
+
+  /* select element dark mode fix */
+  select {
+    color-scheme: light dark;
   }
 }
 
@@ -55,6 +69,8 @@
   --color-border: var(--color-dark-border);
   --color-text-primary: var(--color-dark-text-primary);
   --color-text-secondary: var(--color-dark-text-secondary);
+  --color-info: #60A5FA;
+  --color-accent: #A855F7;
 }
 
 @layer components {
@@ -68,18 +84,27 @@
     @apply bg-secondary text-white shadow-xl shadow-secondary/20 hover:opacity-90 hover:-translate-y-0.5;
   }
   .btn-outline {
-    @apply border-2 border-border bg-transparent hover:bg-slate-50 hover:border-slate-300 text-text-secondary hover:text-text-primary;
+    @apply border-2 border-border bg-transparent hover:bg-card hover:border-primary/20 text-text-secondary hover:text-text-primary;
   }
   .btn-ghost {
-    @apply bg-transparent hover:bg-slate-100 text-text-secondary hover:text-text-primary;
+    @apply bg-transparent hover:bg-card text-text-secondary hover:text-text-primary;
   }
-  
+
+  /* Status background + text utilities (for StatusBadge component) */
+  .status-info { background-color: color-mix(in srgb, var(--color-info) 10%, transparent); color: var(--color-info); }
+  .status-accent { background-color: color-mix(in srgb, var(--color-accent) 10%, transparent); color: var(--color-accent); }
+
+  /* =====================================================
+     SPACING SCALE: sm=p-4(16px) md=p-6(24px) lg=p-8(32px) xl=p-10(40px)
+     RADIUS SCALE:  sm=rounded-xl(12px) md=rounded-2xl(16px) lg=rounded-[28px] xl=rounded-[40px]
+     SHADOW SCALE:  sm=shadow-sm md=shadow-premium lg=shadow-hover
+     ===================================================== */
   .card {
     @apply bg-card rounded-[32px] border border-border shadow-premium overflow-hidden transition-all duration-300 hover:shadow-hover;
   }
   
   .input {
-    @apply w-full rounded-2xl border border-border bg-white px-5 py-3.5 text-sm transition-all duration-300 focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none placeholder:text-text-muted;
+    @apply w-full rounded-2xl border border-border bg-card text-text-primary px-5 py-3.5 text-sm transition-all duration-300 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none placeholder:text-text-muted;
   }
 
   .status-pill {
@@ -89,7 +114,7 @@
   .status-pill-success { @apply bg-success/10 text-success; }
   .status-pill-warning { @apply bg-warning/10 text-warning; }
   .status-pill-danger { @apply bg-danger/10 text-danger; }
-  .status-pill-muted { @apply bg-slate-100 text-slate-500; }
+  .status-pill-muted { background-color: color-mix(in srgb, var(--color-text-muted) 15%, transparent); color: var(--color-text-secondary); }
 
   .label-micro {
     @apply text-[10px] font-extrabold text-text-muted uppercase tracking-[0.15em];
@@ -110,6 +135,17 @@
 
 @keyframes shimmer {
   100% { transform: translateX(100%); }
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(24px, -18px) scale(1.04); }
+  66%       { transform: translate(-16px, 12px) scale(0.97); }
+}
+
+@keyframes pulseSlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.8; transform: scale(1.06); }
 }
 
 /* Custom animations */
@@ -138,6 +174,19 @@
 
 .animate-fab-nudge {
   animation: fabNudge 1.7s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.animate-float-slow {
+  animation: floatOrb 12s ease-in-out infinite;
+}
+.animate-float-medium {
+  animation: floatOrb 8s ease-in-out infinite reverse;
+}
+.animate-float-fast {
+  animation: floatOrb 6s ease-in-out infinite;
+}
+.animate-pulse-slow {
+  animation: pulseSlow 3s ease-in-out infinite;
 }
 
 .animate-unread-ping {

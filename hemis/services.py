@@ -15,13 +15,19 @@ from .models import (
 )
 from .utils.client import HemisRestClient, HemisRestApiError
 from .utils.helpers import (
-    normalize_control_type, 
-    to_decimal, 
-    exam_code, 
-    exam_name, 
-    nested_name, 
-    nested_code
+    normalize_control_type,
+    to_decimal,
+    exam_code,
+    exam_name,
+    nested_name,
+    nested_code,
 )
+from .utils.sync_payload import (
+    populate_hemis_room_snapshot,
+    populate_hemis_student_snapshot,
+    populate_teacher_profile_from_employee,
+)
+from django.conf import settings
 from users.models import User, StudentProfile, TeacherProfile
 from lms.models import ControlType
 
@@ -336,31 +342,20 @@ class RetakeHemisSyncService:
         return result
 
     def _upsert_student_snapshot_from_info(self, payload: Dict[str, Any]) -> HemisStudentSnapshot:
+        if not payload.get("id"):
+            raise ValueError("student-info javobida id yo'q.")
         snapshot, _ = HemisStudentSnapshot.objects.get_or_create(hemis_student_id=payload["id"])
-        snapshot.student_id_number = payload.get("student_id_number", "") or ""
-        snapshot.pinfl = payload.get("hash", "") or payload.get("pinfl", "") or ""
-        snapshot.full_name = payload.get("full_name", "") or ""
-        snapshot.short_name = payload.get("short_name", "") or ""
-        snapshot.faculty_name = nested_name(payload.get("department"))
-        snapshot.specialty_name = nested_name(payload.get("specialty"))
-        snapshot.group_name = nested_name(payload.get("group"))
-        snapshot.semester_code = nested_code(payload.get("semester"))
-        snapshot.semester_name = nested_name(payload.get("semester"))
-        snapshot.curriculum_id = payload.get("_curriculum")
-        snapshot.raw_payload = payload
+        populate_hemis_student_snapshot(snapshot, payload)
         snapshot.save()
         return snapshot
 
     def _upsert_student_snapshot_from_debt_payload(self, payload: Dict[str, Any], pinfl: str, current_semester: Any) -> HemisStudentSnapshot:
         snapshot, _ = HemisStudentSnapshot.objects.get_or_create(hemis_student_id=payload["id"])
-        snapshot.student_id_number = payload.get("student_id_number", "") or ""
-        snapshot.pinfl = payload.get("pinfl", "") or pinfl
-        snapshot.full_name = payload.get("full_name", "") or ""
-        snapshot.faculty_name = payload.get("department", "") or ""
-        snapshot.group_name = payload.get("group", "") or ""
-        snapshot.semester_code = str(current_semester or "")
-        snapshot.semester_name = str(current_semester or "")
-        snapshot.raw_payload = payload
+        populate_hemis_student_snapshot(snapshot, payload)
+        snapshot.pinfl = str(payload.get("pinfl", "") or pinfl or snapshot.pinfl or "").strip()
+        cs = current_semester
+        snapshot.semester_code = str(cs or "") if not isinstance(cs, dict) else nested_code(cs)
+        snapshot.semester_name = str(cs or "") if not isinstance(cs, dict) else nested_name(cs)
         snapshot.save()
         return snapshot
 
@@ -463,9 +458,7 @@ class HemisAdminSyncService:
             return
 
         snapshot, _ = HemisStudentSnapshot.objects.get_or_create(hemis_student_id=hemis_student_id)
-        snapshot.student_id_number = student_id_number
-        snapshot.full_name = payload.get("full_name") or ""
-        snapshot.raw_payload = payload
+        populate_hemis_student_snapshot(snapshot, payload)
         snapshot.save()
 
         if student_id_number:
@@ -474,24 +467,41 @@ class HemisAdminSyncService:
             user.role = User.Role.STUDENT
             user.save()
 
-            profile, _ = StudentProfile.objects.get_or_create(user=user)
-            profile.full_name = payload.get("full_name") or ""
+            inst = getattr(settings, "LMS_INSTITUTION_NAME", "") or ""
+            uni_default = inst or "HEMIS"
+            full = snapshot.full_name or str(payload.get("full_name") or "")
+            profile, _ = StudentProfile.objects.get_or_create(
+                user=user,
+                defaults={
+                    "full_name": full or username,
+                    "student_id_number": student_id_number,
+                    "university": uni_default,
+                },
+            )
+            if not profile.university:
+                profile.university = uni_default
+            profile.full_name = full or profile.full_name
             profile.student_id_number = student_id_number
+            profile.faculty_name = snapshot.faculty_name
+            profile.group_name = snapshot.group_name
+            profile.specialty_name = snapshot.specialty_name
             profile.save()
 
     def _upsert_teacher(self, payload: dict) -> None:
         hemis_id = str(payload.get("id") or "").strip()
         if not hemis_id:
             return
-            
+
         username = f"teacher_{hemis_id}"
         user, _ = User.objects.get_or_create(username=username)
         user.role = User.Role.TEACHER
-        user.save()
 
         teacher_profile, _ = TeacherProfile.objects.get_or_create(user=user)
-        teacher_profile.full_name = payload.get("full_name") or ""
-        teacher_profile.hemis_id = hemis_id
+        populate_teacher_profile_from_employee(user, teacher_profile, payload)
+        if not teacher_profile.university:
+            teacher_profile.university = getattr(settings, "LMS_INSTITUTION_NAME", "") or ""
+
+        user.save()
         teacher_profile.save()
 
     def _upsert_curriculum(self, payload: dict) -> None:
@@ -520,12 +530,7 @@ class HemisAdminSyncService:
         hemis_id = payload.get("id")
         if not hemis_id:
             return
-            
+
         snapshot, _ = HemisRoomSnapshot.objects.get_or_create(hemis_id=hemis_id)
-        snapshot.name = payload.get("name") or ""
-        snapshot.code = payload.get("code", "") or ""
-        snapshot.building_name = nested_name(payload.get("building"))
-        snapshot.capacity = payload.get("capacity") or 0
-        snapshot.room_type = nested_name(payload.get("auditoriumType"))
-        snapshot.raw_payload = payload
+        populate_hemis_room_snapshot(snapshot, payload)
         snapshot.save()

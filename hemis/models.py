@@ -73,6 +73,8 @@ class HemisRoomSnapshot(models.Model):
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=64, default="", blank=True)
     building_name = models.CharField(max_length=255, default="", blank=True)
+    building_code = models.CharField(max_length=64, default="", blank=True)
+    floor = models.CharField(max_length=32, default="", blank=True)
     capacity = models.IntegerField(default=0)
     room_type = models.CharField(max_length=128, default="", blank=True)
     raw_payload = models.JSONField(default=dict, blank=True)

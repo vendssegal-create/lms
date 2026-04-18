@@ -149,7 +149,7 @@ export function AppSidebar({
   return (
     <aside
       className={cn(
-        'fixed inset-y-0 left-0 z-50 h-screen border-r border-border bg-white/88 backdrop-blur-xl transition-all duration-300 ease-out',
+        'fixed inset-y-0 left-0 z-50 h-screen border-r border-border bg-card/90 backdrop-blur-xl transition-all duration-300 ease-out',
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
         isSidebarCollapsed ? 'w-24' : 'w-80',
       )}
@@ -190,7 +190,7 @@ export function AppSidebar({
           <Link
             to="/profile"
           className={cn(
-              'flex items-center gap-3 rounded-3xl border border-border/50 bg-slate-50/70 transition-all hover:border-primary/20 hover:bg-white hover:shadow-premium',
+              'flex items-center gap-3 rounded-3xl border border-border/50 bg-background/50 transition-all hover:border-primary/20 hover:bg-card hover:shadow-premium',
               isSidebarCollapsed ? 'justify-center px-3 py-4' : 'p-4',
             )}
             title={isSidebarCollapsed ? user?.full_name || 'Profil' : undefined}

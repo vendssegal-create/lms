@@ -671,6 +671,11 @@ def resource_mark_viewed(request, resource_id: int):
         return JsonResponse({"error": "Autentifikatsiya talab qilinadi."}, status=401)
 
     resource = get_object_or_404(SectionResource, id=resource_id)
+    if not Enrollment.objects.filter(
+        student=request.user,
+        course=resource.section.course
+    ).exists():
+        return JsonResponse({"error": "Sizda bu kursga kirish huquqi yo'q."}, status=403)
     rv, created = ResourceView.objects.get_or_create(resource=resource, student=request.user)
     if not created:
         rv.view_count += 1
@@ -684,6 +689,11 @@ def resource_mark_completed(request, resource_id: int):
         return JsonResponse({"error": "Autentifikatsiya talab qilinadi."}, status=401)
 
     resource = get_object_or_404(SectionResource, id=resource_id)
+    if not Enrollment.objects.filter(
+        student=request.user,
+        course=resource.section.course
+    ).exists():
+        return JsonResponse({"error": "Sizda bu kursga kirish huquqi yo'q."}, status=403)
     payload = _json_body(request)
     time_spent = _coerce_int(payload.get("time_spent_seconds")) or 0
 
@@ -1404,6 +1414,8 @@ def teacher_enrollment_delete(request, enrollment_id: int):
         return deny
 
     enrollment = get_object_or_404(Enrollment, id=enrollment_id)
+    if not _can_manage_course(request, enrollment.course):
+        return JsonResponse({"error": "Bu kurs sizga tegishli emas."}, status=403)
     enrollment.delete()
     return JsonResponse({"success": True})
 

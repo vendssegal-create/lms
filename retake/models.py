@@ -66,11 +66,17 @@ class RetakeCycle(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        unique_together = (('academic_year', 'name'),)
+        verbose_name = "Qayta topshirish sikli"
+        verbose_name_plural = "Qayta topshirish sikllari"
+
 class RetakeApplication(models.Model):
     cycle = models.ForeignKey(RetakeCycle, on_delete=models.CASCADE, related_name='applications')
     student_snapshot = models.ForeignKey('hemis.HemisStudentSnapshot', on_delete=models.CASCADE)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=32, choices=RetakeApplicationStatus.choices, default=RetakeApplicationStatus.DRAFT)
+
     notes = models.TextField(blank=True, default="")
     declared_amount = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal("0.00"))
     accountant_amount = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal("0.00"))
@@ -117,6 +123,12 @@ class RetakeApplication(models.Model):
     def can_move_to_supervisor(self):
         return self.has_required_documents and self.amounts_match
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['cycle', 'status'], name='retakeapp_cycle_status_idx'),
+            models.Index(fields=['student_snapshot', 'status'], name='retakeapp_student_status_idx'),
+        ]
+
 class RetakeApplicationItem(models.Model):
     application = models.ForeignKey(RetakeApplication, on_delete=models.CASCADE, related_name='items')
     subject_snapshot = models.ForeignKey('hemis.HemisSubjectSnapshot', on_delete=models.CASCADE)
@@ -127,6 +139,24 @@ class RetakeApplicationItem(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal("0.00"))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def clean(self):
+        """Bir talaba bir xil fanni bir siklda ikki marta ariza qila olmasligi."""
+        from django.core.exceptions import ValidationError
+        if self.pk is None:  # Faqat yangi yaratishda tekshiriladi
+            duplicate = RetakeApplicationItem.objects.filter(
+                application__cycle=self.application.cycle,
+                application__student_snapshot=self.application.student_snapshot,
+                subject_snapshot=self.subject_snapshot,
+            ).exclude(status=RetakeItemStatus.CANCELLED).exists()
+            if duplicate:
+                raise ValidationError("Bu talaba bu fan uchun allaqachon faol ariza bergan.")
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['status'], name='retakeitem_status_idx'),
+            models.Index(fields=['application', 'status'], name='retakeitem_app_status_idx'),
+        ]
 
 class RetakeDocument(models.Model):
     application_item = models.ForeignKey(RetakeApplicationItem, on_delete=models.CASCADE, related_name='documents')
