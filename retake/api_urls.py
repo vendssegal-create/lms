@@ -24,6 +24,11 @@ urlpatterns = [
     path("exam-calendar/save/", api_views.exam_calendar_save, name="api_exam_calendar_save"),
     path("applications/", api_views.applications_list, name="api_applications_list"),
     path("applications/<int:app_id>/", api_views.application_detail, name="api_application_detail"),
+    path(
+        "applications/<int:app_id>/refresh-student/",
+        api_views.application_refresh_student,
+        name="api_application_refresh_student",
+    ),
     path("applications/<int:app_id>/update/", api_views.application_update, name="api_application_update"),
     path("applications/<int:app_id>/accounting-action/", api_views.application_accounting_action, name="api_application_accounting_action"),
     path("applications/<int:app_id>/supervisor-action/", api_views.application_supervisor_action, name="api_application_supervisor_action"),

@@ -49,36 +49,65 @@ def populate_hemis_student_snapshot(snapshot, payload: dict) -> None:
     if not payload.get("id"):
         return
 
-    snapshot.student_id_number = str(payload.get("student_id_number") or "").strip()
-    snapshot.pinfl = str(
+    # NOTE: Some endpoints (e.g. student-info) may not include faculty/group/semester.
+    # Do NOT overwrite existing snapshot fields with empty strings.
+
+    student_id_number = str(payload.get("student_id_number") or "").strip()
+    if student_id_number:
+        snapshot.student_id_number = student_id_number
+
+    pinfl = str(
         payload.get("pinfl")
         or payload.get("hash")
         or payload.get("pinfl_hash")
         or ""
     ).strip()
-    snapshot.full_name = str(payload.get("full_name") or "").strip()
-    snapshot.short_name = str(payload.get("short_name") or "").strip()
+    if pinfl:
+        snapshot.pinfl = pinfl
+
+    full_name = str(payload.get("full_name") or "").strip()
+    if full_name:
+        snapshot.full_name = full_name
+
+    short_name = str(payload.get("short_name") or "").strip()
+    if short_name:
+        snapshot.short_name = short_name
 
     dept = payload.get("department") or payload.get("faculty")
-    snapshot.faculty_name = _as_text(dept)
+    faculty_name = _as_text(dept)
+    if faculty_name:
+        snapshot.faculty_name = faculty_name
 
     spec = payload.get("specialty") or payload.get("speciality")
-    snapshot.specialty_name = _as_text(spec)
+    specialty_name = _as_text(spec)
+    if specialty_name:
+        snapshot.specialty_name = specialty_name
 
     grp = payload.get("group")
-    snapshot.group_name = _as_text(grp)
+    group_name = _as_text(grp)
+    if group_name:
+        snapshot.group_name = group_name
 
     sem = payload.get("semester")
-    snapshot.semester_code = nested_code(sem) if isinstance(sem, dict) else str(sem or "").strip()
-    snapshot.semester_name = nested_name(sem) if isinstance(sem, dict) else str(sem or "").strip()
+    semester_code = nested_code(sem) if isinstance(sem, dict) else str(sem or "").strip()
+    semester_name = nested_name(sem) if isinstance(sem, dict) else str(sem or "").strip()
+    if semester_code:
+        snapshot.semester_code = semester_code
+    if semester_name:
+        snapshot.semester_name = semester_name
 
     cur = payload.get("_curriculum")
     if cur is None and isinstance(payload.get("curriculum"), dict):
         cur = payload["curriculum"].get("id")
     snapshot.curriculum_id = _as_int(cur)
 
-    snapshot.email = _first_non_empty_str(payload, "email", "mail", "student_email")
-    snapshot.phone = _first_non_empty_str(payload, "phone", "mobile", "phone_number", "telephone")
+    email = _first_non_empty_str(payload, "email", "mail", "student_email")
+    if email:
+        snapshot.email = email
+
+    phone = _first_non_empty_str(payload, "phone", "mobile", "phone_number", "telephone")
+    if phone:
+        snapshot.phone = phone
 
     snapshot.raw_payload = payload
 

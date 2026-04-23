@@ -298,9 +298,14 @@ def login_student_via_bstu(username: str, password: str) -> User:
             profile.full_name = full_name
             profile.student_id_number = username
             profile.university = me_data.get("university", "") or "BSTU"
-            profile.faculty_name = (me_data.get("faculty") or {}).get("name", "")
-            profile.group_name = (me_data.get("group") or {}).get("name", "")
-            profile.specialty_name = (me_data.get("specialty") or {}).get("name", "")
+            def _as_name(v):
+                if isinstance(v, dict):
+                    return (v.get("name") or v.get("title") or "").strip()
+                return str(v or "").strip()
+
+            profile.faculty_name = _as_name(me_data.get("faculty"))
+            profile.group_name = _as_name(me_data.get("group"))
+            profile.specialty_name = _as_name(me_data.get("specialty"))
             profile.education_lang = (me_data.get("educationLang") or {}).get("name", "")
             profile.level = (me_data.get("level") or {}).get("name", "")
             profile.education_form = (me_data.get("educationForm") or {}).get("name", "")
@@ -354,6 +359,23 @@ def login_student_via_bstu(username: str, password: str) -> User:
                     snapshot.save()
 
                 profile.hemis_snapshot = snapshot
+
+                # Try to fill PINFL/contacts if present in BSTU payload.
+                pinfl = (
+                    me_data.get("pinfl")
+                    or me_data.get("pnfl")
+                    or me_data.get("passport_pin")
+                    or me_data.get("passportPin")
+                )
+                if pinfl and not snapshot.pinfl:
+                    snapshot.pinfl = str(pinfl).strip()
+                email = me_data.get("email") or me_data.get("mail")
+                if email and not snapshot.email:
+                    snapshot.email = str(email).strip()
+                phone = me_data.get("phone") or me_data.get("mobile") or me_data.get("phone_number")
+                if phone and not snapshot.phone:
+                    snapshot.phone = str(phone).strip()
+                snapshot.save()
 
             profile.save()
 

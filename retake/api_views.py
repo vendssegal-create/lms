@@ -1516,6 +1516,84 @@ APPLICATION_EDIT_ROLES = {
     Role.SUPER_ADMIN, Role.REGISTRATOR, Role.RET_REGISTRATOR,
 }
 
+APPLICATION_STUDENT_REFRESH_ROLES = {
+    Role.SUPER_ADMIN,
+    Role.REGISTRATOR,
+    Role.RET_REGISTRATOR,
+    Role.RET_SUPERVISOR,
+}
+
+
+@login_required
+@require_POST
+def application_refresh_student(request, app_id: int):
+    """
+    Arizaga bog'langan talaba snapshotini HEMIS'dan yangilaydi.
+    Maqsad: tasdiqlangan arizalarda ham talaba (fakultet/guruh/FIO) eskirib qolmasin.
+    """
+    role = get_user_role(request.user, request.session)
+    if role not in APPLICATION_STUDENT_REFRESH_ROLES:
+        return JsonResponse({"error": "Talaba ma'lumotini yangilash huquqi yo'q."}, status=403)
+
+    application = get_object_or_404(_application_queryset_for_role(request, role), id=app_id)
+    student = application.student_snapshot
+    if not student:
+        return JsonResponse({"error": "Talaba snapshot topilmadi."}, status=404)
+
+    service = RetakeHemisSyncService()
+    try:
+        updated = service.sync_student(
+            student_id=student.hemis_student_id or None,
+            student_id_number=student.student_id_number or None,
+            sync_debts=False,
+        )
+    except Exception as exc:
+        return JsonResponse({"error": f"HEMIS'dan yangilashda xatolik: {str(exc)}"}, status=500)
+
+    # Fallback: student-info har doim ham faculty/group/specialty/semester qaytarmaydi.
+    # Shuning uchun student-list?search=student_id_number bilan to'ldiramiz.
+    try:
+        needs_fill = any(
+            not (getattr(updated, field, "") or "").strip()
+            for field in ("faculty_name", "group_name", "specialty_name", "semester_name")
+        )
+        if needs_fill and (updated.student_id_number or updated.hemis_student_id):
+            from hemis.utils.client import HemisRestClient
+            from hemis.utils.sync_payload import populate_hemis_student_snapshot
+
+            client = HemisRestClient()
+            search_key = updated.student_id_number or str(updated.hemis_student_id)
+            items, _pagination = client.list_students(page=1, limit=50, search=search_key)
+
+            # Prefer exact hemis_student_id match
+            row = None
+            for it in items:
+                if str(it.get("id") or "").strip() and int(it["id"]) == int(updated.hemis_student_id):
+                    row = it
+                    break
+            if not row and items:
+                row = items[0]
+
+            if row:
+                populate_hemis_student_snapshot(updated, row)
+                updated.hemis_student_id = updated.hemis_student_id or row.get("id")
+                updated.save()
+    except Exception:
+        # fallback xatoligi refreshni buzmasin
+        pass
+
+    # Ehtiyot chorasi: sync_student() hemis_student_id asosida yangi snapshot yaratib yuborishi mumkin.
+    # Shunda ariza eski snapshotga bog'lanib qolmasligi uchun relink qilamiz.
+    if updated and application.student_snapshot_id != updated.id:
+        application.student_snapshot = updated
+        application.save(update_fields=["student_snapshot"])
+
+    return JsonResponse({
+        "success": True,
+        "student": _serialize_student_snapshot(updated),
+        "application": _serialize_application_detail(application),
+    })
+
 
 @login_required
 @require_POST
@@ -1708,6 +1786,25 @@ def search_students(request):
                     student = service.sync_student(student_id_number=clean_query, sync_debts=False)
                     if student:
                         students = [student]
+                else:
+                    # HEMIS Backend API "student-list" supports free-text search
+                    from hemis.utils.client import HemisRestClient
+                    from hemis.utils.sync_payload import populate_hemis_student_snapshot
+
+                    client = HemisRestClient()
+                    items, _pagination = client.list_students(page=1, limit=30, search=clean_query)
+                    out = []
+                    for row in items:
+                        hemis_id = row.get("id")
+                        if not hemis_id:
+                            continue
+                        snap, _ = HemisStudentSnapshot.objects.get_or_create(hemis_student_id=hemis_id)
+                        populate_hemis_student_snapshot(snap, row)
+                        snap.hemis_student_id = hemis_id
+                        snap.save()
+                        out.append(snap)
+                    if out:
+                        students = out
             except Exception as exc:
                 warning = f"HEMIS qidiruvida xatolik: {str(exc)}"
 
@@ -1716,6 +1813,18 @@ def search_students(request):
 
         faculties = get_service_registrator_faculties(request.user, request.session)
         if not faculties:
+            students = []
+            if not warning:
+                warning = "Sizga fakultet biriktirilmagan. Administrator orqali tayinlang."
+        else:
+            students = [s for s in students if (getattr(s, "faculty_name", "") or "").strip() in faculties]
+    elif role == Role.RET_DB_MANAGER:
+        from retake.utils.db_manager_utils import get_db_manager_faculties
+
+        faculties = get_db_manager_faculties(request.user, request.session)
+        if faculties is None:
+            pass
+        elif not faculties:
             students = []
             if not warning:
                 warning = "Sizga fakultet biriktirilmagan. Administrator orqali tayinlang."

@@ -154,6 +154,10 @@ def _build_session_payload(request):
         from retake.utils.service_registrator_utils import get_service_registrator_faculties
 
         retake_assigned_faculties = get_service_registrator_faculties(request.user, request.session)
+    elif active_role == Role.RET_DB_MANAGER:
+        from retake.utils.db_manager_utils import get_db_manager_faculties
+
+        retake_assigned_faculties = get_db_manager_faculties(request.user, request.session)
 
     return {
         "authenticated": True,
