@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { BookOpen, Briefcase, GraduationCap, RefreshCw, ShieldCheck, UserPlus, Users } from 'lucide-react';
+import { BookOpen, Briefcase, Building2, GraduationCap, RefreshCw, ShieldCheck, UserPlus, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/src/features/auth/auth-context';
 import { fetchAdminDashboard } from '@/src/api/lms';
 import type { AdminDashboardResponse } from '@/src/types';
 import { cn } from '@/src/lib/utils';
@@ -21,6 +22,10 @@ function formatRelative(value: string | null) {
 }
 
 export default function AdminDashboardPage() {
+  const { session } = useAuth();
+  const activeRole = session?.user?.active_role || '';
+  const showDbManagerFaculties = activeRole === 'SUPER_ADMIN' || activeRole === 'REGISTRATOR';
+
   const [data, setData] = useState<AdminDashboardResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -74,6 +79,15 @@ export default function AdminDashboardPage() {
               <GraduationCap size={16} />
               Talaba qo'shish
             </Link>
+            {showDbManagerFaculties ? (
+              <Link
+                to="/retake/admin/db-managers/faculties"
+                className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-bold text-white"
+              >
+                <Building2 size={16} />
+                MB menejerlar — fakultetlar
+              </Link>
+            ) : null}
             <button type="button" onClick={() => void load()} className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-bold text-white">
               <RefreshCw size={16} />
               Yangilash

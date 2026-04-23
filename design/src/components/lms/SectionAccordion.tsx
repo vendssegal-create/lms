@@ -38,7 +38,7 @@ import type {
   ResourceStatStudent
 } from '@/src/types'
 import { Link } from 'react-router-dom'
-import { fetchResourceStats } from '@/src/api/lms'
+import { fetchResourceStats, markSectionComplete } from '@/src/api/lms'
 import { BarChart2, CheckCircle2 as CheckIcon, XCircle, Info } from 'lucide-react'
 
 interface SectionAccordionProps {
@@ -53,6 +53,7 @@ interface SectionAccordionProps {
   onDeleteMeeting: (meetingId: number) => void
   onDeleteResource?: (resourceId: number) => void
   uploadingAssignmentId: number | null
+  onSectionComplete?: (sectionId: number, newProgress: number) => void
 }
 
 function formatDateTime(value: string | null) {
@@ -83,10 +84,12 @@ export function SectionAccordion({
   onSubmitAssignment,
   onDeleteMeeting,
   onDeleteResource,
-  uploadingAssignmentId
+  uploadingAssignmentId,
+  onSectionComplete,
 }: SectionAccordionProps) {
   const isStudent = role === 'STUDENT'
   const isTeacher = role === 'TEACHER' || role === 'SUPER_ADMIN'
+  const [isCompleting, setIsCompleting] = React.useState(false)
 
   const [statsResource, setStatsResource] = React.useState<CourseDetailResource | null>(null)
   const [statsData, setStatsData] = React.useState<ResourceStatsResponse | null>(null)
@@ -107,6 +110,21 @@ export function SectionAccordion({
 
   const formattedIndex = (index + 1).toString().padStart(2, '0')
   const totalMaterials = section.resources.length + section.meetings.length + section.assignments.length + section.tests.length
+
+  async function handleMarkComplete() {
+    if (isCompleting || section.is_completed || section.is_locked) return
+    setIsCompleting(true)
+    try {
+      const res = await markSectionComplete(section.id)
+      if (res.success && onSectionComplete) {
+        onSectionComplete(section.id, res.progress_percentage)
+      }
+    } catch {
+      // silent fail
+    } finally {
+      setIsCompleting(false)
+    }
+  }
 
   return (
     <div className={cn(
@@ -162,6 +180,26 @@ export function SectionAccordion({
 
         {/* Badges and Toggle */}
         <div className="flex items-center gap-4">
+          {isStudent && expanded && !section.is_completed && !section.is_locked && (
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); void handleMarkComplete() }}
+              disabled={isCompleting || section.is_completed}
+              className={cn(
+                "ml-auto shrink-0 flex items-center gap-2 rounded-2xl px-4 py-2 text-xs font-bold transition-all",
+                section.is_completed
+                  ? "bg-success/10 text-success cursor-default"
+                  : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
+              )}
+            >
+              {isCompleting ? (
+                <LoaderCircle size={14} className="animate-spin" />
+              ) : (
+                <CheckCircle2 size={14} />
+              )}
+              {section.is_completed ? "Tugatildi" : "Tugatdim"}
+            </button>
+          )}
           {totalMaterials > 0 && !expanded && (
             <span className="hidden sm:inline-flex status-pill status-pill-muted lowercase font-medium tracking-normal px-3">
               {totalMaterials} ta material
@@ -573,6 +611,8 @@ function AssignmentItem({
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
   uploading: boolean
 }) {
+  const [selectedFile, setSelectedFile] = React.useState<string>('')
+
   const deadlineDate = assignment.deadline ? new Date(assignment.deadline) : null
   const now = new Date()
   const isPassed = deadlineDate ? deadlineDate < now : false
@@ -614,11 +654,17 @@ function AssignmentItem({
                   name="file" 
                   type="file" 
                   required
+                  onChange={(e) => setSelectedFile(e.target.files?.[0]?.name || '')}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
                 />
                 <div className="input flex items-center gap-2 group-hover:border-primary transition-colors">
                   <Paperclip size={14} className="text-text-muted" />
-                  <span className="text-text-muted">Fayl tanlang...</span>
+                  <span className={cn(
+                    "text-sm truncate font-semibold",
+                    selectedFile ? "text-text-primary" : "text-text-muted"
+                  )}>
+                    {selectedFile || 'Fayl tanlang...'}
+                  </span>
                 </div>
               </div>
               <input 

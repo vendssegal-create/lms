@@ -13,6 +13,7 @@ from django.views.decorators.http import require_POST
 from django.utils import timezone
 import calendar as cal_module
 from datetime import date, datetime as dt
+from django.contrib.auth import get_user_model
 
 from users.utils.roles import Role, get_user_role
 from users.models import StudentProfile
@@ -29,7 +30,9 @@ from hemis.models import (
 from hemis.services import RetakeHemisSyncService, HemisAdminSyncService
 from django.db import close_old_connections
 
+from .constants import DB_MANAGER_ALL_FACULTIES_SENTINEL
 from .models import (
+    DBManagerFacultyAssignment,
     PaymentReview,
     PaymentReviewStatus,
     RetakeApplication,
@@ -684,16 +687,13 @@ def exam_sheet_detail(request, sheet_id):
 
     # RET_DB_MANAGER faqat o'z fakultetining varaqasini ko'ra oladi
     if role == Role.RET_DB_MANAGER:
-        from retake.models import DBManagerFacultyAssignment
-        user_faculties = set(DBManagerFacultyAssignment.objects.filter(
-            db_manager_user=request.user
-        ).values_list('faculty_name', flat=True))
-        sheet_faculties = set(
-            sheet.assessment_schedule.group.memberships.values_list(
-                'student_snapshot__faculty_name', flat=True
-            )
+        from retake.utils.db_manager_utils import db_manager_may_access_faculties
+
+        group = sheet.assessment_schedule.group
+        sheet_faculties = group.memberships.values_list(
+            "student_snapshot__faculty_name", flat=True
         )
-        if not user_faculties.intersection(sheet_faculties):
+        if not db_manager_may_access_faculties(request.user, sheet_faculties, request.session):
             return JsonResponse({"error": "Bu imtihon varaqa sizning fakultetingizga tegishli emas."}, status=403)
 
     teacher_profile = getattr(request.user, "teacher_profile", None)
@@ -731,14 +731,12 @@ def exam_sheet_save(request, sheet_id):
 
     # RET_DB_MANAGER faqat o'z fakultetining varaqasini o'zgartira oladi
     if role == Role.RET_DB_MANAGER:
-        from retake.models import DBManagerFacultyAssignment
-        user_faculties = set(DBManagerFacultyAssignment.objects.filter(
-            db_manager_user=request.user
-        ).values_list('faculty_name', flat=True))
-        sheet_faculties = set(
-            group.memberships.values_list('student_snapshot__faculty_name', flat=True)
+        from retake.utils.db_manager_utils import db_manager_may_access_faculties
+
+        sheet_faculties = group.memberships.values_list(
+            "student_snapshot__faculty_name", flat=True
         )
-        if not user_faculties.intersection(sheet_faculties):
+        if not db_manager_may_access_faculties(request.user, sheet_faculties, request.session):
             return JsonResponse({"error": "Bu imtihon varaqa sizning fakultetingizga tegishli emas."}, status=403)
 
     teacher_profile = getattr(request.user, "teacher_profile", None)
@@ -1056,7 +1054,21 @@ def groups_list(request):
         .order_by("subject_snapshot__subject_name")
     )
 
-    assigned_faculties = faculties if faculties is not None else []
+    assigned_faculties_all = False
+    if role == Role.RET_DB_MANAGER:
+        raw = list(
+            DBManagerFacultyAssignment.objects.filter(db_manager_user=request.user).values_list(
+                "faculty_name", flat=True
+            )
+        )
+        assigned_faculties_all = DB_MANAGER_ALL_FACULTIES_SENTINEL in raw
+        assigned_faculties = (
+            []
+            if assigned_faculties_all
+            else [x for x in raw if x != DB_MANAGER_ALL_FACULTIES_SENTINEL]
+        )
+    else:
+        assigned_faculties = faculties if faculties is not None else []
 
     return JsonResponse({
         "role": role,
@@ -1078,6 +1090,7 @@ def groups_list(request):
             for item in pending_subjects
         ],
         "assigned_faculties": assigned_faculties,
+        "assigned_faculties_all": assigned_faculties_all,
     })
 
 
@@ -1503,6 +1516,84 @@ APPLICATION_EDIT_ROLES = {
     Role.SUPER_ADMIN, Role.REGISTRATOR, Role.RET_REGISTRATOR,
 }
 
+APPLICATION_STUDENT_REFRESH_ROLES = {
+    Role.SUPER_ADMIN,
+    Role.REGISTRATOR,
+    Role.RET_REGISTRATOR,
+    Role.RET_SUPERVISOR,
+}
+
+
+@login_required
+@require_POST
+def application_refresh_student(request, app_id: int):
+    """
+    Arizaga bog'langan talaba snapshotini HEMIS'dan yangilaydi.
+    Maqsad: tasdiqlangan arizalarda ham talaba (fakultet/guruh/FIO) eskirib qolmasin.
+    """
+    role = get_user_role(request.user, request.session)
+    if role not in APPLICATION_STUDENT_REFRESH_ROLES:
+        return JsonResponse({"error": "Talaba ma'lumotini yangilash huquqi yo'q."}, status=403)
+
+    application = get_object_or_404(_application_queryset_for_role(request, role), id=app_id)
+    student = application.student_snapshot
+    if not student:
+        return JsonResponse({"error": "Talaba snapshot topilmadi."}, status=404)
+
+    service = RetakeHemisSyncService()
+    try:
+        updated = service.sync_student(
+            student_id=student.hemis_student_id or None,
+            student_id_number=student.student_id_number or None,
+            sync_debts=False,
+        )
+    except Exception as exc:
+        return JsonResponse({"error": f"HEMIS'dan yangilashda xatolik: {str(exc)}"}, status=500)
+
+    # Fallback: student-info har doim ham faculty/group/specialty/semester qaytarmaydi.
+    # Shuning uchun student-list?search=student_id_number bilan to'ldiramiz.
+    try:
+        needs_fill = any(
+            not (getattr(updated, field, "") or "").strip()
+            for field in ("faculty_name", "group_name", "specialty_name", "semester_name")
+        )
+        if needs_fill and (updated.student_id_number or updated.hemis_student_id):
+            from hemis.utils.client import HemisRestClient
+            from hemis.utils.sync_payload import populate_hemis_student_snapshot
+
+            client = HemisRestClient()
+            search_key = updated.student_id_number or str(updated.hemis_student_id)
+            items, _pagination = client.list_students(page=1, limit=50, search=search_key)
+
+            # Prefer exact hemis_student_id match
+            row = None
+            for it in items:
+                if str(it.get("id") or "").strip() and int(it["id"]) == int(updated.hemis_student_id):
+                    row = it
+                    break
+            if not row and items:
+                row = items[0]
+
+            if row:
+                populate_hemis_student_snapshot(updated, row)
+                updated.hemis_student_id = updated.hemis_student_id or row.get("id")
+                updated.save()
+    except Exception:
+        # fallback xatoligi refreshni buzmasin
+        pass
+
+    # Ehtiyot chorasi: sync_student() hemis_student_id asosida yangi snapshot yaratib yuborishi mumkin.
+    # Shunda ariza eski snapshotga bog'lanib qolmasligi uchun relink qilamiz.
+    if updated and application.student_snapshot_id != updated.id:
+        application.student_snapshot = updated
+        application.save(update_fields=["student_snapshot"])
+
+    return JsonResponse({
+        "success": True,
+        "student": _serialize_student_snapshot(updated),
+        "application": _serialize_application_detail(application),
+    })
+
 
 @login_required
 @require_POST
@@ -1695,6 +1786,25 @@ def search_students(request):
                     student = service.sync_student(student_id_number=clean_query, sync_debts=False)
                     if student:
                         students = [student]
+                else:
+                    # HEMIS Backend API "student-list" supports free-text search
+                    from hemis.utils.client import HemisRestClient
+                    from hemis.utils.sync_payload import populate_hemis_student_snapshot
+
+                    client = HemisRestClient()
+                    items, _pagination = client.list_students(page=1, limit=30, search=clean_query)
+                    out = []
+                    for row in items:
+                        hemis_id = row.get("id")
+                        if not hemis_id:
+                            continue
+                        snap, _ = HemisStudentSnapshot.objects.get_or_create(hemis_student_id=hemis_id)
+                        populate_hemis_student_snapshot(snap, row)
+                        snap.hemis_student_id = hemis_id
+                        snap.save()
+                        out.append(snap)
+                    if out:
+                        students = out
             except Exception as exc:
                 warning = f"HEMIS qidiruvida xatolik: {str(exc)}"
 
@@ -1703,6 +1813,18 @@ def search_students(request):
 
         faculties = get_service_registrator_faculties(request.user, request.session)
         if not faculties:
+            students = []
+            if not warning:
+                warning = "Sizga fakultet biriktirilmagan. Administrator orqali tayinlang."
+        else:
+            students = [s for s in students if (getattr(s, "faculty_name", "") or "").strip() in faculties]
+    elif role == Role.RET_DB_MANAGER:
+        from retake.utils.db_manager_utils import get_db_manager_faculties
+
+        faculties = get_db_manager_faculties(request.user, request.session)
+        if faculties is None:
+            pass
+        elif not faculties:
             students = []
             if not warning:
                 warning = "Sizga fakultet biriktirilmagan. Administrator orqali tayinlang."
@@ -2197,6 +2319,317 @@ def group_student_groups(request, group_id):
     return JsonResponse({'student_groups': result})
 
 
+# ──────────────────────────────────────────────────────────────────
+# Group membership management (SPA)
+# ──────────────────────────────────────────────────────────────────
+
+@login_required
+@require_GET
+def pending_students_for_group(request, group_id):
+    """
+    Berilgan retake fan guruhi (RetakeSubjectGroup) uchun
+    status=APPROVED_FOR_GROUPING bo'lgan application itemlarni qaytaradi.
+    """
+    role = get_user_role(request.user, request.session)
+    if role not in GROUP_MANAGE_ROLES:
+        return JsonResponse({"error": "Ruxsat yo'q"}, status=403)
+
+    from retake.utils.db_manager_utils import get_db_manager_faculties
+
+    group = get_object_or_404(RetakeSubjectGroup.objects.select_related("subject_snapshot"), id=group_id)
+    subject_snapshot_id = group.subject_snapshot_id
+
+    qs = (
+        RetakeApplicationItem.objects
+        .select_related("application", "application__student_snapshot")
+        .filter(
+            subject_snapshot_id=subject_snapshot_id,
+            status=RetakeItemStatus.APPROVED_FOR_GROUPING,
+        )
+        .order_by("application__student_snapshot__full_name")
+    )
+
+    faculties = get_db_manager_faculties(request.user, request.session)
+    if role == Role.RET_DB_MANAGER and faculties is not None:
+        qs = qs.filter(application__student_snapshot__faculty_name__in=faculties)
+
+    items = []
+    for item in qs:
+        student = item.application.student_snapshot
+        items.append({
+            "item_id": item.id,
+            "student_id": student.id,
+            "full_name": student.full_name,
+            "student_id_number": student.student_id_number,
+            "group_name": student.group_name,
+            "faculty_name": student.faculty_name,
+            "required_control_type": item.required_control_type,
+        })
+
+    return JsonResponse({"items": items, "total_count": len(items)})
+
+
+@login_required
+@require_POST
+def assign_students_to_group(request, group_id):
+    """
+    Body: { "item_ids": [1,2,3] }
+    APPROVED_FOR_GROUPING itemlarni guruhga biriktiradi.
+    """
+    role = get_user_role(request.user, request.session)
+    if role not in GROUP_MANAGE_ROLES:
+        return JsonResponse({"error": "Ruxsat yo'q"}, status=403)
+
+    from retake.models import RetakeGroupMembership
+    from retake.utils.db_manager_utils import get_db_manager_faculties
+
+    payload = _json_body(request)
+    raw_ids = payload.get("item_ids")
+    if not raw_ids:
+        return JsonResponse({"error": "item_ids kiritilishi shart."}, status=400)
+
+    clean_ids = [int(x) for x in raw_ids if str(x).isdigit()]
+    if not clean_ids:
+        return JsonResponse({"error": "item_ids kiritilishi shart."}, status=400)
+
+    group = get_object_or_404(RetakeSubjectGroup.objects.select_related("subject_snapshot"), id=group_id)
+    faculties = get_db_manager_faculties(request.user, request.session)
+
+    assigned_count = 0
+    with transaction.atomic():
+        for item_id in clean_ids:
+            item = (
+                RetakeApplicationItem.objects
+                .select_related("application", "application__student_snapshot")
+                .filter(id=item_id)
+                .first()
+            )
+            if not item:
+                continue
+            if item.subject_snapshot_id != group.subject_snapshot_id:
+                continue
+            if item.status != RetakeItemStatus.APPROVED_FOR_GROUPING:
+                continue
+
+            student = item.application.student_snapshot
+            if role == Role.RET_DB_MANAGER and faculties is not None and student.faculty_name not in faculties:
+                continue
+
+            membership, created = RetakeGroupMembership.objects.get_or_create(
+                group=group,
+                application_item=item,
+                student_snapshot=student,
+                defaults={"required_control_type": item.required_control_type},
+            )
+            if created:
+                assigned_count += 1
+
+            item.status = RetakeItemStatus.GROUPED
+            item.save(update_fields=["status"])
+
+    if assigned_count == 0:
+        return JsonResponse({"error": "Mos keluvchi arizalar topilmadi."}, status=400)
+
+    return JsonResponse({
+        "success": True,
+        "assigned_count": assigned_count,
+        "message": f"{assigned_count} ta talaba guruhga qo'shildi.",
+    })
+
+
+@login_required
+@require_POST
+def remove_member_from_group(request, group_id, membership_id):
+    role = get_user_role(request.user, request.session)
+    if role not in GROUP_MANAGE_ROLES:
+        return JsonResponse({"error": "Ruxsat yo'q"}, status=403)
+
+    from retake.models import RetakeGroupMembership
+    from retake.utils.db_manager_utils import get_db_manager_faculties
+
+    membership = get_object_or_404(
+        RetakeGroupMembership.objects.select_related("application_item", "student_snapshot"),
+        id=membership_id,
+        group_id=group_id,
+    )
+
+    faculties = get_db_manager_faculties(request.user, request.session)
+    if role == Role.RET_DB_MANAGER and faculties is not None:
+        if membership.student_snapshot.faculty_name not in faculties:
+            return JsonResponse({"error": "Ruxsat yo'q"}, status=403)
+
+    blocked_statuses = {
+        RetakeItemStatus.SCHEDULED,
+        RetakeItemStatus.GRADE_ENTRY_OPEN,
+        RetakeItemStatus.COMPLETED,
+    }
+
+    with transaction.atomic():
+        item = membership.application_item
+        if item.status in blocked_statuses:
+            return JsonResponse({
+                "error": "Jadvalga kiritilgan yoki yakunlangan talabani chiqarib bo'lmaydi."
+            }, status=400)
+
+        item.status = RetakeItemStatus.APPROVED_FOR_GROUPING
+        item.save(update_fields=["status"])
+        membership.delete()
+
+    return JsonResponse({"success": True, "message": "Talaba guruhdan chiqarildi."})
+
+
+# ──────────────────────────────────────────────────────────────────
+# Grouping (DB_MANAGER) — v2 endpoints (cycle-aware + grouped response)
+# ──────────────────────────────────────────────────────────────────
+
+@login_required
+@require_GET
+def group_pending_students(request, group_id):
+    """Shu fan guruhiga tegishli, hali biriktirilmagan tayyor talabalar."""
+    role = get_user_role(request.user, request.session)
+    if role not in GROUP_MANAGE_ROLES:
+        return JsonResponse({'error': 'Ruxsat yo\'q'}, status=403)
+
+    from retake.models import RetakeGroupMembership
+    from retake.utils.db_manager_utils import get_db_manager_faculties
+
+    group = get_object_or_404(
+        RetakeSubjectGroup.objects.select_related('subject_snapshot', 'cycle'),
+        id=group_id
+    )
+
+    pending = (
+        RetakeApplicationItem.objects.filter(
+            subject_snapshot=group.subject_snapshot,
+            application__cycle=group.cycle,
+            status=RetakeItemStatus.APPROVED_FOR_GROUPING,
+        )
+        .select_related('application__student_snapshot')
+        .exclude(id__in=RetakeGroupMembership.objects.filter(group=group).values_list('application_item_id', flat=True))
+        .order_by(
+            'application__student_snapshot__group_name',
+            'application__student_snapshot__full_name'
+        )
+    )
+
+    faculties = get_db_manager_faculties(request.user, request.session)
+    if role == Role.RET_DB_MANAGER and faculties is not None:
+        pending = pending.filter(application__student_snapshot__faculty_name__in=faculties)
+
+    result = []
+    for item in pending:
+        student = item.application.student_snapshot
+        result.append({
+            'item_id': item.id,
+            'student_name': student.full_name,
+            'student_id': student.student_id_number,
+            'hemis_group': student.group_name or "Noma'lum",
+            'faculty': student.faculty_name,
+            'required_control_type': item.required_control_type,
+        })
+
+    by_hemis_group = {}
+    for r in result:
+        g = r['hemis_group']
+        by_hemis_group.setdefault(g, []).append(r)
+
+    return JsonResponse({
+        'pending_count': len(result),
+        'by_hemis_group': [
+            {'hemis_group': g, 'students': students}
+            for g, students in sorted(by_hemis_group.items())
+        ],
+    })
+
+
+@login_required
+@require_POST
+def group_auto_assign(request, group_id):
+    """Shu fan guruhiga tegishli barcha tayyor talabalarni avtomatik biriktirish."""
+    role = get_user_role(request.user, request.session)
+    if role not in GROUP_MANAGE_ROLES:
+        return JsonResponse({'error': 'Ruxsat yo\'q'}, status=403)
+
+    from retake.models import RetakeGroupMembership
+    from retake.utils.db_manager_utils import get_db_manager_faculties
+
+    group = get_object_or_404(
+        RetakeSubjectGroup.objects.select_related('subject_snapshot', 'cycle'),
+        id=group_id
+    )
+
+    pending = (
+        RetakeApplicationItem.objects.filter(
+            subject_snapshot=group.subject_snapshot,
+            application__cycle=group.cycle,
+            status=RetakeItemStatus.APPROVED_FOR_GROUPING,
+        )
+        .select_related('application__student_snapshot')
+        .exclude(id__in=RetakeGroupMembership.objects.filter(group=group).values_list('application_item_id', flat=True))
+    )
+
+    faculties = get_db_manager_faculties(request.user, request.session)
+    if role == Role.RET_DB_MANAGER and faculties is not None:
+        pending = pending.filter(application__student_snapshot__faculty_name__in=faculties)
+
+    assigned = 0
+    with transaction.atomic():
+        for item in pending:
+            RetakeGroupMembership.objects.create(
+                group=group,
+                application_item=item,
+                student_snapshot=item.application.student_snapshot,
+                required_control_type=item.required_control_type,
+            )
+            item.status = RetakeItemStatus.GROUPED
+            item.save(update_fields=['status', 'updated_at'])
+            assigned += 1
+
+    return JsonResponse({
+        'success': True,
+        'assigned_count': assigned,
+        'message': f"{assigned} ta talaba guruhga biriktirildi.",
+    })
+
+
+@login_required
+@require_POST
+def group_remove_member(request, group_id):
+    """Talabani fan guruhidan chiqarish (status APPROVED_FOR_GROUPING ga qaytadi)."""
+    role = get_user_role(request.user, request.session)
+    if role not in GROUP_MANAGE_ROLES:
+        return JsonResponse({'error': 'Ruxsat yo\'q'}, status=403)
+
+    from retake.models import RetakeGroupMembership
+    from retake.utils.db_manager_utils import get_db_manager_faculties
+
+    group = get_object_or_404(RetakeSubjectGroup, id=group_id)
+    payload = _json_body(request)
+    membership_id = payload.get('membership_id')
+
+    if not membership_id:
+        return JsonResponse({'error': 'membership_id kiritilmagan'}, status=400)
+
+    membership = get_object_or_404(
+        RetakeGroupMembership.objects.select_related('application_item', 'student_snapshot'),
+        id=membership_id,
+        group=group
+    )
+
+    faculties = get_db_manager_faculties(request.user, request.session)
+    if role == Role.RET_DB_MANAGER and faculties is not None:
+        if membership.student_snapshot.faculty_name not in faculties:
+            return JsonResponse({'error': 'Ruxsat yo\'q'}, status=403)
+
+    with transaction.atomic():
+        item = membership.application_item
+        membership.delete()
+        item.status = RetakeItemStatus.APPROVED_FOR_GROUPING
+        item.save(update_fields=['status', 'updated_at'])
+
+    return JsonResponse({'success': True})
+
+
 @login_required
 @require_POST
 def create_assessment(request, group_id):
@@ -2421,3 +2854,100 @@ def teacher_course_enrollment(request, group_id):
         return JsonResponse({'error': 'Biriktirish xatolik'}, status=500)
 
     return JsonResponse({'error': 'Noto\'g\'ri action'}, status=400)
+
+
+DB_MANAGER_FACULTY_ADMIN_ROLES = {Role.SUPER_ADMIN, Role.REGISTRATOR}
+
+
+@login_required
+@require_GET
+def admin_retake_faculty_names(request):
+    """Hemis snapshotdan noyob fakultet nomlari (MB menejer biriktirish uchun)."""
+    role = get_user_role(request.user, request.session)
+    if role not in DB_MANAGER_FACULTY_ADMIN_ROLES:
+        return JsonResponse({"error": "Ruxsat yo'q."}, status=403)
+    names = (
+        HemisStudentSnapshot.objects.values_list("faculty_name", flat=True)
+        .exclude(faculty_name="")
+        .distinct()
+        .order_by("faculty_name")
+    )
+    return JsonResponse({"faculties": list(names)})
+
+
+@login_required
+@require_GET
+def admin_db_managers_faculties(request):
+    """MB menejerlari va ularning fakultet biriktirishlari."""
+    role = get_user_role(request.user, request.session)
+    if role not in DB_MANAGER_FACULTY_ADMIN_ROLES:
+        return JsonResponse({"error": "Ruxsat yo'q."}, status=403)
+    User = get_user_model()
+    managers = User.objects.filter(role=Role.RET_DB_MANAGER).order_by("username")
+    out = []
+    for u in managers:
+        raw = list(
+            DBManagerFacultyAssignment.objects.filter(db_manager_user=u).values_list("faculty_name", flat=True)
+        )
+        access_all = DB_MANAGER_ALL_FACULTIES_SENTINEL in raw
+        faculty_names = (
+            []
+            if access_all
+            else [x for x in raw if x != DB_MANAGER_ALL_FACULTIES_SENTINEL]
+        )
+        out.append(
+            {
+                "id": u.id,
+                "username": u.username,
+                "full_name": u.get_full_name() or "",
+                "email": u.email or "",
+                "access_all_faculties": access_all,
+                "faculty_names": faculty_names,
+            }
+        )
+    return JsonResponse({"managers": out})
+
+
+@login_required
+@require_POST
+def admin_db_managers_faculties_set(request):
+    """MB menejerga fakultet biriktirish yoki barcha fakultetlar (__ALL__)."""
+    role = get_user_role(request.user, request.session)
+    if role not in DB_MANAGER_FACULTY_ADMIN_ROLES:
+        return JsonResponse({"error": "Ruxsat yo'q."}, status=403)
+    payload = _json_body(request)
+    user_id = payload.get("user_id")
+    if user_id is None or not str(user_id).strip().isdigit():
+        return JsonResponse({"error": "user_id kerak."}, status=400)
+    access_all = bool(payload.get("access_all_faculties") or payload.get("access_all"))
+    faculty_names = payload.get("faculty_names") or payload.get("faculties") or []
+    if not isinstance(faculty_names, list):
+        return JsonResponse({"error": "faculty_names ro'yxati noto'g'ri."}, status=400)
+
+    User = get_user_model()
+    target = get_object_or_404(User, id=int(str(user_id).strip()), role=Role.RET_DB_MANAGER)
+
+    with transaction.atomic():
+        DBManagerFacultyAssignment.objects.filter(db_manager_user=target).delete()
+        if access_all:
+            DBManagerFacultyAssignment.objects.create(
+                db_manager_user=target,
+                faculty_name=DB_MANAGER_ALL_FACULTIES_SENTINEL,
+                assigned_by=request.user,
+            )
+        else:
+            seen = set()
+            for name in faculty_names:
+                n = (name or "").strip()
+                if not n or n == DB_MANAGER_ALL_FACULTIES_SENTINEL:
+                    continue
+                if n in seen:
+                    continue
+                seen.add(n)
+                DBManagerFacultyAssignment.objects.create(
+                    db_manager_user=target,
+                    faculty_name=n,
+                    assigned_by=request.user,
+                )
+
+    return JsonResponse({"success": True})

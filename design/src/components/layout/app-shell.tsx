@@ -154,6 +154,17 @@ export function AppShell() {
           />
         </Suspense>
 
+        {/* Mobile backdrop overlay */}
+        <button
+          type="button"
+          aria-label="Menyuni yopish"
+          onClick={() => setIsSidebarOpen(false)}
+          className={cn(
+            'fixed inset-0 z-40 bg-black/45 backdrop-blur-sm transition-opacity lg:hidden',
+            isSidebarOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
+          )}
+        />
+
         <div className={cn('flex min-h-screen flex-1 flex-col transition-[margin] duration-300 ease-out', isSidebarCollapsed ? 'lg:ml-24' : 'lg:ml-80')}>
           <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-border/60 bg-card/80 px-6 backdrop-blur-md lg:px-8">
             <div className="flex items-center gap-3">

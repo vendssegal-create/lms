@@ -50,7 +50,7 @@ RETAKE_MENUS = [
         'label': 'MB Menejerlari',
         'section': 'RETAKE',
         'icon_lucide': 'user-check',
-        'spa_path': '/retake/admin/db-manager-faculties',
+        'spa_path': '/retake/admin/db-managers/faculties',
         'roles': {'REGISTRATOR': 6, 'SUPER_ADMIN': 6},
     },
     {

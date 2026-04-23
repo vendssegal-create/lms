@@ -459,6 +459,25 @@ class HemisAdminSyncService:
 
         snapshot, _ = HemisStudentSnapshot.objects.get_or_create(hemis_student_id=hemis_student_id)
         populate_hemis_student_snapshot(snapshot, payload)
+
+        # Enrichment: student-list ba'zan faculty/group/specialty/semester bermaydi.
+        # Shunday holatda student-info orqali snapshotni to'ldirishga urinib ko'ramiz.
+        try:
+            needs_fill = any(
+                not (getattr(snapshot, field, "") or "").strip()
+                for field in ("faculty_name", "group_name", "specialty_name", "semester_name")
+            )
+            if needs_fill:
+                info = self.client.get_student_info(
+                    student_id=int(hemis_student_id) if hemis_student_id else None,
+                    student_id_number=student_id_number or None,
+                )
+                if isinstance(info, dict) and info.get("id"):
+                    populate_hemis_student_snapshot(snapshot, info)
+        except Exception:
+            # Enrichment xatoligi syncni to'xtatmasin
+            pass
+
         snapshot.save()
 
         if student_id_number:
@@ -485,6 +504,9 @@ class HemisAdminSyncService:
             profile.faculty_name = snapshot.faculty_name
             profile.group_name = snapshot.group_name
             profile.specialty_name = snapshot.specialty_name
+            # Keep new linkage fields consistent for later lookups.
+            profile.hemis_student_id = hemis_student_id
+            profile.hemis_snapshot = snapshot
             profile.save()
 
     def _upsert_teacher(self, payload: dict) -> None:

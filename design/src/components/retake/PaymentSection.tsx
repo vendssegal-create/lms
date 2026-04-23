@@ -1,5 +1,5 @@
 import { CheckCircle2, FileText, Upload, XCircle } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef, useState, type ChangeEvent } from 'react';
 import { cn } from '@/src/lib/utils';
 import StatusBadge from './StatusBadge';
 
@@ -42,7 +42,7 @@ function FileRow({
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
 
-  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFile = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !onUpload) return;
     setUploading(true);

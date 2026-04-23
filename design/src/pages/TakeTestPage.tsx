@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Camera, CheckCircle2, ChevronLeft, ChevronRight, FlaskConical, LoaderCircle, ShieldCheck } from 'lucide-react';
 import { fetchTakeTest, sendProctorLog, submitTest, verifyFace } from '@/src/api/lms';
 import type { TakeTestQuestion, TakeTestResponse } from '@/src/types';
+import { ConfirmDialog } from '@/src/components/ui/confirm-dialog';
+import { cn } from '@/src/lib/utils';
 
 function formatTime(seconds: number) {
   const clamped = Math.max(0, seconds);
@@ -94,6 +96,7 @@ export default function TakeTestPage() {
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [faceStatus, setFaceStatus] = useState<'idle' | 'loading' | 'verified' | 'failed'>('idle');
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [isFinishConfirmOpen, setIsFinishConfirmOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const referenceDescriptorRef = useRef<Float32Array | null>(null);
@@ -376,12 +379,8 @@ export default function TakeTestPage() {
     }
   }
 
-  async function handleSubmit(auto = false) {
+  async function submitNow() {
     if (!data || isSubmitting) return;
-    if (!auto) {
-      const ok = window.confirm("Testni yakunlaysizmi? Javoblar yuboriladi.");
-      if (!ok) return;
-    }
     setIsSubmitting(true);
     setError(null);
     try {
@@ -392,6 +391,15 @@ export default function TakeTestPage() {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  async function handleSubmit(auto = false) {
+    if (!data || isSubmitting) return;
+    if (!auto) {
+      setIsFinishConfirmOpen(true);
+      return;
+    }
+    await submitNow();
   }
 
   if (isLoading) {
@@ -459,35 +467,75 @@ export default function TakeTestPage() {
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-background">
-      <header className="flex items-center justify-between border-b border-border bg-white/80 px-4 py-3 backdrop-blur-md lg:px-6 dark:bg-dark-card/80">
-        <div className="flex min-w-0 items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-white">
-            <FlaskConical size={18} />
+      <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-md dark:bg-dark-card/80">
+        <div className="flex items-center justify-between gap-3 px-4 py-3 lg:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-white">
+              <FlaskConical size={18} />
+            </div>
+            <div className="min-w-0">
+              <p className="label-micro">Test</p>
+              <h1 className="truncate text-base font-black text-text-primary lg:text-lg">{data.test.name}</h1>
+            </div>
           </div>
-          <div className="min-w-0">
-            <p className="label-micro">Test</p>
-            <h1 className="truncate text-base font-black text-text-primary lg:text-lg">{data.test.name}</h1>
+
+          <div className="hidden items-center gap-2 lg:flex">
+            <span className="status-pill status-pill-muted">
+              Savol {currentQuestion + 1}/{totalQuestions}
+            </span>
+            <span className="status-pill status-pill-muted">
+              Javob {answeredCount}/{totalQuestions}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 lg:gap-3">
+            {remaining !== null ? (
+              <span
+                className={cn(
+                  'status-pill',
+                  remaining <= 300 ? 'status-pill-danger' : 'status-pill-primary',
+                )}
+                aria-label="Qolgan vaqt"
+              >
+                {formatTime(remaining)}
+              </span>
+            ) : null}
+            <button
+              type="button"
+              disabled={isSubmitting}
+              onClick={() => void handleSubmit(false)}
+              className="btn btn-primary px-4 py-2.5 text-xs lg:text-sm"
+              aria-label="Testni yakunlash"
+            >
+              Yakunlash
+            </button>
           </div>
         </div>
 
-        <div className="hidden lg:block">
-          {remaining !== null ? <TimerWidget remaining={remaining} total={(data.test.duration_minutes || 0) * 60} /> : null}
-        </div>
-
-        <div className="flex items-center gap-2 lg:gap-3">
-          <span className="hidden text-sm font-bold text-text-secondary md:inline">
-            {answeredCount}/{totalQuestions} javob
+        <div className="flex items-center justify-between gap-2 px-4 pb-3 text-xs font-bold text-text-secondary lg:hidden">
+          <span className="status-pill status-pill-muted">
+            Savol {currentQuestion + 1}/{totalQuestions}
           </span>
-          <button
-            type="button"
-            disabled={isSubmitting}
-            onClick={() => void handleSubmit(false)}
-            className="btn btn-primary px-4 py-2.5 text-xs lg:text-sm"
-          >
-            Topshirish
-          </button>
+          <span className="status-pill status-pill-muted">
+            Javob {answeredCount}/{totalQuestions}
+          </span>
         </div>
       </header>
+
+      <ConfirmDialog
+        open={isFinishConfirmOpen}
+        title="Testni yakunlaysizmi?"
+        description="Javoblar yuboriladi. Yakunlagandan keyin qayta tahrirlab bo‘lmaydi."
+        confirmLabel="Yakunlash"
+        cancelLabel="Davom etish"
+        variant="danger"
+        isLoading={isSubmitting}
+        onCancel={() => setIsFinishConfirmOpen(false)}
+        onConfirm={() => {
+          setIsFinishConfirmOpen(false);
+          void submitNow();
+        }}
+      />
 
       <div className="flex flex-1 overflow-hidden">
         <aside className="hidden w-64 shrink-0 border-r border-border bg-card p-4 lg:block dark:bg-dark-card">

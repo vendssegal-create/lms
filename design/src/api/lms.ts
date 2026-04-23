@@ -393,6 +393,19 @@ export function markResourceCompleted(resourceId: number, payload: { time_spent_
   });
 }
 
+export function markSectionComplete(sectionId: number) {
+  return apiRequest<{
+    success: boolean;
+    section_id: number;
+    is_completed: boolean;
+    progress_percentage: number;
+    completed_sections: number;
+    total_sections: number;
+  }>(`/api/lms/sections/${sectionId}/complete/`, {
+    method: 'POST',
+  });
+}
+
 export function fetchResourceStats(resourceId: number) {
   return apiRequest<{
     success: boolean;

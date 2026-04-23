@@ -88,6 +88,22 @@ export default function CourseDetailPage() {
   const isStudent = currentRole === 'STUDENT';
   const isTeacher = currentRole === 'TEACHER' || currentRole === 'SUPER_ADMIN';
 
+  const handleSectionComplete = (sectionId: number, newProgressPct: number) => {
+    setData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        sections: prev.sections.map((s) =>
+          s.id === sectionId ? { ...s, is_completed: true } : s
+        ),
+        course: {
+          ...prev.course,
+          progress_percentage: newProgressPct,
+        },
+      };
+    });
+  };
+
   // Load implementation
   const load = async (active = true) => {
     setIsLoading(true);
@@ -466,6 +482,7 @@ export default function CourseDetailPage() {
                         onSubmitAssignment={handleSubmitAssignment}
                         onDeleteMeeting={handleDeleteMeeting}
                         uploadingAssignmentId={uploadingAssignmentId}
+                        onSectionComplete={isStudent ? handleSectionComplete : undefined}
                       />
                     ))}
                   </div>
@@ -551,17 +568,24 @@ export default function CourseDetailPage() {
            <div className="card p-6">
               {isStudent && (
                 <div className="flex flex-col items-center gap-4 mb-6 pb-6 border-b border-border/60 text-center">
-                   <ProgressRing 
+                   <ProgressRing
+                    key={progress.percentage}
                     percentage={progress.percentage} 
                     size={100} 
                     strokeWidth={8}
-                    color="primary"
+                    color={progress.percentage === 100 ? 'success' : 'primary'}
                    />
                    <div>
                      <p className="text-sm font-black text-text-primary">{progress.percentage}% tugatildi</p>
                      <p className="text-[11px] font-bold text-text-muted uppercase mt-1">
                        {progress.completed} / {progress.total} bo'lim
                      </p>
+                     {progress.percentage === 100 && (
+                       <div className="flex items-center justify-center gap-2 rounded-2xl bg-success/10 px-4 py-2 text-xs font-black text-success mt-3">
+                         <Award size={14} />
+                         Kurs tugatildi!
+                       </div>
+                     )}
                    </div>
                 </div>
               )}
@@ -879,6 +903,7 @@ function AssignmentRow({
   uploading: boolean,
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
 }) {
+  const [selectedFile, setSelectedFile] = useState<string>('');
   const deadlineDate = assignment.deadline ? new Date(assignment.deadline) : null;
   const now = new Date();
   const isPassed = deadlineDate ? deadlineDate < now : false;
@@ -925,10 +950,21 @@ function AssignmentRow({
              {!submission ? (
                <form className="grid gap-4 sm:grid-cols-2" onSubmit={onSubmit}>
                   <div className="relative group">
-                    <input name="file" type="file" required className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                    <input
+                      name="file"
+                      type="file"
+                      required
+                      onChange={(e) => setSelectedFile(e.target.files?.[0]?.name || '')}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    />
                     <div className="input flex items-center gap-2 group-hover:border-primary transition-colors py-3">
                        <Paperclip size={16} className="text-text-muted" />
-                       <span className="text-sm text-text-muted font-semibold truncate">Fayl tanlang...</span>
+                       <span className={cn(
+                         "text-sm font-semibold truncate",
+                         selectedFile ? "text-text-primary" : "text-text-muted"
+                       )}>
+                         {selectedFile || 'Fayl tanlang...'}
+                       </span>
                     </div>
                   </div>
                   <input name="comment" placeholder="Izoh (ixtiyoriy)" className="input py-3" />

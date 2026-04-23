@@ -15,6 +15,7 @@ from users.forms import PasswordChangeForm, UserProfileForm
 from users.models import SidebarMenu, SidebarMenuAccess, User
 from users.services import HemisOAuthError, login_student_via_bstu
 from users.utils.roles import Role, get_dashboard_url, get_role_label, get_user_role, get_user_roles
+from users.utils.hemis_helpers import get_snapshot_for_user
 
 
 def _json_body(request):
@@ -153,6 +154,10 @@ def _build_session_payload(request):
         from retake.utils.service_registrator_utils import get_service_registrator_faculties
 
         retake_assigned_faculties = get_service_registrator_faculties(request.user, request.session)
+    elif active_role == Role.RET_DB_MANAGER:
+        from retake.utils.db_manager_utils import get_db_manager_faculties
+
+        retake_assigned_faculties = get_db_manager_faculties(request.user, request.session)
 
     return {
         "authenticated": True,
@@ -328,6 +333,50 @@ def profile_view(request):
     if not request.user.is_authenticated:
         return JsonResponse({"error": "Autentifikatsiya talab qilinadi."}, status=401)
     return JsonResponse(_serialize_profile(request))
+
+
+@require_GET
+def me_api(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Autentifikatsiya talab qilinadi."}, status=401)
+
+    user = request.user
+    snapshot = get_snapshot_for_user(user)
+
+    data = {
+        "id": user.id,
+        "username": user.username,
+        "full_name": user.get_full_name() or user.username,
+        "role": get_user_role(user, request.session),
+        "email": user.email,
+    }
+
+    if snapshot:
+        data["hemis_profile"] = {
+            "hemis_student_id": snapshot.hemis_student_id,
+            "student_id_number": snapshot.student_id_number,
+            "full_name": snapshot.full_name,
+            "faculty_name": snapshot.faculty_name,
+            "group_name": snapshot.group_name,
+            "specialty_name": snapshot.specialty_name,
+            "semester_name": snapshot.semester_name,
+            "is_linked": True,
+        }
+    else:
+        data["hemis_profile"] = {
+            "is_linked": False,
+            "warning": "HEMIS profil bog'lanmagan. Qayta login qiling.",
+        }
+
+    if hasattr(user, "student_profile"):
+        sp = user.student_profile
+        data["student_profile"] = {
+            "university": sp.university,
+            "group_name": sp.group_name or (snapshot.group_name if snapshot else ""),
+            "faculty_name": sp.faculty_name or (snapshot.faculty_name if snapshot else ""),
+        }
+
+    return JsonResponse(data)
 
 
 @require_POST
