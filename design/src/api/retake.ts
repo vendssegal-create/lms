@@ -18,6 +18,9 @@ import {
   RetakeScheduleMutationResponse,
   RetakeSchedulesResponse,
   RetakeTeacherGroupsResponse,
+  RetakePendingStudentsResponse,
+  RetakeAssignStudentsResponse,
+  RetakeRemoveMemberResponse,
 } from '@/src/types';
 
 const RETAKE_APPLICATIONS_CACHE_PREFIX = 'retake:applications:';
@@ -437,6 +440,30 @@ export async function batchCreateAssessments(
   });
 }
 
+export function fetchPendingStudentsForGroup(groupId: number) {
+  return apiRequest<RetakePendingStudentsResponse>(
+    `/api/retake/subject-groups/${groupId}/pending-students/`,
+  );
+}
+
+export function assignStudentsToGroup(groupId: number, itemIds: number[]) {
+  return apiRequest<RetakeAssignStudentsResponse>(
+    `/api/retake/subject-groups/${groupId}/assign-students/`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ item_ids: itemIds }),
+    },
+  );
+}
+
+export function removeMemberFromGroup(groupId: number, membershipId: number) {
+  return apiRequest<RetakeRemoveMemberResponse>(
+    `/api/retake/subject-groups/${groupId}/remove-member/${membershipId}/`,
+    { method: 'POST' },
+  );
+}
+
 // ─── Teacher Enrollment API ──────────────────────────────────────
 
 export async function fetchTeacherEnrollment(groupId: number) {
@@ -452,4 +479,94 @@ export async function submitTeacherEnrollment(
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify(payload),
   });
+}
+
+// ─── MB menejer — fakultet biriktirish (SUPER_ADMIN / REGISTRATOR) ─
+
+export interface RetakeFacultyNamesResponse {
+  faculties: string[];
+}
+
+export interface RetakeDbManagerRow {
+  id: number;
+  username: string;
+  full_name: string;
+  email: string;
+  access_all_faculties: boolean;
+  faculty_names: string[];
+}
+
+export interface RetakeDbManagersFacultiesResponse {
+  managers: RetakeDbManagerRow[];
+}
+
+export function fetchRetakeFacultyNames() {
+  return apiRequest<RetakeFacultyNamesResponse>('/api/retake/admin/faculty-names/');
+}
+
+export function fetchRetakeDbManagersFaculties() {
+  return apiRequest<RetakeDbManagersFacultiesResponse>('/api/retake/admin/db-managers/faculties/');
+}
+
+export function saveRetakeDbManagerFaculties(payload: {
+  user_id: number;
+  access_all_faculties?: boolean;
+  access_all?: boolean;
+  faculty_names?: string[];
+}) {
+  return apiRequest<{ success: boolean }>('/api/retake/admin/db-managers/faculties/set/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(payload),
+  });
+}
+
+// ─── Grouping (DB_MANAGER) — v2 endpoints (fetch + CSRF) ──────────
+
+function getCsrf(): string {
+  const match = document.cookie.match(/csrftoken=([^;]+)/);
+  return match?.[1] ?? '';
+}
+
+export interface PendingStudent {
+  item_id: number;
+  student_name: string;
+  student_id: string;
+  hemis_group: string;
+  faculty: string;
+  required_control_type: string;
+}
+
+export async function fetchGroupPendingStudents(groupId: number) {
+  const res = await fetch(`/api/retake/subject-groups/${groupId}/pending-students/`, {
+    credentials: 'include',
+    headers: { Accept: 'application/json' },
+  });
+  if (!res.ok) throw new Error('Pending students yuklanmadi');
+  return res.json() as Promise<{
+    pending_count: number;
+    by_hemis_group: { hemis_group: string; students: PendingStudent[] }[];
+  }>;
+}
+
+export async function autoAssignGroupStudents(groupId: number) {
+  const res = await fetch(`/api/retake/subject-groups/${groupId}/auto-assign/`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'X-CSRFToken': getCsrf(), 'Content-Type': 'application/json' },
+    body: '{}',
+  });
+  if (!res.ok) throw new Error('Auto-biriktirish xatosi');
+  return res.json() as Promise<{ success: boolean; assigned_count: number; message: string }>;
+}
+
+export async function removeGroupMember(groupId: number, membershipId: number) {
+  const res = await fetch(`/api/retake/subject-groups/${groupId}/remove-member/`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'X-CSRFToken': getCsrf(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ membership_id: membershipId }),
+  });
+  if (!res.ok) throw new Error("O'chirish xatosi");
+  return res.json() as Promise<{ success: boolean }>;
 }

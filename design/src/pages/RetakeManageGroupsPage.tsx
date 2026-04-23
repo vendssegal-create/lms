@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Save, Trash2, Users, ChevronRight } from 'lucide-react';
-import { createRetakeGroup, deleteRetakeGroup, fetchRetakeGroups, updateRetakeGroup } from '@/src/api/retake';
+import { autoAssignGroupStudents, createRetakeGroup, deleteRetakeGroup, fetchRetakeGroups, updateRetakeGroup } from '@/src/api/retake';
 import type { RetakeGroupManageItem, RetakeGroupsResponse } from '@/src/types';
 
 export default function RetakeManageGroupsPage() {
+  const navigate = useNavigate();
   const [data, setData] = useState<RetakeGroupsResponse | null>(null);
   const [selected, setSelected] = useState<RetakeGroupManageItem | null>(null);
   const [createForm, setCreateForm] = useState({ subject_id: 0, code: '', teacher_id: 0, capacity: 25 });
@@ -12,6 +13,27 @@ export default function RetakeManageGroupsPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  async function handleQuickCreate(ps: { subject_id: number; subject_name: string; subject_code: string }) {
+    setError(null);
+    setSuccess(null);
+    const autoCode = `${ps.subject_code || ps.subject_name.substring(0, 8).toUpperCase().replace(/\s+/g, '-')}-${new Date().getFullYear()}`;
+    try {
+      const res = await createRetakeGroup({
+        subject_id: ps.subject_id,
+        code: autoCode,
+        teacher_id: null,
+        capacity: 30,
+      });
+      if (res.group) {
+        await autoAssignGroupStudents(res.group.id);
+        setSuccess(`"${ps.subject_name}" fan guruhi yaratildi va talabalar biriktirildi.`);
+        navigate(`/retake/groups/${res.group.id}`);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Xatolik');
+    }
+  }
 
   async function load() {
     setIsLoading(true);
@@ -163,6 +185,41 @@ export default function RetakeManageGroupsPage() {
               <h3 className="text-lg font-black text-text-primary">Yangi guruh</h3>
             </div>
             <div className="mt-4 space-y-4">
+              <div className="overflow-hidden rounded-[24px] border border-border/60">
+                <div className="border-b border-border/50 bg-slate-50 px-5 py-3 text-xs font-black uppercase tracking-[0.2em] text-text-muted">
+                  Pending subjects
+                </div>
+                <div className="divide-y divide-border/40">
+                  {data?.pending_subjects.map((ps) => {
+                    const existingGroup = data.groups.find((g) => g.subject.id === ps.subject_id);
+                    return (
+                      <div
+                        key={ps.subject_id}
+                        className="flex items-center justify-between px-5 py-3.5 border-b border-border/40 last:border-0 hover:bg-slate-50/50"
+                      >
+                        <div>
+                          <p className="font-bold text-text-primary text-sm">{ps.subject_name}</p>
+                          <p className="text-xs text-text-muted">
+                            {ps.subject_code} • {ps.items_count} ta talaba tayyor
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {existingGroup ? (
+                            <Link to={`/retake/groups/${existingGroup.id}`} className="btn btn-outline text-xs h-8 px-3 gap-1.5">
+                              <ChevronRight size={13} /> Guruhga o'tish
+                            </Link>
+                          ) : (
+                            <button onClick={() => void handleQuickCreate(ps)} className="btn btn-primary text-xs h-8 px-3 gap-1.5">
+                              <Plus size={13} /> Guruh yaratish
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
               <select value={createForm.subject_id} onChange={(e) => setCreateForm((c) => ({ ...c, subject_id: Number(e.target.value) }))} className="input">
                 <option value={0}>Fan tanlang</option>
                 {data?.pending_subjects.map((subject) => (

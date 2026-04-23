@@ -12,6 +12,7 @@ from ..models import (
 from hemis.models import HemisStudentSnapshot, HemisStudentDebt
 from hemis.services import RetakeHemisSyncService
 from users.utils.roles import Role, get_user_role, role_required
+from users.utils.hemis_helpers import get_snapshot_for_user
 
 def log_workflow_event(application, action, from_status, to_status, actor, comment=""):
     WorkflowEvent.objects.create(
@@ -188,7 +189,11 @@ def application_list(request):
     elif role == Role.RET_SUPERVISOR:
         queryset = queryset.filter(status=RetakeApplicationStatus.PARTIALLY_APPROVED)
     elif role == Role.STUDENT:
-        queryset = queryset.filter(student_snapshot__hemis_student_id=request.user.student_profile.hemis_id if hasattr(request.user, 'student_profile') else 0)
+        snapshot = get_snapshot_for_user(request.user)
+        if snapshot:
+            queryset = queryset.filter(student_snapshot=snapshot)
+        else:
+            queryset = queryset.none()
     
     # Search filter
     q = request.GET.get('q', '').strip()

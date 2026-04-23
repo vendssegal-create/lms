@@ -97,7 +97,7 @@ export default function ExamSheetTable({
     });
   };
 
-  const hasDirty = Object.values(edits).some((e) => e.dirty);
+  const hasDirty = (Object.values(edits) as EntryEdit[]).some((e) => e.dirty);
   const effective = maxScore ?? entries[0]?.max_score ?? 100;
 
   return (

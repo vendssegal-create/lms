@@ -1238,6 +1238,32 @@ export interface RetakeExamSheetResponse {
   entries: RetakeExamSheetEntry[];
 }
 
+export interface RetakePendingStudentItem {
+  item_id: number;
+  student_id: number;
+  full_name: string;
+  student_id_number: string;
+  group_name: string;
+  faculty_name: string;
+  required_control_type: string;
+}
+
+export interface RetakePendingStudentsResponse {
+  items: RetakePendingStudentItem[];
+  total_count: number;
+}
+
+export interface RetakeAssignStudentsResponse {
+  success: boolean;
+  assigned_count: number;
+  message: string;
+}
+
+export interface RetakeRemoveMemberResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface RetakeCycleManageItem extends RetakeCycleSummary {
   applications_count: number;
   groups_count: number;
@@ -1296,6 +1322,10 @@ export interface RetakeGroupsResponse {
     subject_code: string;
     items_count: number;
   }>;
+  /** MB menejer uchun biriktirilgan fakultet nomlari */
+  assigned_faculties?: string[];
+  /** MB menejer uchun barcha fakultetlar rejimi */
+  assigned_faculties_all?: boolean;
 }
 
 export interface RetakeGroupMutationResponse {

@@ -95,6 +95,11 @@ export default function SuperAdminPage() {
       label: 'Talaba yaratish',
       icon: <GraduationCap size={18} className="text-primary" />,
     },
+    {
+      to: '/retake/admin/db-managers/faculties',
+      label: 'MB menejerlar — fakultetlar',
+      icon: <Shield size={18} className="text-primary" />,
+    },
   ];
 
   const dynamicLinks = (session.navigation || []).map((item) => ({

@@ -3,6 +3,7 @@ import { LoaderCircle } from 'lucide-react';
 import { Navigate, Route, Routes, useParams } from 'react-router-dom';
 import { AppShell } from '@/src/components/layout/app-shell';
 import { ProtectedRoute } from '@/src/components/layout/route-guard';
+import { legacySpaRedirectRoutes } from '@/src/app/legacySpaRedirects';
 
 const CoursesPage = lazy(() => import('@/src/pages/CoursesPage'));
 const CourseDetailPage = lazy(() => import('@/src/pages/CourseDetailPage'));
@@ -38,6 +39,7 @@ const RetakeDashboard = lazy(() => import('@/src/pages/RetakeDashboard'));
 const RetakeSearchStudentPage = lazy(() => import('@/src/pages/RetakeSearchStudentPage'));
 const RetakeStudentDebtsPage = lazy(() => import('@/src/pages/RetakeStudentDebtsPage'));
 const RetakeSyncPage = lazy(() => import('@/src/pages/RetakeSyncPage'));
+const RetakeDbManagerFacultiesPage = lazy(() => import('@/src/pages/RetakeDbManagerFacultiesPage'));
 const AdminDashboardPage = lazy(() => import('@/src/pages/AdminDashboardPage'));
 const AdminCreateTeacherPage = lazy(() => import('@/src/pages/AdminCreateTeacherPage'));
 const AdminCreateStudentPage = lazy(() => import('@/src/pages/AdminCreateStudentPage'));
@@ -134,6 +136,7 @@ export function AppRouter() {
             <Route path="/retake/search-student" element={<RetakeSearchStudentPage />} />
             <Route path="/retake/students/:studentId/debts" element={<RetakeStudentDebtsPage />} />
             <Route path="/retake/sync" element={<RetakeSyncPage />} />
+            <Route path="/retake/admin/db-managers/faculties" element={<RetakeDbManagerFacultiesPage />} />
             <Route path="/retake/teacher/groups" element={<RetakeTeacherGroupsPage />} />
             <Route path="/retake/exam-sheets/:sheetId" element={<RetakeExamSheetPage />} />
             <Route path="/retake/cycles" element={<RetakeCyclesPage />} />
@@ -162,7 +165,10 @@ export function AppRouter() {
             <Route path="/forum/topics/:topicId" element={<ForumTopicPage />} />
             <Route path="/courses/:courseId/gradebook" element={<TeacherGradebookPage />} />
 
-            {/* Backward-compatible aliases for old server-side URLs */}
+            {/* Legacy (__legacy) → SPA: mos keladiganlar iframe siz */}
+            {legacySpaRedirectRoutes}
+
+            {/* Backward-compatible aliases for old server-side URLs (/__legacy emas) */}
             <Route path="/legacy/*" element={<LegacyFramePage />} />
             <Route path="/lms/admin-dashboard/" element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="/lms/admin/teachers/create/" element={<Navigate to="/admin/teachers/create" replace />} />

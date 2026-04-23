@@ -79,6 +79,7 @@ from users.utils.roles import (
 )
 from users.models import TeacherProfile, StudentProfile, User
 from retake.models import RetakeApplication, RetakeApplicationItem, RetakeItemStatus
+from users.utils.hemis_helpers import get_snapshot_for_user
 
 
 def _iso(value):
@@ -703,6 +704,36 @@ def resource_mark_completed(request, resource_id: int):
     rv.time_spent_seconds = max(0, rv.time_spent_seconds + time_spent)
     rv.save(update_fields=["is_completed", "completed_at", "time_spent_seconds", "last_viewed_at"])
     return JsonResponse({"success": True, "completed_at": _iso(rv.completed_at)})
+
+
+@require_POST
+def section_mark_complete(request, section_id: int):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Autentifikatsiya talab qilinadi."}, status=401)
+
+    section = get_object_or_404(Section.objects.select_related("course"), id=section_id)
+
+    if not Enrollment.objects.filter(course=section.course, student=request.user).exists():
+        return JsonResponse({"error": "Bu kursga ro'yxatdan o'tilmagan."}, status=403)
+
+    SectionCompletion.objects.get_or_create(student=request.user, section=section)
+
+    course = section.course
+    total_sections = course.sections.count()
+    completed_count = SectionCompletion.objects.filter(
+        student=request.user,
+        section__course=course,
+    ).count()
+    progress_percentage = int((completed_count / total_sections) * 100) if total_sections else 0
+
+    return JsonResponse({
+        "success": True,
+        "section_id": section_id,
+        "is_completed": True,
+        "progress_percentage": progress_percentage,
+        "completed_sections": completed_count,
+        "total_sections": total_sections,
+    })
 
 
 @require_GET
@@ -2948,14 +2979,9 @@ def student_grades(request):
     retake_items = []
     try:
         from retake.models import ExamSheetEntry, ExamSheetStatus
-        from hemis.models import HemisStudentSnapshot
 
-        student_profile = getattr(request.user, "student_profile", None)
-        snapshot_ids = []
-        if student_profile and student_profile.student_id_number:
-            snapshot_ids = list(HemisStudentSnapshot.objects.filter(
-                student_id_number=student_profile.student_id_number
-            ).values_list("id", flat=True))
+        snapshot = get_snapshot_for_user(request.user)
+        snapshot_ids = [snapshot.id] if snapshot else []
 
         retake_entries = ExamSheetEntry.objects.filter(
             student_snapshot_id__in=snapshot_ids

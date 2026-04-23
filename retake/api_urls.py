@@ -39,7 +39,43 @@ urlpatterns = [
     path("subject-groups/<int:group_id>/student-groups/", api_views.group_student_groups, name="api_group_student_groups"),
     path("subject-groups/<int:group_id>/assessments/", api_views.create_assessment, name="api_create_assessment"),
     path("subject-groups/<int:group_id>/assessments/batch/", api_views.batch_create_assessments, name="api_batch_create_assessments"),
+    path(
+        "subject-groups/<int:group_id>/pending-students/",
+        api_views.pending_students_for_group,
+        name="api_pending_students_for_group"
+    ),
+    path(
+        "subject-groups/<int:group_id>/assign-students/",
+        api_views.assign_students_to_group,
+        name="api_assign_students_to_group"
+    ),
+    path(
+        "subject-groups/<int:group_id>/remove-member/<int:membership_id>/",
+        api_views.remove_member_from_group,
+        name="api_remove_member_from_group"
+    ),
+    # Grouping (DB_MANAGER) — v2 endpoints
+    path(
+        "subject-groups/<int:group_id>/pending-students/",
+        api_views.group_pending_students,
+        name="api_group_pending_students"
+    ),
+    path(
+        "subject-groups/<int:group_id>/auto-assign/",
+        api_views.group_auto_assign,
+        name="api_group_auto_assign"
+    ),
+    path(
+        "subject-groups/<int:group_id>/remove-member/",
+        api_views.group_remove_member,
+        name="api_group_remove_member"
+    ),
 
     # Teacher enrollment API
     path("groups/<int:group_id>/enrollment/", api_views.teacher_course_enrollment, name="api_teacher_course_enrollment"),
+
+    # MB menejer — fakultet biriktirish (SUPER_ADMIN / REGISTRATOR)
+    path("admin/faculty-names/", api_views.admin_retake_faculty_names, name="api_admin_retake_faculty_names"),
+    path("admin/db-managers/faculties/", api_views.admin_db_managers_faculties, name="api_admin_db_managers_faculties"),
+    path("admin/db-managers/faculties/set/", api_views.admin_db_managers_faculties_set, name="api_admin_db_managers_faculties_set"),
 ]

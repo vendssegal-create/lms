@@ -33,6 +33,7 @@ urlpatterns = [
     path("teacher/sections/<int:section_id>/resources/reorder/", api_views.teacher_resources_reorder, name="api_teacher_resources_reorder"),
     path("resources/<int:resource_id>/viewed/", api_views.resource_mark_viewed, name="api_resource_viewed"),
     path("resources/<int:resource_id>/complete/", api_views.resource_mark_completed, name="api_resource_complete"),
+    path("sections/<int:section_id>/complete/", api_views.section_mark_complete, name="api_section_complete"),
     path("resources/<int:resource_id>/chapters/<int:chapter_id>/", api_views.resource_book_chapter, name="api_book_chapter"),
     path("teacher/resources/<int:resource_id>/chapters/save/", api_views.teacher_book_chapter_save, name="api_teacher_book_chapter_save"),
     path("teacher/resources/<int:resource_id>/chapters/<int:chapter_id>/delete/", api_views.teacher_book_chapter_delete, name="api_teacher_book_chapter_delete"),

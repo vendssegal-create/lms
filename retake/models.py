@@ -307,7 +307,8 @@ class DBManagerFacultyAssignment(models.Model):
     )
     faculty_name = models.CharField(
         max_length=255,
-        help_text="HemisStudentSnapshot.faculty_name bilan mos kelishi kerak"
+        help_text="HemisStudentSnapshot.faculty_name bilan mos kelishi kerak. "
+        "Maxsus qiymat: __ALL__ — barcha fakultetlar (bitta qator sifatida).",
     )
     assigned_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,

@@ -245,6 +245,15 @@ class HemisOAuthService:
         return data
 
 def login_student_via_bstu(username: str, password: str) -> User:
+    """
+    BSTU (HEMIS Student API) orqali talabani autentifikatsiya qiladi.
+    - Student API dan ma'lumot oladi
+    - User va StudentProfile yaratadi yoki yangilaydi
+    - HemisStudentSnapshot bilan bog'laydi (agar mavjud bo'lsa)
+    - Snapshot mavjud bo'lmasa — yangisini yaratadi
+    """
+    from hemis.models import HemisStudentSnapshot
+
     login_url = "https://student.bstu.uz/rest/v1/auth/login"
     login_data = {"login": username, "password": password}
 
@@ -252,37 +261,43 @@ def login_student_via_bstu(username: str, password: str) -> User:
         login_response = requests.post(login_url, json=login_data, timeout=15)
         if login_response.status_code != 200:
             raise HemisOAuthError("Login yoki parol noto'g'ri (Student API).")
-        
+
         access_token = login_response.json().get("data", {}).get("token")
         if not access_token:
             raise HemisOAuthError("Javobda token topilmadi.")
 
         me_response = requests.get(
-            "https://student.bstu.uz/rest/v1/account/me", 
+            "https://student.bstu.uz/rest/v1/account/me",
             headers={"Authorization": f"Bearer {access_token}"},
-            timeout=15
+            timeout=15,
         )
         if me_response.status_code != 200:
             raise HemisOAuthError(f"Talaba ma'lumotlarini olishda xatolik: {me_response.text}")
-            
+
         me_data = me_response.json().get("data", {})
-        
+
+        # HEMIS internal ID — snapshot bilan ulanish uchun kalit
+        hemis_student_id = me_data.get("id")  # HEMIS dagi raqamli ID
+
         with transaction.atomic():
+            # 1. User yaratish yoki yangilash
             user, _ = User.objects.get_or_create(username=username)
-            user.first_name = me_data.get("full_name", username)
+            full_name = me_data.get("full_name", "") or username
+            first_name, _, last_name = full_name.partition(" ")
+            user.first_name = first_name
+            user.last_name = last_name
             user.role = User.Role.STUDENT
             user.is_active = True
-            user.save() # sets is_staff=False automatically
+            user.save()
 
             group, _ = Group.objects.get_or_create(name="Student")
             user.groups.add(group)
 
+            # 2. StudentProfile yaratish yoki yangilash
             profile, _ = StudentProfile.objects.get_or_create(user=user)
-            profile.full_name = me_data.get("full_name", "") or username
+            profile.full_name = full_name
             profile.student_id_number = username
             profile.university = me_data.get("university", "") or "BSTU"
-            
-            # Map detailed fields
             profile.faculty_name = (me_data.get("faculty") or {}).get("name", "")
             profile.group_name = (me_data.get("group") or {}).get("name", "")
             profile.specialty_name = (me_data.get("specialty") or {}).get("name", "")
@@ -299,14 +314,50 @@ def login_student_via_bstu(username: str, password: str) -> User:
             profile.social_category = (me_data.get("socialCategory") or {}).get("name", "")
             profile.accommodation = (me_data.get("accommodation") or {}).get("name", "")
             profile.bstu_token = access_token
-            
-            # Handle birth date
+
             birth_date_raw = me_data.get("birth_date")
             if birth_date_raw and isinstance(birth_date_raw, (int, float)):
                 profile.birth_date = datetime.fromtimestamp(birth_date_raw, tz=timezone.utc).date()
-            
+
+            # 3. HemisStudentSnapshot bilan bog'lash (ASOSIY YANGILIK)
+            if hemis_student_id:
+                profile.hemis_student_id = hemis_student_id
+
+                # Avval mavjud snapshot ni izlash
+                snapshot = HemisStudentSnapshot.objects.filter(hemis_student_id=hemis_student_id).first()
+
+                # Agar topilmasa — student_id_number orqali izlash
+                if not snapshot:
+                    snapshot = HemisStudentSnapshot.objects.filter(student_id_number=username).first()
+
+                # Agar hali ham topilmasa — yangi snapshot yaratish
+                if not snapshot:
+                    snapshot = HemisStudentSnapshot.objects.create(
+                        hemis_student_id=hemis_student_id,
+                        student_id_number=username,
+                        full_name=full_name,
+                        faculty_name=profile.faculty_name,
+                        specialty_name=profile.specialty_name,
+                        group_name=profile.group_name,
+                        raw_payload=me_data,
+                    )
+                else:
+                    # Mavjud snapshotni yangilash
+                    snapshot.full_name = full_name
+                    snapshot.faculty_name = profile.faculty_name
+                    snapshot.specialty_name = profile.specialty_name
+                    snapshot.group_name = profile.group_name
+                    snapshot.student_id_number = username
+                    if hemis_student_id and not snapshot.hemis_student_id:
+                        snapshot.hemis_student_id = hemis_student_id
+                    snapshot.raw_payload = me_data
+                    snapshot.save()
+
+                profile.hemis_snapshot = snapshot
+
             profile.save()
 
         return user
+
     except requests.RequestException as exc:
         raise HemisOAuthError(f"Student API so'roviga ulanib bo'lmadi: {exc}")
