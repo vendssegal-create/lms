@@ -42,4 +42,9 @@ urlpatterns = [
 
     # Teacher enrollment API
     path("groups/<int:group_id>/enrollment/", api_views.teacher_course_enrollment, name="api_teacher_course_enrollment"),
+
+    # Fan guruhi — talabalarni biriktirish (DB_MANAGER)
+    path("subject-groups/<int:group_id>/pending-students/", api_views.group_pending_students, name="api_group_pending_students"),
+    path("subject-groups/<int:group_id>/auto-assign/", api_views.group_auto_assign, name="api_group_auto_assign"),
+    path("subject-groups/<int:group_id>/remove-member/", api_views.group_remove_member, name="api_group_remove_member"),
 ]

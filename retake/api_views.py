@@ -2421,3 +2421,135 @@ def teacher_course_enrollment(request, group_id):
         return JsonResponse({'error': 'Biriktirish xatolik'}, status=500)
 
     return JsonResponse({'error': 'Noto\'g\'ri action'}, status=400)
+
+
+# ──────────────────────────────────────────────────────────────────
+# Fan guruhi — talabalarni biriktirish (DB_MANAGER)
+# ──────────────────────────────────────────────────────────────────
+
+@login_required
+@require_GET
+def group_pending_students(request, group_id):
+    """Shu fan guruhiga tegishli, hali biriktirilmagan tayyor talabalar."""
+    role = get_user_role(request.user, request.session)
+    if role not in GROUP_MANAGE_ROLES:
+        return JsonResponse({'error': "Ruxsat yo'q"}, status=403)
+
+    group = get_object_or_404(
+        RetakeSubjectGroup.objects.select_related('subject_snapshot', 'cycle'),
+        id=group_id
+    )
+
+    pending = (
+        RetakeApplicationItem.objects
+        .filter(
+            subject_snapshot=group.subject_snapshot,
+            application__cycle=group.cycle,
+            status=RetakeItemStatus.APPROVED_FOR_GROUPING,
+        )
+        .select_related('application__student_snapshot')
+        .exclude(group_membership__isnull=False)
+        .order_by(
+            'application__student_snapshot__group_name',
+            'application__student_snapshot__full_name',
+        )
+    )
+
+    result = []
+    for item in pending:
+        student = item.application.student_snapshot
+        result.append({
+            'item_id': item.id,
+            'student_name': student.full_name,
+            'student_id': student.student_id_number,
+            'hemis_group': student.group_name or "Noma'lum",
+            'faculty': student.faculty_name,
+            'required_control_type': item.required_control_type,
+        })
+
+    by_hemis_group = {}
+    for r in result:
+        g = r['hemis_group']
+        by_hemis_group.setdefault(g, []).append(r)
+
+    return JsonResponse({
+        'pending_count': len(result),
+        'by_hemis_group': [
+            {'hemis_group': g, 'students': students}
+            for g, students in sorted(by_hemis_group.items())
+        ],
+    })
+
+
+@login_required
+@require_POST
+def group_auto_assign(request, group_id):
+    """Shu fan guruhiga tegishli barcha tayyor talabalarni avtomatik biriktirish."""
+    role = get_user_role(request.user, request.session)
+    if role not in GROUP_MANAGE_ROLES:
+        return JsonResponse({'error': "Ruxsat yo'q"}, status=403)
+
+    group = get_object_or_404(
+        RetakeSubjectGroup.objects.select_related('subject_snapshot', 'cycle'),
+        id=group_id
+    )
+
+    pending = (
+        RetakeApplicationItem.objects
+        .filter(
+            subject_snapshot=group.subject_snapshot,
+            application__cycle=group.cycle,
+            status=RetakeItemStatus.APPROVED_FOR_GROUPING,
+        )
+        .select_related('application__student_snapshot')
+        .exclude(group_membership__isnull=False)
+    )
+
+    assigned = 0
+    with transaction.atomic():
+        for item in pending:
+            RetakeGroupMembership.objects.create(
+                group=group,
+                application_item=item,
+                student_snapshot=item.application.student_snapshot,
+                required_control_type=item.required_control_type,
+            )
+            item.status = RetakeItemStatus.GROUPED
+            item.save(update_fields=['status', 'updated_at'])
+            assigned += 1
+
+    return JsonResponse({
+        'success': True,
+        'assigned_count': assigned,
+        'message': f"{assigned} ta talaba guruhga biriktirildi.",
+    })
+
+
+@login_required
+@require_POST
+def group_remove_member(request, group_id):
+    """Talabani fan guruhidan chiqarish — status APPROVED_FOR_GROUPING ga qaytadi."""
+    role = get_user_role(request.user, request.session)
+    if role not in GROUP_MANAGE_ROLES:
+        return JsonResponse({'error': "Ruxsat yo'q"}, status=403)
+
+    group = get_object_or_404(RetakeSubjectGroup, id=group_id)
+    payload = _json_body(request)
+    membership_id = payload.get('membership_id')
+
+    if not membership_id:
+        return JsonResponse({'error': 'membership_id kiritilmagan'}, status=400)
+
+    membership = get_object_or_404(
+        RetakeGroupMembership.objects.select_related('application_item'),
+        id=membership_id,
+        group=group,
+    )
+
+    with transaction.atomic():
+        item = membership.application_item
+        membership.delete()
+        item.status = RetakeItemStatus.APPROVED_FOR_GROUPING
+        item.save(update_fields=['status', 'updated_at'])
+
+    return JsonResponse({'success': True})

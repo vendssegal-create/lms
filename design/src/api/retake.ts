@@ -437,6 +437,51 @@ export async function batchCreateAssessments(
   });
 }
 
+// ─── Fan guruhi — Talabalarni biriktirish (DB_MANAGER) ──────────
+
+export interface PendingStudent {
+  item_id: number;
+  student_name: string;
+  student_id: string;
+  hemis_group: string;
+  faculty: string;
+  required_control_type: string;
+}
+
+export interface PendingStudentsResponse {
+  pending_count: number;
+  by_hemis_group: { hemis_group: string; students: PendingStudent[] }[];
+}
+
+export async function fetchGroupPendingStudents(groupId: number): Promise<PendingStudentsResponse> {
+  return apiRequest<PendingStudentsResponse>(
+    `/api/retake/subject-groups/${groupId}/pending-students/`,
+  );
+}
+
+export async function autoAssignGroupStudents(
+  groupId: number,
+): Promise<{ success: boolean; assigned_count: number; message: string }> {
+  return apiRequest<{ success: boolean; assigned_count: number; message: string }>(
+    `/api/retake/subject-groups/${groupId}/auto-assign/`,
+    { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: '{}' },
+  );
+}
+
+export async function removeGroupMember(
+  groupId: number,
+  membershipId: number,
+): Promise<{ success: boolean }> {
+  return apiRequest<{ success: boolean }>(
+    `/api/retake/subject-groups/${groupId}/remove-member/`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ membership_id: membershipId }),
+    },
+  );
+}
+
 // ─── Teacher Enrollment API ──────────────────────────────────────
 
 export async function fetchTeacherEnrollment(groupId: number) {

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Plus, Save, Trash2, Users, ChevronRight } from 'lucide-react';
-import { createRetakeGroup, deleteRetakeGroup, fetchRetakeGroups, updateRetakeGroup } from '@/src/api/retake';
+import { Link, useNavigate } from 'react-router-dom';
+import { Plus, Save, Trash2, Users, ChevronRight, Zap } from 'lucide-react';
+import { createRetakeGroup, deleteRetakeGroup, fetchRetakeGroups, updateRetakeGroup, autoAssignGroupStudents } from '@/src/api/retake';
 import type { RetakeGroupManageItem, RetakeGroupsResponse } from '@/src/types';
 
 export default function RetakeManageGroupsPage() {
+  const navigate = useNavigate();
   const [data, setData] = useState<RetakeGroupsResponse | null>(null);
   const [selected, setSelected] = useState<RetakeGroupManageItem | null>(null);
   const [createForm, setCreateForm] = useState({ subject_id: 0, code: '', teacher_id: 0, capacity: 25 });
@@ -12,6 +13,7 @@ export default function RetakeManageGroupsPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [quickCreating, setQuickCreating] = useState<number | null>(null);
 
   async function load() {
     setIsLoading(true);
@@ -82,6 +84,29 @@ export default function RetakeManageGroupsPage() {
       setSuccess('Guruh yangilandi.');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Guruh yangilanmadi.');
+    }
+  }
+
+  async function handleQuickCreate(ps: { subject_id: number; subject_name: string; subject_code: string }) {
+    setError(null);
+    setSuccess(null);
+    setQuickCreating(ps.subject_id);
+    const autoCode = `${(ps.subject_code || ps.subject_name).substring(0, 8).toUpperCase().replace(/\s+/g, '-')}-${new Date().getFullYear()}`;
+    try {
+      const res = await createRetakeGroup({
+        subject_id: ps.subject_id,
+        code: autoCode,
+        teacher_id: null,
+        capacity: 30,
+      });
+      if (res.group) {
+        await autoAssignGroupStudents(res.group.id);
+        navigate(`/retake/groups/${res.group.id}`);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Guruh yaratilmadi.');
+    } finally {
+      setQuickCreating(null);
     }
   }
 
@@ -169,6 +194,50 @@ export default function RetakeManageGroupsPage() {
                   <option key={subject.subject_id} value={subject.subject_id}>{subject.subject_name} ({subject.items_count})</option>
                 ))}
               </select>
+
+              {/* Pending subjects — quick create */}
+              {data?.pending_subjects && data.pending_subjects.length > 0 && (
+                <div className="rounded-2xl border border-amber-200 bg-amber-50/50 overflow-hidden">
+                  <p className="px-4 py-2.5 text-xs font-black text-amber-800 uppercase tracking-wider border-b border-amber-200">
+                    Guruhga biriktirilmagan fanlar ({data.pending_subjects.length})
+                  </p>
+                  <div className="divide-y divide-amber-100">
+                    {data.pending_subjects.map(ps => {
+                      const existingGroup = data.groups.find(g => g.subject.id === ps.subject_id);
+                      const isCreating = quickCreating === ps.subject_id;
+                      return (
+                        <div key={ps.subject_id} className="flex items-center justify-between px-4 py-3">
+                          <div>
+                            <p className="font-bold text-text-primary text-sm">{ps.subject_name}</p>
+                            <p className="text-xs text-text-muted">{ps.items_count} ta talaba tayyor</p>
+                          </div>
+                          {existingGroup ? (
+                            <Link
+                              to={`/retake/groups/${existingGroup.id}`}
+                              className="inline-flex items-center gap-1 rounded-xl border border-border px-3 py-1.5 text-xs font-bold text-text-muted hover:text-primary hover:border-primary/30 transition-colors"
+                            >
+                              Ko'rish <ChevronRight size={12} />
+                            </Link>
+                          ) : (
+                            <button
+                              onClick={() => void handleQuickCreate({ subject_id: ps.subject_id, subject_name: ps.subject_name, subject_code: ps.subject_code || '' })}
+                              disabled={isCreating}
+                              className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60"
+                            >
+                              {isCreating ? (
+                                <span className="animate-spin inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full" />
+                              ) : (
+                                <Zap size={12} />
+                              )}
+                              Guruh yaratish
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
               <input value={createForm.code} onChange={(e) => setCreateForm((c) => ({ ...c, code: e.target.value }))} className="input" placeholder="Group code" />
               <select value={createForm.teacher_id} onChange={(e) => setCreateForm((c) => ({ ...c, teacher_id: Number(e.target.value) }))} className="input">
                 <option value={0}>Teacher tanlanmagan</option>
