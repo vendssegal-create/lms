@@ -83,6 +83,18 @@ class StudentProfile(models.Model):
     
     # HEMIS data
     bstu_token = models.CharField(max_length=255, default="", blank=True)
+    hemis_student_id = models.BigIntegerField(
+        null=True, blank=True, unique=True,
+        help_text="HEMIS ichki talaba ID (HemisStudentSnapshot.hemis_student_id bilan mos)"
+    )
+    hemis_snapshot = models.OneToOneField(
+        'hemis.HemisStudentSnapshot',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='student_profile',
+        help_text="HEMIS snapshot bilan to'g'ridan-to'g'ri bog'liq"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

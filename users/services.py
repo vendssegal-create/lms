@@ -245,6 +245,12 @@ class HemisOAuthService:
         return data
 
 def login_student_via_bstu(username: str, password: str) -> User:
+    """
+    BSTU Student API orqali talabani autentifikatsiya qiladi.
+    Login muvaffaqiyatli bo'lsa HemisStudentSnapshot bilan bog'laydi.
+    """
+    from hemis.models import HemisStudentSnapshot
+
     login_url = "https://student.bstu.uz/rest/v1/auth/login"
     login_data = {"login": username, "password": password}
 
@@ -252,37 +258,49 @@ def login_student_via_bstu(username: str, password: str) -> User:
         login_response = requests.post(login_url, json=login_data, timeout=15)
         if login_response.status_code != 200:
             raise HemisOAuthError("Login yoki parol noto'g'ri (Student API).")
-        
+
         access_token = login_response.json().get("data", {}).get("token")
         if not access_token:
             raise HemisOAuthError("Javobda token topilmadi.")
 
         me_response = requests.get(
-            "https://student.bstu.uz/rest/v1/account/me", 
+            "https://student.bstu.uz/rest/v1/account/me",
             headers={"Authorization": f"Bearer {access_token}"},
             timeout=15
         )
         if me_response.status_code != 200:
             raise HemisOAuthError(f"Talaba ma'lumotlarini olishda xatolik: {me_response.text}")
-            
+
         me_data = me_response.json().get("data", {})
-        
+
+        # HEMIS internal ID — snapshot bilan ulanish uchun kalit
+        hemis_student_id = me_data.get("id") or me_data.get("student_id") or me_data.get("hemis_id")
+        if hemis_student_id:
+            try:
+                hemis_student_id = int(hemis_student_id)
+            except (ValueError, TypeError):
+                hemis_student_id = None
+
+        full_name = me_data.get("full_name", "") or username
+
         with transaction.atomic():
+            # User yaratish yoki yangilash
             user, _ = User.objects.get_or_create(username=username)
-            user.first_name = me_data.get("full_name", username)
+            name_parts = full_name.split()
+            user.first_name = name_parts[0] if name_parts else full_name
+            user.last_name = " ".join(name_parts[1:]) if len(name_parts) > 1 else ""
             user.role = User.Role.STUDENT
             user.is_active = True
-            user.save() # sets is_staff=False automatically
+            user.save()
 
             group, _ = Group.objects.get_or_create(name="Student")
             user.groups.add(group)
 
+            # StudentProfile yaratish yoki yangilash
             profile, _ = StudentProfile.objects.get_or_create(user=user)
-            profile.full_name = me_data.get("full_name", "") or username
+            profile.full_name = full_name
             profile.student_id_number = username
             profile.university = me_data.get("university", "") or "BSTU"
-            
-            # Map detailed fields
             profile.faculty_name = (me_data.get("faculty") or {}).get("name", "")
             profile.group_name = (me_data.get("group") or {}).get("name", "")
             profile.specialty_name = (me_data.get("specialty") or {}).get("name", "")
@@ -299,12 +317,52 @@ def login_student_via_bstu(username: str, password: str) -> User:
             profile.social_category = (me_data.get("socialCategory") or {}).get("name", "")
             profile.accommodation = (me_data.get("accommodation") or {}).get("name", "")
             profile.bstu_token = access_token
-            
-            # Handle birth date
+
             birth_date_raw = me_data.get("birth_date")
             if birth_date_raw and isinstance(birth_date_raw, (int, float)):
                 profile.birth_date = datetime.fromtimestamp(birth_date_raw, tz=timezone.utc).date()
-            
+
+            # HemisStudentSnapshot bilan bog'lash
+            if hemis_student_id:
+                profile.hemis_student_id = hemis_student_id
+
+            snapshot = None
+            if hemis_student_id:
+                snapshot = HemisStudentSnapshot.objects.filter(
+                    hemis_student_id=hemis_student_id
+                ).first()
+
+            if not snapshot:
+                snapshot = HemisStudentSnapshot.objects.filter(
+                    student_id_number=username
+                ).first()
+
+            if not snapshot and hemis_student_id:
+                # Yangi snapshot yaratish (keyinchalik admin to'liq sync qiladi)
+                snapshot = HemisStudentSnapshot.objects.create(
+                    hemis_student_id=hemis_student_id,
+                    student_id_number=username,
+                    full_name=full_name,
+                    faculty_name=profile.faculty_name,
+                    specialty_name=profile.specialty_name,
+                    group_name=profile.group_name,
+                    raw_payload=me_data,
+                )
+            elif snapshot:
+                # Mavjud snapshotni yangilash
+                updated = False
+                if not snapshot.hemis_student_id and hemis_student_id:
+                    snapshot.hemis_student_id = hemis_student_id
+                    updated = True
+                if snapshot.student_id_number != username:
+                    snapshot.student_id_number = username
+                    updated = True
+                if updated:
+                    snapshot.save()
+
+            if snapshot:
+                profile.hemis_snapshot = snapshot
+
             profile.save()
 
         return user
